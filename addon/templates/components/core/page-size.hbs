@@ -1,0 +1,14 @@
+<div class="input-group">
+  <span class="input-group-addon page-size">test</span>
+
+  {{#power-select
+    selected=_pageSize
+    options=_pageSizes
+    onchange=(action 'updatePageSize')
+    class='page-size-selector'
+    tagName='div'
+    as |page-size|
+  }}
+    {{page-size}}
+  {{/power-select}}
+</div>
