@@ -13,7 +13,7 @@ test('it exists', function(assert) {
 
 // Valid cases
 
-test('isPossiblePage 1', function(assert) {
+test('Can get first page', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(1, 15, 30));
 });
