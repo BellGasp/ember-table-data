@@ -7,7 +7,7 @@ export default Ember.Object.extend({
     this.set('filters', new Ember.A());
   },
   currentPage: 1,
-  pageSize: null,
+  pageSize: 10,
   sorts: null,
   filters: null
 });

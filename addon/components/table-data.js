@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import QueryObj from '../utils/query-obj';
-import RecordPage from '../utils/record-page';
 import layout from '../templates/components/table-data';
 
 const {
@@ -20,15 +19,23 @@ export default Ember.Component.extend({
   pageSizes: null,
 
   eagerLoading: true,
-  alwaysReload: false,
 
   loadedPages: null,
   totalCount: null,
 
   setup: on('init', function () {
     this.resetLoadedPages();
+    this.loadFirstPage();
     this.resetQueryObj(this.get('queryObj'));
   }),
+  loadFirstPage() {
+    let service = this.get('tableData');
+    let query = this.get('queryFunction');
+    let queryObj = this.get('queryObj');
+    let loadedPages = this.get('loadedPages');
+
+    loadedPages.pushObject(service.loadPage(1, query, queryObj));
+  },
   resetLoadedPages() {
     this.set('loadedPages', new Ember.A())
   },
@@ -38,43 +45,41 @@ export default Ember.Component.extend({
 
   records: computed('queryObj.currentPage', function () {
     let currentPage = this.get('queryObj.currentPage');
-    let loadedPages = this.get('loadedPages');
-    let loadedPage = loadedPages.findBy('page', currentPage);
+    let loadedPage = this.loadPage(currentPage);
 
-    if (!loadedPage || this.get('alwaysReload')) {
-      loadedPage = this.loadPage(currentPage);
+    if (this.get('eagerLoading')) {
+      resolve(loadedPage).then(lPage => {
+        let pageNumber = lPage.get('page');
+        this.loadPage(pageNumber - 1);
+        this.loadPage(pageNumber + 1);
+      });
     }
 
     return loadedPage.get('records');
   }),
-
+  
   loadPage(page) {
-    let loadedPages = this.get('loadedPages');
-    let recordPage = loadedPages.findBy('page', page) || loadedPages.pushObject(RecordPage.create({
-      page
-    }));
-    recordPage.set('records', this.loadRecords(page));
-    return recordPage;
-  },
-  loadRecords(page) {
-    let queryFunction = this.get('queryFunction');
-    let currentQueryObj = this.get('queryObj');
-    let isCurrentPage = currentQueryObj.get('page') === page;
+    let service = this.get('tableData');
+    let pageSize = this.get('queryObj.pageSize');
+    let totalCount = this.get('totalCount');
 
-    if (isCurrentPage) {
-      this.set('isLoading', true);
-    }
+    if (service.isPossiblePage(page, pageSize, totalCount)) {
+      let loadedPages = this.get('loadedPages');
+      let loadedPage = loadedPages.findBy('page', page);
 
-    let queryObj = QueryObj.create(currentQueryObj);
-    queryObj.set('page', page);
+      if (!loadedPage || this.get('eagerLoading')) {
+        loadedPage.removeObject(loadedPage);
 
-    return resolve(queryFunction(queryObj)).then(data => {
-      if (isCurrentPage) {
-        this.set('totalCount', data.get('meta.totalCount'));
-        this.set('isLoading', false);
+        let query = this.get('queryFunction');
+        let queryObj = QueryObj.create(this.get('queryObj'));
+        queryObj.set('page', page);
+
+        loadedPages.pushObject(service.loadPage(page, query, queryObj));
+
+        queryObj.destroy();
       }
-      return data;
-    });
+      return loadedPage;
+    }
   },
 
   actions: {

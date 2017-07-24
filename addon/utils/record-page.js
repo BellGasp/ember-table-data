@@ -5,6 +5,6 @@ export default Ember.Object.extend({
     this._super(...args);
     this.set('records', new Ember.A());
   },
-  page: null,
+  page: 1,
   records: null
 });
