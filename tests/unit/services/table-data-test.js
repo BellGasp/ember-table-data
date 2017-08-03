@@ -18,49 +18,49 @@ test('Can get first page', function(assert) {
   assert.ok(service.isPossiblePage(1, 15, 30));
 });
 
-test('isPossiblePage 2', function(assert) {
+test('Can get full only page', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(1, 15, 15));
 });
 
-test('isPossiblePage 3', function(assert) {
+test('Can get non-full only page', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(1, 15, 1));
 });
 
-test('isPossiblePage 4', function(assert) {
+test('Can get full last page', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(3, 5, 15));
 });
 
-test('isPossiblePage 44', function(assert) {
+test('Can get non-full last page', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(3, 5, 12));
 });
 
-test('isPossiblePage 45', function(assert) {
+test('Can get first page if no records', function(assert) {
   let service = this.subject();
   assert.ok(service.isPossiblePage(1, 15, 0));
 });
 
 // Invalid cases
 
-test('isPossiblePage 5', function(assert) {
+test('Cannot get page 0', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(0, 15, 15));
 });
 
-test('isPossiblePage 6', function(assert) {
+test('Cannot get page after last page (full last page)', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(3, 5, 10));
 });
 
-test('isPossiblePage 7', function(assert) {
+test('Cannot get negative page', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(-1, 15, 15));
 });
 
-test('isPossiblePage 8', function(assert) {
+test('Cannot get page x != 1 if no records', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(3, 15, 0));
 });

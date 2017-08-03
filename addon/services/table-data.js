@@ -7,18 +7,21 @@ const {
 
 export default Ember.Service.extend({
   isPossiblePage(page, pageSize, totalCount) {
-    return (page * pageSize) < (totalCount + pageSize) && page > 0;
+    let maxPage = Math.ceil(totalCount / pageSize);
+    return page === 1 || page > 0 && page <= maxPage;
   },
 
-  loadPage(query, queryObj) {
+  loadPage(records, queryObj) {
     return RecordPage.create({
-      page: queryObj.get('page'),
-      records: this.loadRecords(query, queryObj)
+      page: queryObj.get('currentPage'),
+      records: this.loadRecords(records, queryObj)
     });
   },
 
-  loadRecords(page, query, queryObj) {
-    // TODO manage local data;
-    return resolve(query(queryObj));
+  loadRecords(records, queryObj) {
+    if (typeof(records) === 'function') {
+      return resolve(records(queryObj));
+    }
+    return resolve(records);
   },
 });

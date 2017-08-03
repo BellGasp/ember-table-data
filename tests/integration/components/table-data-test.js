@@ -7,12 +7,10 @@ moduleForComponent('table-data', 'Integration | Component | table data', {
 
 test('it renders', function(assert) {
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  this.set('records', []);
 
-  // Template block usage:
   this.render(hbs`
-    {{#table-data}}
+    {{#table-data records=records}}
       <tr>
         <td>
           template block text
@@ -23,4 +21,19 @@ test('it renders', function(assert) {
 
   assert.equal(this.$('table').length, 1);
   assert.equal(this.$('table').text().trim(), 'template block text');
+});
+
+test('it throws assertion error without records', function(assert) {
+  assert.expectAssertion(() => {
+    this.render(hbs`
+      {{#table-data}}
+        <tr>
+          <td>
+            template block text
+          </td>
+        </tr>
+      {{/table-data}}`);
+  },
+  /"records"/,
+  'Throws assertion error if records isn\'t passed')
 });

@@ -24,17 +24,21 @@ export default Ember.Component.extend({
   totalCount: null,
 
   setup: on('init', function () {
+    if (!this.get('records'))
+      Ember.assert('table-data: the property "records" must be passed.');
+
     this.resetLoadedPages();
-    this.loadFirstPage();
     this.resetQueryObj(this.get('queryObj'));
+
+    this.loadFirstPage();
   }),
   loadFirstPage() {
     let service = this.get('tableData');
-    let query = this.get('queryFunction');
+    let records = this.get('records');
     let queryObj = this.get('queryObj');
     let loadedPages = this.get('loadedPages');
 
-    loadedPages.pushObject(service.loadPage(1, query, queryObj));
+    loadedPages.pushObject(service.loadPage(records, queryObj));
   },
   resetLoadedPages() {
     this.set('loadedPages', new Ember.A())
@@ -43,7 +47,7 @@ export default Ember.Component.extend({
     this.set('queryObj', QueryObj.create(queryObj));
   },
 
-  records: computed('queryObj.currentPage', function () {
+  pageRecords: computed('queryObj.currentPage', function () {
     let currentPage = this.get('queryObj.currentPage');
     let loadedPage = this.loadPage(currentPage);
 
@@ -57,7 +61,7 @@ export default Ember.Component.extend({
 
     return loadedPage.get('records');
   }),
-  
+
   loadPage(page) {
     let service = this.get('tableData');
     let pageSize = this.get('queryObj.pageSize');
@@ -70,11 +74,11 @@ export default Ember.Component.extend({
       if (!loadedPage || this.get('eagerLoading')) {
         loadedPage.removeObject(loadedPage);
 
-        let query = this.get('queryFunction');
+        let records = this.get('records');
         let queryObj = QueryObj.create(this.get('queryObj'));
-        queryObj.set('page', page);
+        queryObj.set('currentPage', page);
 
-        loadedPages.pushObject(service.loadPage(page, query, queryObj));
+        loadedPages.pushObject(service.loadPage(records, queryObj));
 
         queryObj.destroy();
       }
