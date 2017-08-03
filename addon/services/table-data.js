@@ -20,7 +20,10 @@ export default Ember.Service.extend({
 
   loadRecords(records, queryObj) {
     if (typeof(records) === 'function') {
-      return resolve(records(queryObj));
+      return resolve(records(queryObj)).then(data => {
+        queryObj.set('totalCount', data.get('meta.totalCount'));
+        return data;
+      });
     }
     return resolve(records);
   },

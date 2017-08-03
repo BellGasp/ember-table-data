@@ -65,7 +65,7 @@ export default Ember.Component.extend({
   loadPage(page) {
     let service = this.get('tableData');
     let pageSize = this.get('queryObj.pageSize');
-    let totalCount = this.get('totalCount');
+    let totalCount = this.get('queryObj.totalCount');
 
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
