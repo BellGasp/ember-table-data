@@ -1,5 +1,7 @@
 {{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
+{{!welcome-page}}
 {{!-- Feel free to remove this! --}}
 
 {{outlet}}
+
+{{core/page-numbers queryObj=queryObj changePage=(action 'changePage')}}

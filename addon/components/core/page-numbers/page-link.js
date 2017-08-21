@@ -10,12 +10,14 @@ export default Ember.Component.extend({
   classNames: ['page-item'],
   classNameBindings: ['isDisabled:disabled', 'isActive:active'],
 
-  disabled: null,
+  isDisabled: null,
   currentPage: null,
   page: null,
 
   isActive: computed('currentPage', 'page', function () {
-    return this.get('page') === this.get('currentPage');
+    let page = this.get('page');
+    let currentPage = this.get('currentPage');
+    return page && page === currentPage;
   }),
 
   actions: {

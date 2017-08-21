@@ -1,44 +1,44 @@
 <nav aria-label="Page navigation">
   <ul class="pagination">
     {{#if showFL}}
-      {{#core/page-numbers/page-link disabled=isFirstPage action=(action 'goToPrev')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=isFirstPage action=(action 'goToFirst')}}
+        <span class="fa fa-angle-double-left"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if showPN}}
-      {{#core/page-numbers/page-link disabled=isFirstPage action=(action 'goToPrev')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=isFirstPage action=(action 'goToPrev')}}
+        <span class="fa fa-angle-left"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if hasMoreBefore}}
-      {{#core/page-numbers/page-link action=(action 'showMoreBefore')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=true action=(action 'showMoreBefore')}}
+        <span class="fa fa-ellipsis-h"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
 
-    {{#each pageNumbersToDisplay as |page|}}
+    {{#each pageNumbers as |page|}}
       {{#core/page-numbers/page-link currentPage=queryObj.currentPage page=page action=(action 'goToPage')}}
         {{page}}
       {{/core/page-numbers/page-link}}
     {{/each}}
 
     {{#if hasMoreAfter}}
-      {{#core/page-numbers/page-link action=(action 'showMoreAfter')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=true action=(action 'showMoreAfter')}}
+        <span class="fa fa-ellipsis-h"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if showPN}}
-      {{#core/page-numbers/page-link disabled=isLastPage action=(action 'goToNext')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=isLastPage action=(action 'goToNext')}}
+        <span class="fa fa-angle-right"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if showFL}}
-      {{#core/page-numbers/page-link disabled=isLastPage action=(action 'goToLast')}}
-        <span>&laquo;</span>
+      {{#core/page-numbers/page-link isDisabled=isLastPage action=(action 'goToLast')}}
+        <span class="fa fa-angle-double-right"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
   </ul>

@@ -2,7 +2,7 @@
   <table>
     {{yield (hash
       pageSize=(component 'core/page-size' options=pageSizes defaultPageSize=queryObj.pageSize updatePageSize=(action 'updatePageSize'))
-      pagination=(component 'core/page-numbers' queryObj=queryObj)
+      pagination=(component 'core/page-numbers' queryObj=queryObj changePage=(action 'goToPage'))
       header=(component 'base/table-header')
       body=(component 'base/table-body' records=pageRecords isLoading=isLoading)
 
