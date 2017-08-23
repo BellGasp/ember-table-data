@@ -11,11 +11,13 @@ test('it renders', function(assert) {
 
   this.render(hbs`
     {{#table-data records=records}}
-      <tr>
-        <td>
-          template block text
-        </td>
-      </tr>
+      <table>
+        <tr>
+          <td>
+            template block text
+          </td>
+        </tr>
+      </table>
     {{/table-data}}
   `);
 

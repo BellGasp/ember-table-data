@@ -12,7 +12,9 @@ export default Ember.Controller.extend({
       pageSize: 5
     }));
   },
-
+  records() {
+    return ["test", "test3", "test2"];
+  },
   actions: {
     changePage(page) {
       this.set('queryObj.currentPage', page);

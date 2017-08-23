@@ -1,7 +1,39 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{!welcome-page}}
-{{!-- Feel free to remove this! --}}
-
 {{outlet}}
 
-{{core/page-numbers queryObj=queryObj changePage=(action 'changePage')}}
+
+{{#table-data records=records as |tableData|}}
+  <div class="row">
+    {{tableData.pageSize class="col-2"}}
+    {{tableData.pagination class="col-6"}}
+  </div>
+
+  {{#tableData.table class="table-striped col-12" as |table|}}
+    {{#table.header as |header|}}
+      {{#header.row as |row|}}
+        {{#row.cell}}
+          First cell
+        {{/row.cell}}
+        {{#row.cell}}
+          Second cell
+        {{/row.cell}}
+        {{#row.cell}}
+          Third cell
+        {{/row.cell}}
+      {{/header.row}}
+    {{/table.header}}
+
+    {{#table.body as |body record|}}
+      {{#body.row as |row|}}
+        {{#row.cell}}
+          c1 {{record}}
+        {{/row.cell}}
+        {{#row.cell}}
+          c2 {{record}}
+        {{/row.cell}}
+        {{#row.cell}}
+          c3 {{record}}
+        {{/row.cell}}
+      {{/body.row}}
+    {{/table.body}}
+  {{/tableData.table}}
+{{/table-data}}

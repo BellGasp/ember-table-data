@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../../templates/components/core/page-numbers';
 
-const { computed, on} = Ember;
+const { computed, on, isPresent } = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -12,16 +12,16 @@ export default Ember.Component.extend({
   }),
 
   assertRequiredProperties() {
-    if (!this.get('queryObj'))
+    if (!isPresent(this.get('queryObj')))
       Ember.assert('table-data: the property "queryObj" must be passed.');
 
-    if (!this.get('queryObj.currentPage'))
+    if (!isPresent(this.get('queryObj.currentPage')))
       Ember.assert('table-data: the property "queryObj.currentPage" must be passed.');
 
-    if (!this.get('queryObj.totalCount'))
+    if (!isPresent(this.get('queryObj.totalCount')))
       Ember.assert('table-data: the property "queryObj.totalCount" must be passed.');
 
-    if (!this.get('queryObj.pageSize'))
+    if (!isPresent(this.get('queryObj.pageSize')))
       Ember.assert('table-data: the property "queryObj.pageSize" must be passed.');
   },
 

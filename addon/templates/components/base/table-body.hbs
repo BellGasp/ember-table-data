@@ -1,9 +1,7 @@
 {{#if isLoading}}
-  
+
 {{else}}
   {{#each records as |record|}}
-    {{yield
-      (hash row=(component 'base/table-row'))
-      record}}
+    {{yield (hash row=(component 'base/table-row')) record}}
   {{/each}}
 {{/if}}

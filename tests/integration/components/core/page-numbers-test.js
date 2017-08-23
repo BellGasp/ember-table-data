@@ -200,20 +200,3 @@ test('it renders only 1 page', function(assert) {
   assert.equal(this.$('li').length, 1, 'Shows pages with [1]');
   assert.ok(this.$('li:eq(0)').text().trim(), 1);
 });
-
-test('it renders', function(assert) {
-  this.set('queryObj', {
-    currentPage: 1,
-    totalCount: 15,
-    pageSize: 5
-  });
-
-  this.set('externalAction', (page) => {
-    this.set('queryObj.currentPage', page);
-    assert.equals(page, 2);
-  });
-
-  this.render(hbs`{{core/page-numbers queryObj=queryObj changePage=externalAction}}`);
-
-
-});

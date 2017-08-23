@@ -10,14 +10,20 @@ const {
 
 export default Component.extend({
   layout,
-  classNames: ['col-md-2 col-xs-2 page-size'],
+  classNames: ['page-size'],
   _defaultOptions: [5, 10, 15, 25, 50, 100],
-  _pageSize: null,
+  _pageSize: 10,
+
+  _pageSizes: computed('_defaultOptions.[]', 'pageSizes.[]', function() {
+    let pageSizes = Ember.A(this.get('pageSizes'));
+    let defaultOptions = Ember.A(this.get('_defaultOptions'));
+    return isEmpty(pageSizes) ? defaultOptions : pageSizes;
+  }),
 
   pageSizes: null,
   pageSize: null,
 
-  setupPageSizes: on('init', function () {
+  setupPageSizes: on('didReceiveAttrs', function () {
     let pageSize = this.get('pageSize');
     let pageSizes = this.get('_pageSizes');
     if (pageSize && pageSizes.includes(pageSize)) {
@@ -25,12 +31,6 @@ export default Component.extend({
     } else {
       this.send('updatePageSize', this.get('_pageSizes.firstObject'));
     }
-  }),
-
-  _pageSizes: computed('_defaultOptions.[]', 'pageSizes.[]', function() {
-    let pageSizes = Ember.A(this.get('pageSizes'));
-    let defaultOptions = Ember.A(this.get('_defaultOptions'));
-    return isEmpty(pageSizes) ? defaultOptions : pageSizes;
   }),
   actions: {
     updatePageSize(pageSize) {

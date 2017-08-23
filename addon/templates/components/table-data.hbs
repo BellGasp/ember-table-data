@@ -1,11 +1,5 @@
-<div class="col-md-12 col-12">
-  <table>
-    {{yield (hash
-      pageSize=(component 'core/page-size' options=pageSizes defaultPageSize=queryObj.pageSize updatePageSize=(action 'updatePageSize'))
-      pagination=(component 'core/page-numbers' queryObj=queryObj changePage=(action 'goToPage'))
-      header=(component 'base/table-header')
-      body=(component 'base/table-body' records=pageRecords isLoading=isLoading)
-
-    )}}
-  </table>
-</div>
+{{yield (hash
+  pageSize=(component 'core/page-size' pageSizes=pageSizes pageSize=queryObj.pageSize updatePageSize=(action 'updatePageSize'))
+  pagination=(component 'core/page-numbers' queryObj=queryObj changePage=(action 'updatePage'))
+  table=(component 'base/table-container' records=pageRecords)
+)}}

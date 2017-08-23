@@ -5,18 +5,16 @@ import layout from '../templates/components/table-data';
 const {
   computed,
   on,
-  RSVP: { resolve },
   inject: { service }
 } = Ember;
 
 export default Ember.Component.extend({
   layout,
-  classNames: ['table-responsive'],
+  classNames: ['table-responsive', 'col-12'],
   tableData: service(),
 
   queryObj: null,
   queryFunction: null,
-  pageSizes: null,
 
   eagerLoading: true,
 
@@ -52,11 +50,9 @@ export default Ember.Component.extend({
     let loadedPage = this.loadPage(currentPage);
 
     if (this.get('eagerLoading')) {
-      resolve(loadedPage).then(lPage => {
-        let pageNumber = lPage.get('page');
-        this.loadPage(pageNumber - 1);
-        this.loadPage(pageNumber + 1);
-      });
+      let pageNumber = loadedPage.get('page');
+      this.loadPage(pageNumber - 1);
+      this.loadPage(pageNumber + 1);
     }
 
     return loadedPage.get('records');
@@ -72,7 +68,7 @@ export default Ember.Component.extend({
       let loadedPage = loadedPages.findBy('page', page);
 
       if (!loadedPage || this.get('eagerLoading')) {
-        loadedPage.removeObject(loadedPage);
+        loadedPages.removeObject(loadedPage);
 
         let records = this.get('records');
         let queryObj = QueryObj.create(this.get('queryObj'));
@@ -89,6 +85,9 @@ export default Ember.Component.extend({
   actions: {
     updatePageSize(pageSize) {
       this.set('queryObj.pageSize', pageSize);
+    },
+    updatePage(page){
+      this.set('queryObj.currentPage', page);
     }
   }
 });
