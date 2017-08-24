@@ -10,11 +10,11 @@ test('it renders with first/prev/next/last', function(assert) {
 
   this.set('queryObj', {
     currentPage: 1,
-    totalCount: 5,
     pageSize: 5
   });
+  this.set('totalCount', 5);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount}}`);
 
   assert.equal(this.$('li').length, 5, 'Shows pages with [first, prev, 1, next, last]');
   assert.equal(this.$('li .fa-angle-double-left').length, 1, 'Shows go to first');
@@ -28,11 +28,11 @@ test('it renders with more before and after', function(assert) {
 
   this.set('queryObj', {
     currentPage: 5,
-    totalCount: 50,
     pageSize: 5
   });
+  this.set('totalCount', 50);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount}}`);
 
   assert.equal(this.$('li').length, 11, 'Shows pages with [first, prev, ..., 3, 4, 5, 6, 7,... next, last]');
   assert.equal(this.$('li .fa-angle-double-left').length, 1, 'Shows go to first');
@@ -59,11 +59,11 @@ test('it renders with more before', function(assert) {
 
   this.set('queryObj', {
     currentPage: 5,
-    totalCount: 35,
     pageSize: 5
   });
+  this.set('totalCount', 35);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount}}`);
 
   assert.equal(this.$('li').length, 10, 'Shows pages with [first, prev, ..., 3, 4, 5, 6, 7, next, last]');
   assert.equal(this.$('li .fa-angle-double-left').length, 1, 'Shows go to first');
@@ -89,11 +89,11 @@ test('it renders with more after', function(assert) {
 
   this.set('queryObj', {
     currentPage: 3,
-    totalCount: 35,
     pageSize: 5
   });
+  this.set('totalCount', 35);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount}}`);
 
   assert.equal(this.$('li').length, 10, 'Shows pages with [first, prev, 3, 4, 5, 6, 7, ..., next, last]');
   assert.equal(this.$('li .fa-angle-double-left').length, 1, 'Shows go to first');
@@ -119,11 +119,11 @@ test('it renders without first/last', function(assert) {
 
   this.set('queryObj', {
     currentPage: 1,
-    totalCount: 5,
     pageSize: 5
   });
+  this.set('totalCount', 5);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj showFL=false}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount showFL=false}}`);
 
   assert.equal(this.$('li').length, 3, 'Shows pages with [prev, 1, next]');
   assert.equal(this.$('li .fa-angle-double-left').length, 0, 'Does not show go to first');
@@ -137,11 +137,11 @@ test('it renders without prev/next', function(assert) {
 
   this.set('queryObj', {
     currentPage: 1,
-    totalCount: 5,
     pageSize: 5
   });
+  this.set('totalCount', 5);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj showPN=false}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount showPN=false}}`);
 
   assert.equal(this.$('li').length, 3, 'Shows pages with [prev, 1, next]');
   assert.equal(this.$('li .fa-angle-double-left').length, 1, 'Shows go to first');
@@ -155,11 +155,11 @@ test('it renders with only page numbers', function(assert) {
 
   this.set('queryObj', {
     currentPage: 5,
-    totalCount: 50,
     pageSize: 5
   });
+  this.set('totalCount', 50);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj showPN=false showFL=false showHasMore=false}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount showPN=false showFL=false showHasMore=false}}`);
 
   assert.equal(this.$('li').length, 5, 'Shows pages with [3, 4, 5, 6, 7]');
   assert.equal(this.$('li .fa-angle-double-left').length, 0, 'Does not show go to first');
@@ -174,11 +174,11 @@ test('it renders with only 3 page shown', function(assert) {
 
   this.set('queryObj', {
     currentPage: 5,
-    totalCount: 50,
     pageSize: 5
   });
+  this.set('totalCount', 50);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj showPN=false showFL=false showHasMore=false nbPagesToShow=3}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount showPN=false showFL=false showHasMore=false nbPagesToShow=3}}`);
 
   assert.equal(this.$('li').length, 3, 'Shows pages with [4, 5, 6]');
   assert.ok(this.$('li:eq(0)').text().trim(), 4);
@@ -194,8 +194,9 @@ test('it renders only 1 page', function(assert) {
     totalCount: 5,
     pageSize: 15
   });
+  this.set('totalCount', 5);
 
-  this.render(hbs`{{core/page-numbers queryObj=queryObj showPN=false showFL=false showHasMore=false}}`);
+  this.render(hbs`{{core/page-numbers queryObj=queryObj totalCount=totalCount showPN=false showFL=false showHasMore=false}}`);
 
   assert.equal(this.$('li').length, 1, 'Shows pages with [1]');
   assert.ok(this.$('li:eq(0)').text().trim(), 1);

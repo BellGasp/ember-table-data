@@ -5,6 +5,7 @@ import layout from '../templates/components/table-data';
 const {
   computed,
   on,
+  observer,
   inject: { service }
 } = Ember;
 
@@ -17,64 +18,71 @@ export default Ember.Component.extend({
   queryFunction: null,
 
   eagerLoading: true,
+  updatePageAfter: 10,
 
   loadedPages: null,
-  totalCount: null,
+  totalCount: 0,
+
 
   setup: on('init', function () {
     if (!this.get('records'))
       Ember.assert('table-data: the property "records" must be passed.');
 
-    this.resetLoadedPages();
+    this.set('loadedPages', new Ember.A());
     this.resetQueryObj(this.get('queryObj'));
-
-    this.loadFirstPage();
   }),
-  loadFirstPage() {
-    let service = this.get('tableData');
-    let records = this.get('records');
-    let queryObj = this.get('queryObj');
-    let loadedPages = this.get('loadedPages');
-
-    loadedPages.pushObject(service.loadPage(records, queryObj));
-  },
-  resetLoadedPages() {
-    this.set('loadedPages', new Ember.A())
-  },
+  resetLoadedPages: observer('queryObj.pageSize', function() {
+    this.get('loadedPages').clear();
+  }),
   resetQueryObj(queryObj) {
     this.set('queryObj', QueryObj.create(queryObj));
   },
 
-  pageRecords: computed('queryObj.currentPage', function () {
+  pageRecords: computed('queryObj.{currentPage,pageSize}', function () {
     let currentPage = this.get('queryObj.currentPage');
     let loadedPage = this.loadPage(currentPage);
 
-    if (this.get('eagerLoading')) {
-      let pageNumber = loadedPage.get('page');
-      this.loadPage(pageNumber - 1);
-      this.loadPage(pageNumber + 1);
-    }
+    let records = loadedPage.get('records');
+    records.then(data => {
+      if (data.get('meta.totalCount')) {
+         this.set('totalCount', data.get('meta.totalCount'));
+       } else {
+         this.set('totalCount', data.get('length'));
+       }
 
-    return loadedPage.get('records');
+       if (this.get('eagerLoading')) {
+         let pageNumber = loadedPage.get('page');
+         this.loadPage(pageNumber - 1);
+         this.loadPage(pageNumber + 1);
+       }
+    })
+    return records
   }),
-
+  shouldReloadPage(loadedPage) {
+    let lastUpdated = loadedPage.get('lastUpdated');
+    let now = Date.now();
+    let diffInMin = (lastUpdated - now) / 1000 / 60;
+    let maxDiffInMin = this.get('updatePageAfter')
+    return diffInMin >= maxDiffInMin;
+  },
   loadPage(page) {
     let service = this.get('tableData');
     let pageSize = this.get('queryObj.pageSize');
-    let totalCount = this.get('queryObj.totalCount');
+    let totalCount = this.get('totalCount');
 
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
       let loadedPage = loadedPages.findBy('page', page);
-
-      if (!loadedPage || this.get('eagerLoading')) {
+      let shoudLoadPage = !loadedPage ||!this.get('eagerLoading') || this.shouldReloadPage(loadedPage);
+      if (shoudLoadPage) {
         loadedPages.removeObject(loadedPage);
 
         let records = this.get('records');
         let queryObj = QueryObj.create(this.get('queryObj'));
         queryObj.set('currentPage', page);
 
-        loadedPages.pushObject(service.loadPage(records, queryObj));
+        loadedPage = service.loadPage(records, queryObj);
+        loadedPages.pushObject(loadedPage);
 
         queryObj.destroy();
       }

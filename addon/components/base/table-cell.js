@@ -3,5 +3,7 @@ import layout from '../../templates/components/base/table-cell';
 
 export default Ember.Component.extend({
   layout,
-  tagName: 'td'
+  tagName: 'td',
+  attributeBindings: ['colspan'],
+  colspan: 1
 });

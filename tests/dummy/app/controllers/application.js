@@ -8,7 +8,6 @@ export default Ember.Controller.extend({
     this._super(args);
     this.set('queryObj', new QueryObj({
       currentPage: 1,
-      totalCount: 50,
       pageSize: 5
     }));
   },

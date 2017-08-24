@@ -6,9 +6,16 @@ export default Ember.Object.extend({
     this.set('sorts', new Ember.A());
     this.set('filters', new Ember.A());
   },
-  totalCount: 0,
   currentPage: 1,
   pageSize: 10,
   sorts: null,
-  filters: null
+  filters: null,
+  toQueryableObject(){
+    return {
+      filters: this.get('filters'),
+      sorts: this.get('sorts'),
+      currentPage: this.get('currentPage'),
+      pageSize: this.get('pageSize')
+    };
+  }
 });

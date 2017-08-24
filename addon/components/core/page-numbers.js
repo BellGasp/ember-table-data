@@ -18,31 +18,32 @@ export default Ember.Component.extend({
     if (!isPresent(this.get('queryObj.currentPage')))
       Ember.assert('table-data: the property "queryObj.currentPage" must be passed.');
 
-    if (!isPresent(this.get('queryObj.totalCount')))
-      Ember.assert('table-data: the property "queryObj.totalCount" must be passed.');
+    if (!isPresent(this.get('totalCount')))
+      Ember.assert('table-data: the property "totalCount" must be passed.');
 
     if (!isPresent(this.get('queryObj.pageSize')))
       Ember.assert('table-data: the property "queryObj.pageSize" must be passed.');
   },
 
-  lastPage: computed('queryObj.{totalCount,pageSize}', function() {
-    let { totalCount, pageSize } = this.get('queryObj');
+  lastPage: computed('queryObj.pageSize', 'totalCount', function() {
+    let pageSize = this.get('queryObj.pageSize');
+    let totalCount = this.get('totalCount');
     return Math.ceil(totalCount / pageSize) || 1;
   }),
 
-  isLastPage: computed('queryObj.{totalCount,pageSize,currentPage}', function () {
+  isLastPage: computed('queryObj.currentPage', 'lastPage', function () {
     return this.get('lastPage') === this.get('queryObj.currentPage');
   }),
-  isFirstPage: computed('queryObj.{currentPage}', function () {
+  isFirstPage: computed('queryObj.currentPage', function () {
     return this.get('queryObj.currentPage') === 1;
   }),
 
-  hasMoreBefore: computed('queryObj.{totalCount,pageSize,currentPage}', function () {
+  hasMoreBefore: computed('pageNumbers.firstObject', 'showHasMore', function () {
     let firstPageShown = this.get('pageNumbers.firstObject');
     let showHasMore = this.get('showHasMore');
     return firstPageShown !== 1 && showHasMore;
   }),
-  hasMoreAfter: computed('queryObj.{totalCount,pageSize,currentPage}', function () {
+  hasMoreAfter: computed('pageNumbers.lastObject', 'showHasMore', function () {
     let lastPageShown = this.get('pageNumbers.lastObject');
     let lastPage = this.get('lastPage');
     let showHasMore = this.get('showHasMore');
@@ -56,7 +57,7 @@ export default Ember.Component.extend({
   currentPageToShow: 1,
   nbPagesToShow: 5,
 
-  pageNumbers: computed('currentPageToShow', 'queryObj.{totalCount,pageSize,currentPage}', function () {
+  pageNumbers: computed('currentPageToShow', 'lastPage', function () {
     let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
     let currentPage = this.get('currentPageToShow');
     let lastPage = this.get('lastPage');

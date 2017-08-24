@@ -2,10 +2,6 @@ import Ember from 'ember';
 import RecordPage from '../utils/record-page';
 import DS from 'ember-data';
 
-const {
-  RSVP: { Promise }
-} = Ember;
-
 const { PromiseArray } = DS;
 
 export default Ember.Service.extend({
@@ -22,26 +18,15 @@ export default Ember.Service.extend({
   },
 
   loadRecords(records, queryObj) {
-    let promise = new Promise(resolve => {
-      if (typeof(records) === 'function') {
-        resolve(records(queryObj));
-      } else {
-        resolve(records)
-      }
-    });
-    let handler = result => {
-      var data = Ember.A(result);
-      if (data.get('meta.totalCount')) {
-        queryObj.set('totalCount', data.get('meta.totalCount'));
-      } else {
-        queryObj.set('totalCount', data.get('length'));
-      }
-      return data;
-    };
+    let recordsPromise;
+    if (typeof(records) === 'function') {
+      recordsPromise = records(queryObj.toQueryableObject());
+    } else {
+      recordsPromise = records
+    }
 
-    let promiseArray = PromiseArray.create({
-      promise: promise.then(handler)
+    return PromiseArray.create({
+      promise: recordsPromise
     });
-    return promiseArray;
   }
 });

@@ -1,7 +1,9 @@
-{{#if isLoading}}
-
-{{else}}
+{{#if records.isSettled}}
   {{#each records as |record|}}
-    {{yield (hash row=(component 'base/table-row')) record}}
+      {{yield (hash row=(component 'base/table-row')) record}}
+    {{else}}
+      {{yield (hash emptyRow=(component 'base/table-row'))}}
   {{/each}}
+{{else}}
+  {{yield (hash loadingRow=(component 'base/table-row'))}}
 {{/if}}
