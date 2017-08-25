@@ -1,37 +1,29 @@
----
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 sudo: false
-
 cache:
   directories:
-    - $HOME/.npm
-
+  - "$HOME/.npm"
 env:
-  # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
-  - EMBER_TRY_SCENARIO=ember-lts-2.4
-  - EMBER_TRY_SCENARIO=ember-lts-2.8
-  - EMBER_TRY_SCENARIO=ember-release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
-  - EMBER_TRY_SCENARIO=ember-default
-
+- EMBER_TRY_SCENARIO=ember-lts-2.4
+- EMBER_TRY_SCENARIO=ember-lts-2.8
+- EMBER_TRY_SCENARIO=ember-release
+- EMBER_TRY_SCENARIO=ember-beta
+- EMBER_TRY_SCENARIO=ember-canary
+- EMBER_TRY_SCENARIO=ember-default
 matrix:
   fast_finish: true
   allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
-
+  - env: EMBER_TRY_SCENARIO=ember-canary
 before_install:
-  - npm config set spin false
-  - npm install -g phantomjs-prebuilt
-  - phantomjs --version
-
+- npm config set spin false
+- npm install -g phantomjs-prebuilt
+- phantomjs --version
 install:
-  - npm install
-
+- npm install
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+- node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+deploy:
+  api_key:
+    secure: V3si35lJCvjr9jP3pRTpCMlAhfRpGbjWXI2XcWlaVuXfuWHZ3ZCJprCo828wkwyvXYgBJYrM2SiMeNgnSusjvxSvrodry+2zrO6yMTnm6dZx2OMYBnyfhWdipk2agbG3hsrBb/Sa0Eynl7zy8y1p4RcjlhkD7Dl6+QEGTjTq6PQGbHGvuI1CHNfOpf8lFvXtUb3fuvFctDhOnqQR0375llUVykOi33m3cwbQxhn84/PJUcKO3dP79XjrD0z603/NyDdJOT7dMZzgC3F5D3tqTPAqDKzSpoFqlxLayS1Q8fRuVQQNiiUnVKdLTsaHxk41S+SxUFIN/nSqaGLXHWGvS1gJIps4A/uCQl1Ve5FWjBwurH+TzMQ84FA19EOUOsvhS22SFZ/wOr/ieAcJNrMn4FhNRkaTBPmPlNg8HXu9O1bs2BUskDYzRis4pW8RSXfEXahl1msCYKESj0QECUlIk+fBpe/zIfWEI/0wzQtxUkmfwx1ocI7p58wOx/QsKb3mXxvaT0TbQ/EFsJxB0Th7BrAF77tdS9uyaTnZIpSYDYns3fSrpcsfqv7PAiqUKZ4Fj68XLOcpttZMh3emcngBhoT4LtTbMz+yjzsW01ul66vWVPzIm1kZb24ttU1mtofgqe3RTHZx4MnNCU/UCmm7oAkXmT56z5tt2k1DTLBtIQk=
