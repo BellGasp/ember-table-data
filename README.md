@@ -6,7 +6,7 @@ This README outlines the details of collaborating on this Ember addon.
 
 * `git clone <repository-url>` this repository
 * `cd ember-table-data`
-* `npm install`
+* `npm install` hey
 
 ## Running
 
