@@ -21,6 +21,14 @@ test('it renders multiple records', function(assert) {
   this.render(hbs`
     <table>
       {{#base/table-body records=records as |body record|}}
+        {{#body.loadingRow}}
+          <td>Test loading</td>
+        {{/body.loadingRow}}
+
+        {{#body.emptyRow}}
+          <td>Test empty</td>
+        {{/body.emptyRow}}
+
         {{#body.row}}
           <td>{{record}}</td>
         {{/body.row}}
@@ -45,9 +53,17 @@ test('it renders empty records row', function(assert) {
   this.render(hbs`
     <table>
       {{#base/table-body records=records as |body record|}}
+        {{#body.loadingRow}}
+          <td>Test loading</td>
+        {{/body.loadingRow}}
+
         {{#body.emptyRow}}
           <td>Test empty</td>
         {{/body.emptyRow}}
+
+        {{#body.row}}
+          <td>{{record}}</td>
+        {{/body.row}}
       {{/base/table-body}}
     </table>
   `);
@@ -58,7 +74,7 @@ test('it renders empty records row', function(assert) {
   });
 });
 
-test('it renders multiple records', function(assert) {
+test('it renders loading record row', function(assert) {
   let records = ['test1', 'test2'];
   let recordsPromise = new PromiseArray({
     promise: resolve(records)
@@ -71,6 +87,14 @@ test('it renders multiple records', function(assert) {
         {{#body.loadingRow}}
           <td>Test loading</td>
         {{/body.loadingRow}}
+
+        {{#body.emptyRow}}
+          <td>Test empty</td>
+        {{/body.emptyRow}}
+
+        {{#body.row}}
+          <td>{{record}}</td>
+        {{/body.row}}
       {{/base/table-body}}
     </table>
   `);
