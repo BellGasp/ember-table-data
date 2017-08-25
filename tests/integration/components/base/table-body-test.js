@@ -75,9 +75,11 @@ test('it renders empty records row', function(assert) {
 });
 
 test('it renders loading record row', function(assert) {
-  let records = ['test1', 'test2'];
+
+  let promise = new Ember.RSVP.Promise(() => {});
+
   let recordsPromise = new PromiseArray({
-    promise: resolve(records)
+    promise: promise
   });
   this.set('records', recordsPromise);
   // Template block usage:
