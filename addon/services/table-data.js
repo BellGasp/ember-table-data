@@ -3,6 +3,7 @@ import RecordPage from '../utils/record-page';
 import DS from 'ember-data';
 
 const { PromiseArray } = DS;
+const { RSVP: { resolve }} = Ember;
 
 export default Ember.Service.extend({
   isPossiblePage(page, pageSize, totalCount) {
@@ -26,7 +27,7 @@ export default Ember.Service.extend({
     }
 
     return PromiseArray.create({
-      promise: recordsPromise
+      promise: resolve(recordsPromise)
     });
   }
 });

@@ -44,6 +44,9 @@ export default Ember.Component.extend({
 
     let records = loadedPage.get('records');
     records.then(data => {
+      if (!data.get) {
+        data = Ember.A(data);
+      }
       if (data.get('meta.totalCount')) {
          this.set('totalCount', data.get('meta.totalCount'));
        } else {
