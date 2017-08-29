@@ -22,14 +22,11 @@ It currently exposes 'pagination', 'pageSize' and 'table'.
 
 | Property Key | Default Value | Type | Description |
 |---|:-------------:|:------:|:-------------:|
-| records | null (required) | [] or function | This is the way to get the data.
-Either you pass 'records' as an array directly, and then it'll paginate it locally (_not done yet_)
-or you pass a function that'll be called to get the data. A Query object is passed to the function,
-but you decide how you use it. If you've got any special case to do, usually you'd do it here.|
+| records | null (required) | [] or function | This is the way to get the data. Either you pass 'records' as an array directly, and then it'll paginate it locally (_not done yet_) or you pass a function returning a _promise_ that'll be called to get the data. A Query object is passed to the function, but you decide how you use it. If you've got any special case to do, usually you'd do it here.|
 
 ##### Example
 ```hbs
-{{#table-data records=(action 'requests') as |tableData|}}
+{{#table-data records=(action 'getData') as |tableData|}}
 ```
 ``` javascript
 actions: {
