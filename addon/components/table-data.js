@@ -33,6 +33,7 @@ export default Ember.Component.extend({
   }),
   resetLoadedPages: observer('queryObj.pageSize', function() {
     this.get('loadedPages').clear();
+    this.send('updatePage', 1);
   }),
   resetQueryObj(queryObj) {
     this.set('queryObj', QueryObj.create(queryObj));
