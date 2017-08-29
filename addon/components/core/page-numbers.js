@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../../templates/components/core/page-numbers';
 
-const { computed, on, isPresent } = Ember;
+const { computed, observer, on, isPresent } = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -53,6 +53,10 @@ export default Ember.Component.extend({
   showFL: true,
   showPN: true,
   showHasMore: true,
+
+  updatesCurrentPageToShow: observer('queryObj.{currentPage,pageSize}', 'totalCount', function() {
+    this.set('currentPageToShow', this.get('queryObj.currentPage'));
+  }),
 
   currentPageToShow: 1,
   nbPagesToShow: 5,
@@ -110,15 +114,16 @@ export default Ember.Component.extend({
     goToLast() {
       this.send('goToPage', this.get('lastPage'));
     },
-    showMoreBefore() {
+    showMore(before) {
       let nbOfPagesShown = this.get('pageNumbers.length');
       let currentPage = this.get('currentPageToShow');
-      this.set('currentPageToShow', currentPage - nbOfPagesShown);
-    },
-    showMoreAfter() {
-      let nbOfPagesShown = this.get('pageNumbers.length');
-      let currentPage = this.get('currentPageToShow');
-      this.set('currentPageToShow', currentPage + nbOfPagesShown);
+
+      let newPage = currentPage + nbOfPagesShown;
+      if (before){
+        newPage = currentPage - nbOfPagesShown
+      }
+
+      this.set('currentPageToShow', newPage);
     }
   }
 });

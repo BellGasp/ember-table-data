@@ -13,7 +13,7 @@
     {{/if}}
 
     {{#if hasMoreBefore}}
-      {{#core/page-numbers/page-link action=(action 'showMoreBefore')}}
+      {{#core/page-numbers/page-link action=(action 'showMore' true)}}
         <span class="fa fa-ellipsis-h"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
@@ -25,7 +25,7 @@
     {{/each}}
 
     {{#if hasMoreAfter}}
-      {{#core/page-numbers/page-link action=(action 'showMoreAfter')}}
+      {{#core/page-numbers/page-link action=(action 'showMore' false)}}
         <span class="fa fa-ellipsis-h"></span>
       {{/core/page-numbers/page-link}}
     {{/if}}
