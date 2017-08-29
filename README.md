@@ -20,6 +20,24 @@ Like most ember addons, simply run `ember install ember-table-data` and you shou
 The Table-data component serves as the main container of the component. It's used to wrap the pagination/page-size component in the same container that the table in itself resides (Will eventually contain filters too).
 It currently exposes 'pagination', 'pageSize' and 'table'.
 
+| Property Key | Default Value | Type | Description |
+|---|:-------------:|:------:|:-------------:|
+| records | null (required) | [] or function | This is the way to get the data.
+Either you pass 'records' as an array directly, and then it'll paginate it locally (_not done yet_)
+or you pass a function that'll be called to get the data. A Query object is passed to the function,
+but you decide how you use it. If you've got any special case to do, usually you'd do it here.|
+
+##### Example
+```hbs
+{{#table-data records=(action 'requests') as |tableData|}}
+```
+``` javascript
+actions: {
+    getData(queryObj){
+      return this.get('store').query('data', queryObj);
+    }
+  }
+```
 #### Pagination
 
 The `pagination` component is used to show the currently shown page and navigate to other pages.
@@ -73,6 +91,7 @@ The 'row' component (both from header and body) is simply a table row (tr).
 
 The 'cell' component (both from header and body) is simply a table cell (td).
 
+### Example
 _Here's what a complete table-data would look like:_
 
 ```hbs
