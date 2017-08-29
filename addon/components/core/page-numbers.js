@@ -112,12 +112,12 @@ export default Ember.Component.extend({
     },
     showMoreBefore() {
       let nbOfPagesShown = this.get('pageNumbers.length');
-      let currentPage = this.get('queryObj.currentPage');
+      let currentPage = this.get('currentPageToShow');
       this.set('currentPageToShow', currentPage - nbOfPagesShown);
     },
     showMoreAfter() {
       let nbOfPagesShown = this.get('pageNumbers.length');
-      let currentPage = this.get('queryObj.currentPage');
+      let currentPage = this.get('currentPageToShow');
       this.set('currentPageToShow', currentPage + nbOfPagesShown);
     }
   }
