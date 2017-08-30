@@ -15,7 +15,6 @@ export default Ember.Component.extend({
   tableData: service(),
 
   queryObj: null,
-  queryFunction: null,
 
   eagerLoading: true,
   updatePageAfter: 10,
@@ -31,7 +30,7 @@ export default Ember.Component.extend({
     this.set('loadedPages', new Ember.A());
     this.resetQueryObj(this.get('queryObj'));
   }),
-  resetLoadedPages: observer('queryObj.pageSize', function() {
+  resetLoadedPages: observer('records', 'records.[]', 'queryObj.pageSize', function() {
     this.get('loadedPages').clear();
     this.send('updatePage', 1);
   }),

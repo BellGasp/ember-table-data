@@ -23,11 +23,15 @@ export default Ember.Service.extend({
     if (typeof(records) === 'function') {
       recordsPromise = records(queryObj.toQueryableObject());
     } else {
-      recordsPromise = records
+      recordsPromise = this.paginateRecords(records);
     }
 
     return PromiseArray.create({
       promise: resolve(recordsPromise)
     });
+  },
+  paginateRecords(records, {currentPage, pageSize}) {
+    let firstRecordIndex = currentPage * pageSize - pageSize;
+    return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
   }
 });
