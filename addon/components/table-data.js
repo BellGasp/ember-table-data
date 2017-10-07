@@ -1,15 +1,13 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
+import Component from '@ember/component';
+import { on } from '@ember/object/evented';
+import { observer, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
 
-const {
-  computed,
-  on,
-  observer,
-  inject: { service }
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
   classNames: ['table-responsive', 'col-12'],
   tableData: service(),
@@ -25,9 +23,9 @@ export default Ember.Component.extend({
 
   setup: on('init', function () {
     if (!this.get('records'))
-      Ember.assert('table-data: the property "records" must be passed.');
+      assert('table-data: the property "records" must be passed.');
 
-    this.set('loadedPages', new Ember.A());
+    this.set('loadedPages', new A());
     this.resetQueryObj(this.get('queryObj'));
   }),
   resetLoadedPages: observer('records', 'records.[]', 'queryObj.pageSize', function() {
@@ -45,7 +43,7 @@ export default Ember.Component.extend({
     let records = loadedPage.get('records');
     records.then(data => {
       if (!data.get) {
-        data = Ember.A(data);
+        data = A(data);
       }
       if (data.get('meta.totalCount')) {
          this.set('totalCount', data.get('meta.totalCount'));

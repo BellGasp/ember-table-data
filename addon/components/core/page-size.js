@@ -1,12 +1,9 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { on } from '@ember/object/evented';
+import Component from '@ember/component';
+import { isEmpty } from '@ember/utils';
 import layout from '../../templates/components/core/page-size';
-
-const {
-  computed,
-  on,
-  Component,
-  isEmpty
-} = Ember;
 
 export default Component.extend({
   layout,
@@ -15,8 +12,8 @@ export default Component.extend({
   _pageSize: 10,
 
   _pageSizes: computed('_defaultOptions.[]', 'pageSizes.[]', function() {
-    let pageSizes = Ember.A(this.get('pageSizes'));
-    let defaultOptions = Ember.A(this.get('_defaultOptions'));
+    let pageSizes = A(this.get('pageSizes'));
+    let defaultOptions = A(this.get('_defaultOptions'));
     return isEmpty(pageSizes) ? defaultOptions : pageSizes;
   }),
 
