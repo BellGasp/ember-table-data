@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import Service from '@ember/service';
+import { resolve } from 'rsvp';
 import RecordPage from '../utils/record-page';
 import DS from 'ember-data';
 
 const { PromiseArray } = DS;
-const { RSVP: { resolve }} = Ember;
 
-export default Ember.Service.extend({
+export default Service.extend({
   isPossiblePage(page, pageSize, totalCount) {
     let maxPage = Math.ceil(totalCount / pageSize);
     return page === 1 || page > 0 && page <= maxPage;

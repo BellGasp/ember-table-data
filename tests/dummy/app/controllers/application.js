@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import QueryObj from 'dummy/utils/query-obj';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryObj: null,
 
   init(...args) {

@@ -1,11 +1,10 @@
+import { resolve, Promise as EmberPromise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
 import DS from 'ember-data';
 import wait from 'ember-test-helpers/wait';
 
 const { PromiseArray } = DS;
-const { RSVP: { resolve }} = Ember;
 
 moduleForComponent('base/table-body', 'Integration | Component | base/table body', {
   integration: true
@@ -76,7 +75,7 @@ test('it renders empty records row', function(assert) {
 
 test('it renders loading record row', function(assert) {
 
-  let promise = new Ember.RSVP.Promise(() => {});
+  let promise = new EmberPromise(() => {});
 
   let recordsPromise = new PromiseArray({
     promise: promise
