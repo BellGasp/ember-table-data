@@ -4,18 +4,20 @@ import EmberObject from '@ember/object';
 export default EmberObject.extend({
   init(...args) {
     this._super(...args);
-    
+
     if (!this.get('sorts')) {
-      this.set('sorts', new A());
+      this.set('sorts', A());
     }
     if (!this.get('filters')) {
-      this.set('filters', new A());
+      this.set('filters', A());
     }
   },
+
   currentPage: 1,
   pageSize: 10,
   sorts: null,
   filters: null,
+
   toQueryableObject() {
     return {
       filters: this.get('filters'),

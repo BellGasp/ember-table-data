@@ -111,7 +111,6 @@ export default Component.extend({
 
   actions: {
     goToPage(page) {
-      // this.set('currentPageToShow', page);
       this.get('changePage')(page);
     },
     goToNext() {

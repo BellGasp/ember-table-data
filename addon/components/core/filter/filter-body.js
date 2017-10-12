@@ -1,7 +1,7 @@
 import Component from '@ember/component';
-import layout from '../../../templates/components/core/filter/filter-body';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import layout from '../../../templates/components/core/filter/filter-body';
 
 export default Component.extend({
   layout,
@@ -13,10 +13,9 @@ export default Component.extend({
     let userComparator = this.get('comparators');
 
     if(userComparator){
-      userComparator.forEach(function(comp){
+      userComparator.forEach(comp => {
         var defaultTypeComparators = defaultComparators.filterBy('propertyType', comp.get('propertyType'));
-        if (defaultTypeComparators.length > 0)
-        {
+        if (defaultTypeComparators.length > 0){
           let sameComparator = defaultTypeComparators.findBy('internalName', comp.get('internalName'));
           if (sameComparator) {
               if (comp.get('valueForQuery')){

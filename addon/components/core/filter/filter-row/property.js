@@ -7,8 +7,11 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if (this.get('filterRowObject') && this.get('properties') && this.get('properties.length') > 0) {
-      this.set('filterRowObject.property', this.get('properties.firstObject'));
+    let filterRowObject = this.get('filterRowObject');
+    let properties = this.get('properties');
+
+    if (filterRowObject && properties && properties.get('length') > 0) {
+      filterRowObject.set('property', properties.get('firstObject'));
     }
   },
 });

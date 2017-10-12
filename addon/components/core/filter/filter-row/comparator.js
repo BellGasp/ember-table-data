@@ -7,8 +7,11 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if(this.get('filterRowObject') && this.get('filteredComparators') && this.get('filteredComparators.length') > 0){
-      this.set('filterRowObject.comparator', this.get('filteredComparators.firstObject'));
+    let filterRowObject = this.get('filterRowObject');
+    let filteredComparators = this.get('filteredComparators');
+
+    if(filterRowObject && filteredComparators && filteredComparators.get('length') > 0){
+      filterRowObject.set('comparator', filteredComparators.get('firstObject'));
     }
   },
 });
