@@ -7,7 +7,8 @@ moduleForComponent('core/filter/filter-row', 'Integration | Component | core/fil
 });
 
 test('it renders and show the error the for missing component for empty type', function(assert) {
-  this.render(hbs`{{core/filter/filter-row}}`);
+  this.set('deleteRow', () => {});
+  this.render(hbs`{{core/filter/filter-row deleteRow=(action deleteRow)}}`);
 
   assert.equal(this.$().text().trim(), '');
 });
