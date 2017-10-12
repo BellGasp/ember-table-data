@@ -1,12 +1,14 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { A } from '@ember/array';
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   init(...args) {
     this._super(...args);
-    this.set('records', new Ember.A());
+    this.set('records', new A());
     this.set('lastUpdated', Date.now());
   },
   page: 1,
   records: null,
-  lastUpdated: null
+  lastUpdated: null,
+  forceReload: false
 });

@@ -1,9 +1,12 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { on } from '@ember/object/evented';
+import { isPresent } from '@ember/utils';
+import { assert } from '@ember/debug';
+import { computed, observer } from '@ember/object';
+import { A } from '@ember/array';
 import layout from '../../templates/components/core/page-numbers';
 
-const { computed, observer, on, isPresent } = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
 
   setup: on('init', function () {
@@ -13,16 +16,16 @@ export default Ember.Component.extend({
 
   assertRequiredProperties() {
     if (!isPresent(this.get('queryObj')))
-      Ember.assert('table-data: the property "queryObj" must be passed.');
+      assert('table-data: the property "queryObj" must be passed.');
 
     if (!isPresent(this.get('queryObj.currentPage')))
-      Ember.assert('table-data: the property "queryObj.currentPage" must be passed.');
+      assert('table-data: the property "queryObj.currentPage" must be passed.');
 
     if (!isPresent(this.get('totalCount')))
-      Ember.assert('table-data: the property "totalCount" must be passed.');
+      assert('table-data: the property "totalCount" must be passed.');
 
     if (!isPresent(this.get('queryObj.pageSize')))
-      Ember.assert('table-data: the property "queryObj.pageSize" must be passed.');
+      assert('table-data: the property "queryObj.pageSize" must be passed.');
   },
 
   lastPage: computed('queryObj.pageSize', 'totalCount', function() {
@@ -68,9 +71,17 @@ export default Ember.Component.extend({
 
     if (currentPage < 1 ) {
       currentPage = 1;
+      if (currentPage === this.get('queryObj.currentPage')){
+        this.get('changePage')(currentPage);
+        return;
+      }
     }
     if (currentPage > lastPage) {
       currentPage = lastPage
+      if (currentPage === this.get('queryObj.currentPage')){
+        this.get('changePage')(currentPage);
+        return;
+      }
     }
 
     let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
@@ -94,12 +105,12 @@ export default Ember.Component.extend({
     }
 
     let nbOfPagesToShow = lastPageToShow - firstPageToShow + 1;
-    return Ember.A(Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i));
+    return A(Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i));
   }),
 
   actions: {
     goToPage(page) {
-      this.set('currentPageToShow', page);
+      // this.set('currentPageToShow', page);
       this.get('changePage')(page);
     },
     goToNext() {

@@ -1,17 +1,15 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject as service} from '@ember/service';
+import { on } from '@ember/object/evented';
+import { observer, computed } from '@ember/object';
+import { assert } from '@ember/debug';
+import { A } from '@ember/array';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
 
-const {
-  computed,
-  on,
-  observer,
-  inject: { service }
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
-  classNames: ['table-responsive', 'col-12'],
+
   tableData: service(),
 
   queryObj: null,
@@ -23,11 +21,11 @@ export default Ember.Component.extend({
   totalCount: 0,
 
 
-  setup: on('init', function () {
+  setup: on('init', function() {
     if (!this.get('records'))
-      Ember.assert('table-data: the property "records" must be passed.');
+      assert('table-data: the property "records" must be passed.');
 
-    this.set('loadedPages', new Ember.A());
+    this.set('loadedPages', new A());
     this.resetQueryObj(this.get('queryObj'));
   }),
   resetLoadedPages: observer('records', 'records.[]', 'queryObj.pageSize', function() {
@@ -38,35 +36,33 @@ export default Ember.Component.extend({
     this.set('queryObj', QueryObj.create(queryObj));
   },
 
-  pageRecords: computed('queryObj.{currentPage,pageSize}', function () {
+  pageRecords: computed('queryObj.{currentPage,pageSize,filters.[]}', function() {
     let currentPage = this.get('queryObj.currentPage');
     let loadedPage = this.loadPage(currentPage);
 
     let records = loadedPage.get('records');
     records.then(data => {
       if (!data.get) {
-        data = Ember.A(data);
+        data = A(data);
       }
-      if (data.get('meta.totalCount')) {
-         this.set('totalCount', data.get('meta.totalCount'));
-       } else {
-         this.set('totalCount', data.get('length'));
-       }
-
-       if (this.get('eagerLoading')) {
-         let pageNumber = loadedPage.get('page');
-         this.loadPage(pageNumber - 1);
-         this.loadPage(pageNumber + 1);
-       }
+      if (this.get('eagerLoading')) {
+        let pageNumber = loadedPage.get('page');
+        this.loadPage(pageNumber - 1);
+        this.loadPage(pageNumber + 1);
+      }
     })
     return records
   }),
   shouldReloadPage(loadedPage) {
-    let lastUpdated = loadedPage.get('lastUpdated');
-    let now = Date.now();
-    let diffInMin = (lastUpdated - now) / 1000 / 60;
-    let maxDiffInMin = this.get('updatePageAfter')
-    return diffInMin >= maxDiffInMin;
+    if (!loadedPage.get('forceReload')){
+      let lastUpdated = loadedPage.get('lastUpdated');
+      let now = Date.now();
+      let diffInMin = (lastUpdated - now) / 1000 / 60;
+      let maxDiffInMin = this.get('updatePageAfter')
+      return diffInMin >= maxDiffInMin;
+    }
+
+    return true;
   },
   loadPage(page) {
     let service = this.get('tableData');
@@ -76,7 +72,8 @@ export default Ember.Component.extend({
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
       let loadedPage = loadedPages.findBy('page', page);
-      let shoudLoadPage = !loadedPage ||!this.get('eagerLoading') || this.shouldReloadPage(loadedPage);
+      let shoudLoadPage = !loadedPage || !this.get('eagerLoading') || this.shouldReloadPage(
+        loadedPage);
       if (shoudLoadPage) {
         loadedPages.removeObject(loadedPage);
 
@@ -85,6 +82,19 @@ export default Ember.Component.extend({
         queryObj.set('currentPage', page);
 
         loadedPage = service.loadPage(records, queryObj);
+        loadedPage.get('records').then(data => {
+          if (data.get && data.get('meta') && data.get('meta.totalCount')) {
+            this.set('totalCount', data.get('meta.totalCount'));
+          } else {
+            if (data.get){
+            this.set('totalCount', data.get('length'));
+          } else
+            {
+              this.set('totalCount', data.length);
+            }
+          }
+        });
+        loadedPage.set('forceReload', false);
         loadedPages.pushObject(loadedPage);
 
         queryObj.destroy();
@@ -97,8 +107,18 @@ export default Ember.Component.extend({
     updatePageSize(pageSize) {
       this.set('queryObj.pageSize', pageSize);
     },
-    updatePage(page){
+    updatePage(page) {
       this.set('queryObj.currentPage', page);
+    },
+    refreshPage(page) {
+      let pageToReload = page || this.get('queryObj.currentPage');
+      let loadedCurrentPage = this.get('loadedPages').findBy('page', pageToReload);
+      loadedCurrentPage.set('forceReload', true);
+      this.notifyPropertyChange('queryObj.currentPage');
+    },
+    updateFilter(filters){
+      this.resetLoadedPages();
+      this.set('queryObj.filters', filters);
     }
   }
 });
