@@ -1,0 +1,10 @@
+{{#power-select
+    selected=filterRowObject.property
+    options=properties
+    onchange=(action (mut filterRowObject.property))
+    tagName='div'
+    class="property-selector"
+    as |filter|
+}}
+  {{get filter 'label'}}
+{{/power-select}}

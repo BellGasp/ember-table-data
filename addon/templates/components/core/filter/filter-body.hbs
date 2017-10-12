@@ -1,0 +1,5 @@
+{{#each filtersRows as |row|}}
+  {{yield (hash
+    row=(component 'core/filter/filter-row' filterRowObject=row properties=properties count=filtersRows.length comparators=availableComparators deleteRow=deleteRow )
+  )}}
+{{/each}}

@@ -9,5 +9,6 @@ export default EmberObject.extend({
   },
   page: 1,
   records: null,
-  lastUpdated: null
+  lastUpdated: null,
+  forceReload: false
 });

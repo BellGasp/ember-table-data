@@ -74,9 +74,8 @@ test('it renders empty records row', function(assert) {
 });
 
 test('it renders loading record row', function(assert) {
-
+  
   let promise = new EmberPromise(() => {});
-
   let recordsPromise = new PromiseArray({
     promise: promise
   });

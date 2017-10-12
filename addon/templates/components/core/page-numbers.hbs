@@ -13,6 +13,10 @@
     {{/if}}
 
     {{#if hasMoreBefore}}
+      {{#core/page-numbers/page-link currentPage=queryObj.currentPage page=1 action=(action 'goToFirst')}}
+        1
+      {{/core/page-numbers/page-link}}
+
       {{#core/page-numbers/page-link action=(action 'showMore' true)}}
         <span class="fa fa-ellipsis-h"></span>
       {{/core/page-numbers/page-link}}
@@ -27,6 +31,11 @@
     {{#if hasMoreAfter}}
       {{#core/page-numbers/page-link action=(action 'showMore' false)}}
         <span class="fa fa-ellipsis-h"></span>
+      {{/core/page-numbers/page-link}}
+
+      {{#core/page-numbers/page-link currentPage=queryObj.currentPage page=lastPage action=(action
+        'goToLast')}}
+        {{lastPage}}
       {{/core/page-numbers/page-link}}
     {{/if}}
 

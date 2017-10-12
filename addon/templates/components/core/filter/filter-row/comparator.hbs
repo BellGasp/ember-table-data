@@ -1,0 +1,10 @@
+{{#power-select
+    selected=filterRowObject.comparator
+    options=filteredComparators
+    onchange=(action (mut filterRowObject.comparator))
+    class="comparator-selector"
+    tagName='div'
+    as |comparator|
+}}
+  {{get comparator 'label'}}
+{{/power-select}}

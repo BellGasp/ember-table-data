@@ -1,0 +1,1 @@
+export { default } from 'ember-table-data/components/core/filter/filter-row/value';

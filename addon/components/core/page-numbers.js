@@ -4,6 +4,7 @@ import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { isPresent } from '@ember/utils';
+
 import layout from '../../templates/components/core/page-numbers';
 
 export default Component.extend({
@@ -71,9 +72,17 @@ export default Component.extend({
 
     if (currentPage < 1 ) {
       currentPage = 1;
+      if (currentPage === this.get('queryObj.currentPage')){
+        this.get('changePage')(currentPage);
+        return;
+      }
     }
     if (currentPage > lastPage) {
       currentPage = lastPage
+      if (currentPage === this.get('queryObj.currentPage')){
+        this.get('changePage')(currentPage);
+        return;
+      }
     }
 
     let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
@@ -102,7 +111,6 @@ export default Component.extend({
 
   actions: {
     goToPage(page) {
-      this.set('currentPageToShow', page);
       this.get('changePage')(page);
     },
     goToNext() {
