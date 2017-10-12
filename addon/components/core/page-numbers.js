@@ -1,9 +1,10 @@
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
 import Component from '@ember/component';
+import { observer, computed } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { isPresent } from '@ember/utils';
-import { assert } from '@ember/debug';
-import { computed, observer } from '@ember/object';
-import { A } from '@ember/array';
+
 import layout from '../../templates/components/core/page-numbers';
 
 export default Component.extend({

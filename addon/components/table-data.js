@@ -1,9 +1,9 @@
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
 import Component from '@ember/component';
-import { inject as service} from '@ember/service';
 import { on } from '@ember/object/evented';
 import { observer, computed } from '@ember/object';
-import { assert } from '@ember/debug';
-import { A } from '@ember/array';
+import { inject as service } from '@ember/service';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
 

@@ -7,7 +7,6 @@ import { A } from '@ember/array';
 
 const { PromiseArray } = DS;
 
-
 export default Service.extend({
   isPossiblePage(page, pageSize, totalCount) {
     let maxPage = Math.ceil(totalCount / pageSize);

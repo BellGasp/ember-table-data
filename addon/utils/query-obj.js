@@ -1,9 +1,10 @@
-import EmberObject from '@ember/object';
 import { A } from '@ember/array';
+import EmberObject from '@ember/object';
 
 export default EmberObject.extend({
   init(...args) {
     this._super(...args);
+    
     if (!this.get('sorts')) {
       this.set('sorts', new A());
     }
