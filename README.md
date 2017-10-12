@@ -35,7 +35,7 @@ actions: {
     }
   }
 ```
-The defaultSerializedObject is a object serialize for C# API that will be able to deserialize a array object for the filters. The queryObj is provider if you want to format it differently.
+The defaultSerializedObject is an object serialized for the C# API so that it can deserialize an array object for the filters (queryParams). The queryObj is provided if you want to serialize it differently. You can use the queryObj straight up if your API accepts JSON in queryParams.
 
 #### Pagination
 
@@ -63,20 +63,20 @@ Here are the parameters that are available.
 
 #### Filters
 
-The 'filter' component is exposed if you want to have the filter options visible.
-The filter componet is used as a block component. It expose 3 component: 'header', 'body' and 'footer'.
+The 'filter' component is exposed if you want to have the filters visible.
+The filter component is used as a block component. It expose 3 component: 'header', 'body' and 'footer'.
 
 Here are the parameters that are available.
 
 | Properties | Default Value | Type | Description |
 |---|:-------------:|:------:|:-------------:|
-| properties | new Ember array | array | Represent the available properties to be able to filter |
-| comparators | see below the default comparators | array | Represent the comparator to override or be add to the default comparators |  
+| properties | Ember array | array | Represents the available properties to be able to filter |
+| comparators | see below the default comparators | array | Represents the comparator to override/add to the default comparators |  
 
-We provide the filter-object in the utils. The filter-object contain 4 property:
-| label | Represent the label that will be show in the dropdown to select the property for filter |
-| propertyType | Represent the type of the property to filter comparators |
-|  valueForQuery | Represent the value that will be used when we will construct the serializeObject |
+We provide the filter-object in the utils. The filter-object contains 3 properties:
+| label | Represents the label that will be show in the dropdown to select the property for filter |
+| propertyType | Represents the type of the property to filter comparators |
+| valueForQuery | Represents the value that will be used when we will construct the serialized object |
 
 Here an exemple of the properties array :
 ```javascript
@@ -84,24 +84,36 @@ import filterObject from 'ember-table-data/utils/filter-object';
 [...]
 properties: computed('i18n.locale', function () {
     let array = new A();
-    array.pushObject(filterObject.create({ label:'Label to be display in the dropdown', propertyType:'string',
-      valueForQuery:'Label1' }));
-    array.pushObject(filterObject.create({ label:'Label 2 to be display in the dropdown', propertyType:'number',
-      valueForQuery:'Label2' }));
-    array.pushObject(filterObject.create({ label:'Label 3 to be display in the dropdown', propertyType:'boolean',
-      valueForQuery:'Label3.Code' }));
-    array.pushObject(filterObject.create({ label:'Label 4 to be display in the dropdown', propertyType:'date',
-      valueForQuery:'Label4' }));
+    array.pushObject(filterObject.create({
+      label:'Label to be display in the dropdown',
+      propertyType:'string',
+      valueForQuery:'Label1'
+    }));
+    array.pushObject(filterObject.create({
+      label:'Label 2 to be display in the dropdown',
+      propertyType:'number',
+      valueForQuery:'Label2'
+    }));
+    array.pushObject(filterObject.create({
+      label:'Label 3 to be display in the dropdown',
+      propertyType:'boolean',
+      valueForQuery:'Label3.Code'
+    }));
+    array.pushObject(filterObject.create({
+      label:'Label 4 to be display in the dropdown',
+      propertyType:'date',
+      valueForQuery:'Label4'
+    }));
     return array;
   }),
 ```
 ##### Comparators
 
-We provide a default list of comparators for each time. When you want to add a comparator of modify one existing, you need to provide a list of comparator-object available in the utils.
+We provide a default list of comparators for each type. When you want to add a comparator or override an existing one, you need to provide a list of comparator, using the comparator-object available in the utils.
 | label | Represent the label that will be show in the dropdown to select the comparator for filter |
-| internalName | Represent the unique name for a specific type |
-| propertyType | Represent the type of the property |
-| valueForQuery | Represent the value that will be used when we will construct the serializeObject |
+| internalName | Represents the unique name of the comparator for a specific type (uniqueness is based on internalName + propertyType)|
+| propertyType | Represents the type of the property |
+| valueForQuery | Represents the value used when constructing the serialized object |
 
 Here the available default comparators :
 ```javascript
@@ -139,7 +151,7 @@ new A([
 
 If you provide a list of comparators in the filters, we will match the internalName and the type. If you provide a label and/or a valueForQuery, we will override the default one with the new value.
 
-If you use a globalization system, do not forget to make a computed that watch the locale for your new comparators to have the label change when change language.
+If you use a globalization system, do not forget to make a computed that watches the locale for your new comparators to have the label change when changing language.
 
 ```hbs
 {{#tableData.filter properties=properties comparators=userComparators as |filter|}}
@@ -147,7 +159,7 @@ If you use a globalization system, do not forget to make a computed that watch t
 
 ##### Header
 
-The 'header' component exposed in the filter component is used to display the Add row button. The addButton will be generate as a button. The click function will add 1 row to the filter list.
+The 'header' component exposed in the filter component is used to display the "Add row" button. The addButton will be generated as a button. The click function will add 1 row to the filter list. It is provided so that you can style/place it properly.
 
 ```hbs
 {{#filter.header as |header|}}
@@ -160,12 +172,12 @@ The 'header' component exposed in the filter component is used to display the Ad
 ##### Body / Row
 
 The 'body' and 'row' component expose the 'property', 'comparator', 'value' and 'deleteButton' component.
-The 'property' component is used to display the property dropdown to be filter on.
+The 'property' component is used to display the property dropdown to filter on.
 The 'comparator' component is used to display the comparator list base on the type of the property selected.
-The 'value' component is used to display the input to select the value for the filter.
-The 'deleteButton' is used to display a button that will delete the row from the filters. This component render with button tag.
+The 'value' component is used to display an input to enter the value on which to filter.
+The 'deleteButton' is used to display a button that will delete the row from the filters. This component renders with button tag.
 
-The 'row' component expose the count of the filters. You can use that to have logical display on the deleteButton component. In the case below, we display the delete button only if 2 filter or more are in the list.
+The 'row' component exposes the count of the filters. You can use that to have logical display on the deleteButton component. In the case below, we display the delete button only if 2 filter or more are in the list.
 
 ```hbs
 {{#filter.body as |body|}}
@@ -185,13 +197,13 @@ The 'row' component expose the count of the filters. You can use that to have lo
 
 ###### Override input value control
 
-You can override or create input value for current or custom propertyType. The component will search in the components/filter-input/PROPERTYTYPE. We provide default input for each type.
-The string type will generate a input with the input helper with the type text.
-The number type will generate a input with the input helper with the type number.
-The date type will generate a input with the input helper with the type date.
-The boolean type will generate a input with the input helper with the type boolean.
+You can override or create input value for current or custom propertyType. The component will search in the components/filter-input/PROPERTYTYPE. We provide default inputs for each type.
+The string type will generate an input of type text.
+The number type will generate an input of type number.
+The date type will generate an input of type date.
+The boolean type will generate an input of type boolean.
 
-When you override a input value, you need to execute the provide action when the value change. The component receive a closure action named 'valueChange' that need to be executed when value is changed to update the filter object. The action receive the value as a parameter. So when the value as changed, you need to call the action. See the example below.
+When you override an input value, you need to execute the provided action when the value changes. The component receives a closure action named 'valueChange' that needs to be executed when the value is changed to update the filter object. The action receives the value as a parameter. So when the value is changed, you need to call the action. See the example below.
 
 ```javascript
 {
@@ -200,13 +212,13 @@ this.get('valueChange')("THE NEW VALUE");
 }
 ```
 
-If you want the override or add component, you can use the ember cli command : ember g component filter-input/PROPERTYTYPE.
-Do not forget to prove the appropriated comprator if you use custom 'propertyType'.
+If you want the override or add a component, you can use the ember cli command : ember g component filter-input/PROPERTYTYPE.
+Do not forget to provide the appropriate comparator if you use a custom 'propertyType'.
 
 ##### Footer
 
-The 'footer' component expose the 'filterButton' and the 'clearButton'.
-The 'filterButton' will trigger the getData action to send the call with the new queryObj. It will also remove all the invalid filter from the list. The invalid filter are the filter row that comparator or value or property are not defined.
+The 'footer' component exposes the 'filterButton' and the 'clearButton'.
+The 'filterButton' will trigger the getData action to send the call with the new queryObj. It will also remove all invalid filters from the list. The invalid filters are the filters that the comparator, value or property are not defined/selected.
 The 'clearButton' will clear the filter list and trigger the getData action with the new queryObj.
 
 ```hbs
