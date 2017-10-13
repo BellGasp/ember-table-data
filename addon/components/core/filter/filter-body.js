@@ -27,6 +27,8 @@ export default Component.extend({
           } else {
             defaultComparators.pushObject(comp);
           }
+        } else {
+          defaultComparators.pushObject(comp);
         }
       });
     }
