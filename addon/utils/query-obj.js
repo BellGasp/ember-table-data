@@ -34,12 +34,13 @@ export default EmberObject.extend({
 
     this.get('filters').forEach((filter, index) => {
       let type = filter.get('property.propertyType');
-      serializedObj[`Filters[${index}].FieldName`] = filter.get('property.valueForQuery');
+      serializedObj[`Filters[${index}].FieldName`] = filter.get('property.valueFor' + filter.get('comparator.internalName')) || filter.get('property.valueForQuery');
       serializedObj[`Filters[${index}].FieldValue`] = filter.get('value');
       serializedObj[`Filters[${index}].FieldType`] = type === 'number' ? 'int' :
         type === 'date' ? 'datetime' :
           type;
       serializedObj[`Filters[${index}].Operator`] = filter.get('comparator.valueForQuery');
+      serializedObj[`Filters[${index}].ColumnWrapper`] = filter.get('property.columnWrapperFor' + filter.get('comparator.internalName')) || filter.get('property.columnWrapperForQuery');
     });
 
     this.get('sorts').forEach((sort, index) => {

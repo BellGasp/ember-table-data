@@ -4,5 +4,6 @@ export default EmberObject.extend({
   label:null,
   internalName: null,
   propertyType: null,
-  valueForQuery:null
+  valueForQuery:null,
+  showInput: true
 });

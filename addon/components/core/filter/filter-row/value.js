@@ -1,6 +1,6 @@
 import { getOwner } from '@ember/application';
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import layout from '../../../../templates/components/core/filter/filter-row/value';
 
 export default Component.extend({
@@ -10,4 +10,9 @@ export default Component.extend({
     let componentName = `component:filter-input/${this.get('propertyType')}`;
     return getOwner(this).lookup(componentName);
   }),
+  resetValue: observer('showInput', function(){
+    if (!this.get('showInput')){
+      this.get('valueChange')();
+    }
+  })
 });
