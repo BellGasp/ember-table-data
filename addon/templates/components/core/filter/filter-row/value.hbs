@@ -1,5 +1,7 @@
 {{#if componentExist}}
-  {{component (concat 'filter-input/' propertyType) valueChange=valueChange }}
+  {{#if showInput}}
+    {{component (concat 'filter-input/' propertyType) valueChange=valueChange }}
+  {{/if}}
 {{else}}
   <p> No Component was found for this type : {{propertyType}}  (filter-input/)</p>
 {{/if}}

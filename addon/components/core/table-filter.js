@@ -45,7 +45,7 @@ export default Component.extend({
     },
     filter(){
       let validFilter = this.get('filtersRows').filter(filter =>
-        filter.get('property') && filter.get('comparator') && filter.get('value'));
+        filter.get('property') && filter.get('comparator') && (filter.get('value') || !filter.get('comparator.showInput')));
 
       let invalidFilter = this.get('filtersRows').filter(filter =>
         validFilter.length === 0 || !validFilter.any(validFilter => validFilter === filter));

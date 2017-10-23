@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import layout from '../../../templates/components/core/filter/filter-body';
+import { A } from '@ember/array';
 
 export default Component.extend({
   layout,
@@ -14,16 +15,11 @@ export default Component.extend({
 
     if(userComparator){
       userComparator.forEach(comp => {
-        var defaultTypeComparators = defaultComparators.filterBy('propertyType', comp.get('propertyType'));
+        var defaultTypeComparators = A(defaultComparators.filterBy('propertyType', comp.get('propertyType')));
         if (defaultTypeComparators.length > 0){
           let sameComparator = defaultTypeComparators.findBy('internalName', comp.get('internalName'));
           if (sameComparator) {
-              if (comp.get('valueForQuery')){
-                sameComparator.set('valueForQuery', comp.get('valueForQuery'));
-              }
-              if (comp.get('label')){
-                sameComparator.set('label', comp.get('label'));
-              }
+            Object.assign(sameComparator, comp);
           } else {
             defaultComparators.pushObject(comp);
           }
@@ -33,6 +29,6 @@ export default Component.extend({
       });
     }
 
-    return defaultComparators;
+    return A(defaultComparators.filterBy('showComparator'));
   })
 });

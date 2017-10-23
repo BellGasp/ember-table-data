@@ -6,7 +6,7 @@ moduleForComponent('core/filter/filter-row', 'Integration | Component | core/fil
   integration: true
 });
 
-test('it renders and show the error the for missing component for empty type', function(assert) {
+test('it renders nothing when not using the exposed component', function(assert) {
   this.set('deleteRow', () => {});
   this.render(hbs`{{core/filter/filter-row deleteRow=(action deleteRow)}}`);
 

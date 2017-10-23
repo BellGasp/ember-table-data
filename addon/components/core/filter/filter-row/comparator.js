@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../../../../templates/components/core/filter/filter-row/comparator';
 import { set } from '@ember/object';
-import { observer } from "@ember/object";
+import { observer } from '@ember/object';
 
 export default Component.extend({
   layout,
