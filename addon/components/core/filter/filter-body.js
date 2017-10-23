@@ -33,6 +33,6 @@ export default Component.extend({
       });
     }
 
-    return defaultComparators;
+    return defaultComparators.filterBy('showComparator');
   })
 });

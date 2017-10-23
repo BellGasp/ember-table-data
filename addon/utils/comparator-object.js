@@ -5,5 +5,6 @@ export default EmberObject.extend({
   internalName: null,
   propertyType: null,
   valueForQuery:null,
-  showInput: true
+  showInput: true,
+  showComparator: true
 });

@@ -54,7 +54,7 @@ export default Service.extend({
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'number', valueForQuery:'{0} == {1}'}),
       ComparatorObject.create({label: '>', internalName: 'greaterThan', propertyType: 'number', valueForQuery:'{0} > {1}'}),
       ComparatorObject.create({label: '>=', internalName: 'greaterThanOrEqual', propertyType: 'number', valueForQuery:'{0} >= {1}'}),
-      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'number', valueForQuery:'{0} == {1} || {0} == ""'}),
+      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'number', valueForQuery:'{0} == {1}'}),
 
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'date', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '<', internalName: 'lessThan', propertyType: 'date', valueForQuery:'{0} < {1}'}),
@@ -62,7 +62,7 @@ export default Service.extend({
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'date', valueForQuery:'{0} == {1}'}),
       ComparatorObject.create({label: '>', internalName: 'greaterThan', propertyType: 'date', valueForQuery:'{0} > {1}'}),
       ComparatorObject.create({label: '>=', internalName: 'greaterThanOrEqual', propertyType: 'date', valueForQuery:'{0} >= {1}'}),
-      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1} || {0} == ""'}),
+      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1}'}),
 
       ComparatorObject.create({label: '<>', internalName: 'noEqual', propertyType: 'boolean', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'})
