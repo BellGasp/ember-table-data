@@ -6,6 +6,7 @@ import { observer, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
+import SortStates from '../utils/sort-states';
 
 export default Component.extend({
   layout,
@@ -36,7 +37,7 @@ export default Component.extend({
     this.set('queryObj', QueryObj.create(queryObj));
   },
 
-  pageRecords: computed('queryObj.{currentPage,pageSize,filters.[]}', function() {
+  pageRecords: computed('queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
     let currentPage = this.get('queryObj.currentPage');
     let loadedPage = this.loadPage(currentPage);
 
@@ -103,7 +104,15 @@ export default Component.extend({
     }
   },
 
+  sortStates: SortStates.create(),
+
   actions: {
+    updateSort(property) {
+      let sortStates = this.get('sortStates');
+
+      sortStates.changeState(property);
+      this.set('queryObj.sorts', sortStates.getSortArray());
+    },
     updatePageSize(pageSize) {
       this.set('queryObj.pageSize', pageSize);
     },

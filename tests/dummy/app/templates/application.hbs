@@ -1,7 +1,7 @@
 {{outlet}}
 
 
-{{#table-data records=records as |tableData|}}
+{{#table-data class="table table-bordered" records=records as |tableData|}}
 
   {{#tableData.filter properties=properties  as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
@@ -41,7 +41,7 @@
   {{#tableData.table class="table-striped col-12" as |table|}}
     {{#table.header as |header|}}
       {{#header.row as |row|}}
-        {{#row.cell}}
+        {{#row.cell sortProperty="some-test"}}
           First cell
         {{/row.cell}}
         {{#row.cell}}
