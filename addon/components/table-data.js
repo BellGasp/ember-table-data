@@ -106,11 +106,20 @@ export default Component.extend({
 
   sortStates: SortStates.create(),
 
+  forceReload(page) {
+    let pageToReload = page || this.get('queryObj.currentPage');
+    let loadedCurrentPage = this.get('loadedPages').findBy('page', pageToReload);
+    loadedCurrentPage.set('forceReload', true);
+  },
+
   actions: {
     updateSort(property) {
       let sortStates = this.get('sortStates');
 
       sortStates.changeState(property);
+
+      this.forceReload();
+
       this.set('queryObj.sorts', sortStates.getSortArray());
     },
     updatePageSize(pageSize) {
@@ -120,9 +129,7 @@ export default Component.extend({
       this.set('queryObj.currentPage', page);
     },
     refreshPage(page) {
-      let pageToReload = page || this.get('queryObj.currentPage');
-      let loadedCurrentPage = this.get('loadedPages').findBy('page', pageToReload);
-      loadedCurrentPage.set('forceReload', true);
+      this.forceReload(page);
       this.notifyPropertyChange('queryObj.currentPage');
     },
     updateFilter(filters){
