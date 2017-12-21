@@ -64,7 +64,7 @@ export default Service.extend({
       ComparatorObject.create({label: '>=', internalName: 'greaterThanOrEqual', propertyType: 'date', valueForQuery:'{0} >= {1}'}),
       ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1}'}),
 
-      ComparatorObject.create({label: '<>', internalName: 'noEqual', propertyType: 'boolean', valueForQuery:'{0} != {1}'}),
+      ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'boolean', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'})
     ]);
   }
