@@ -1,8 +1,8 @@
 import Component from '@ember/component';
-import filterRowObject from 'ember-table-data/utils/filter-row-object';
-import { computed } from '@ember/object';
-import { A } from '@ember/array';
+import FilterRow from 'ember-table-data/utils/filter-row-object';
 import layout from '../../templates/components/core/table-filter';
+import { A } from '@ember/array';
+import { alias } from '@ember/object/computed';
 
 export default Component.extend({
   layout,
@@ -12,43 +12,44 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if(!this.get('rows')){
+    if (!this.get('rows')) {
       this.initializeFilters();
     }
   },
 
-  initializeFilters(){
+  initializeFilters() {
     this.set('rows', A());
   },
 
-  filtersRows: computed('rows', function(){
-    let rows = this.get('rows');
-
-    return rows;
-  }),
+  filtersRows: alias('rows'),
 
   actions:{
-    addRow(){
-      let rows = this.get('rows');
-      rows.pushObject(filterRowObject.create());
+    addRow() {
+      this.get('rows').pushObject(FilterRow.create());
     },
-    deleteRow(row){
+
+    deleteRow(row) {
       if (row.length){
-        this.get('rows').removeObjects(row)
+        this.get('rows').removeObjects(row);
       } else {
         this.get('rows').removeObject(row);
       }
     },
-    clearFilters(){
+
+    clearFilters() {
       this.initializeFilters();
       this.get('updateFilter')(this.get('filtersRows'));
     },
-    filter(){
+
+    filter() {
       let validFilter = this.get('filtersRows').filter(filter =>
-        filter.get('property') && filter.get('comparator') && (filter.get('value') || !filter.get('comparator.showInput')));
+        filter.get('property') &&
+        filter.get('comparator') &&
+        (filter.get('value') || !filter.get('comparator.showInput')));
 
       let invalidFilter = this.get('filtersRows').filter(filter =>
-        validFilter.length === 0 || !validFilter.any(validFilter => validFilter === filter));
+        validFilter.length === 0 ||
+        !validFilter.any(validFilter => validFilter === filter));
 
       this.get('updateFilter')(validFilter);
       this.send('deleteRow', invalidFilter);

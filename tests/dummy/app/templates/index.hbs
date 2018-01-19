@@ -1,0 +1,52 @@
+{{#table-data class="table" records=(action 'getRecords') as |table-data|}}
+  {{#table-data.filter properties=properties as |filter|}}
+    {{#filter.header class="row pb-1" as |header|}}
+      {{#header.addButton class="btn btn-primary btn-sm col-1 offset-11"}}
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      {{/header.addButton}}
+    {{/filter.header}}
+
+    {{#filter.body as |body|}}
+      {{#body.row class="row pb-1" as |row|}}
+        {{row.property class="col-4"}}
+        {{row.comparator class="col-4"}}
+        {{row.value class="col-3 text-center"}}
+        {{#if (gt row.count 1)}}
+          {{#row.deleteButton class="btn btn-danger col-1"}}
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          {{/row.deleteButton}}
+        {{/if}}
+      {{/body.row}}
+    {{/filter.body}}
+
+    {{#filter.footer class="row" as |footer| }}
+      {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
+        <i class="fa fa-filter" aria-hidden="true"></i>
+      {{/footer.filterButton}}
+      {{#footer.clearButton class="btn btn-primary col-1"}}
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+      {{/footer.clearButton}}
+    {{/filter.footer}}
+  {{/table-data.filter}}
+
+  <div class="row">
+    {{table-data.pageSize class="col-2"}}
+    {{table-data.pagination class="col-6"}}
+  </div>
+
+  {{#table-data.table class="table-striped col-12" as |table|}}
+    {{#table.header as |header|}}
+      {{#header.row as |row|}}
+        {{#row.cell}}Avatar{{/row.cell}}
+        {{#row.cell}}Full Name{{/row.cell}}
+      {{/header.row}}
+    {{/table.header}}
+
+    {{#table.body as |body person|}}
+      {{#body.row as |row|}}
+        {{#row.cell}} <img src="{{person.avatar}}" alt="avatar" height="48"> {{/row.cell}}
+        {{#row.cell}} {{person.fullName}} {{/row.cell}}
+      {{/body.row}}
+    {{/table.body}}
+  {{/table-data.table}}
+{{/table-data}}
