@@ -16,6 +16,9 @@ export default Controller.extend({
       valueForQuery:'PA' }),
     filterObject.create({ label:'Last Inspection Date', propertyType:'date',
       valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
+        + '.FirstOrDefault().CreationDate' }),
+    filterObject.create({ label:'Dropdown Test', propertyType:'dropdown',
+      valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
         + '.FirstOrDefault().CreationDate' })
   ]),
 

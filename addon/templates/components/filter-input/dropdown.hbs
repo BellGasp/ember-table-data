@@ -1,3 +1,10 @@
-<p>
-  No implemented yet.
-</p>
+{{#power-select
+    options=options
+    tagName='div'
+    class='dropdown'
+    selected=selectedValue
+    onchange=(action 'valueChanged')
+    as |option|
+}}
+  {{option}}
+{{/power-select}}
