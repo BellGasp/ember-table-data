@@ -19,11 +19,13 @@ test('it renders', function(assert) {
 test('must pass data', function(assert) {
   assert.expect(1);
 
-  assert.expectAssertion(() => {
-    this.render(hbs`{{filter-input/dropdown}}`);
-  },
-  /"data"/,
-  'Throws assertion error if data isn\'t passed')
+  assert.expectAssertion(
+    () => {
+      this.render(hbs`{{filter-input/dropdown}}`);
+    },
+    /"data"/,
+    'Throws assertion error if data isn\'t passed'
+  );
 });
 
 test('data must be valid', function(assert) {
@@ -172,6 +174,8 @@ test('selecting an option triggers valueChanged', async function(assert) {
 });
 
 test('can select option using default property path', async function(assert) {
+  assert.expect(1);
+
   this.set('data', [
     { id: 1, label: 'test1'},
     { id: 2, label: 'test2'},
@@ -187,6 +191,8 @@ test('can select option using default property path', async function(assert) {
 });
 
 test('can select option using given property path', async function(assert) {
+  assert.expect(1);
+
   this.set('data', [
     { id: 1, label: 'test1'},
     { id: 2, label: 'test2'},
@@ -206,28 +212,37 @@ test('can select option using given property path', async function(assert) {
   await selectChoose('div.dropdown', '.ember-power-select-option', 0);
 });
 
-test('can select option using given (undefined) property path', async function(assert) {
-  this.set('data', [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
-  ]);
-
-  this.set('externalAction', (actual) => {
-    assert.equal(actual, 'test1', 'The value was sent to the action.');
-  });
-
-  this.render(hbs`
-    {{filter-input/dropdown
-      data=data
-      valueChange=(action externalAction)
-      propertyPath='pogchamp'
-    }}`);
-
-  await selectChoose('div.dropdown', '.ember-power-select-option', 0);
-});
+// expectAssertion does not currently support async
+// test('can select option using given (undefined) property path', function(assert) {
+//   assert.expect(1);
+//
+//   this.set('data', [
+//     { id: 1, label: 'test1'},
+//     { id: 2, label: 'test2'},
+//   ]);
+//
+//   this.set('externalAction', () => {
+//     assert.notOk(true, 'The test should not reach this assertion.');
+//   });
+//
+//   this.render(hbs`
+//     {{filter-input/dropdown
+//       data=data
+//       valueChange=(action externalAction)
+//       propertyPath='pogchamp'
+//     }}`);
+//
+//   assert.expectAssertion(
+//     async () => {
+//       await selectChoose('div.dropdown', '.ember-power-select-option', 0);
+//     },
+//     /"data"/,
+//     'Throws assertion error if data isn\'t passed'
+//   );
+// });
 
 test('shows options with default label property', function(assert) {
-
+  
 });
 
 test('shows options with given label property', function(assert) {

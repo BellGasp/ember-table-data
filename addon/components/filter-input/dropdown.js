@@ -11,6 +11,7 @@ export default Component.extend({
 
   valueChange: null,
   propertyPath: 'id',
+  labelPropertyPath: 'label',
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -45,7 +46,13 @@ export default Component.extend({
         return;
       }
 
-      this.get('valueChange')(get(value, this.get('propertyPath')));    
+      let propertyPath = this.get('propertyPath');
+
+      if (!value.hasOwnProperty(propertyPath)) {
+        assert('dropdown: the propertyPath must be a valid property of the object.');
+      }
+
+      this.get('valueChange')(get(value, propertyPath));
     }
   }
 });

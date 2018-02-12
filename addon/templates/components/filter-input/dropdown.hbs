@@ -6,5 +6,9 @@
     onchange=(action 'valueChanged')
     as |option|
 }}
-  {{option}}
+  {{!-- {{#if labelPropertyPath}}
+    {{get option labelPropertyPath}}
+  {{else}} --}}
+    {{option}}
+  {{!-- {{/if}} --}}
 {{/power-select}}
