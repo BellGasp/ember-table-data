@@ -36,8 +36,8 @@ export default Service.extend({
     let firstRecordIndex = currentPage * pageSize - pageSize;
     return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
   },
-  defaultComparators(){
-    return new A([
+  stringComparators() {
+    return A([
       ComparatorObject.create({label: 'Contains', internalName: 'contains', propertyType: 'string', valueForQuery:'{0}.Contains("{1}")'}),
       ComparatorObject.create({label: 'Ends with', internalName: 'endsWith', propertyType: 'string', valueForQuery:'{0}.EndsWith("{1}")'}),
       ComparatorObject.create({label: 'Equal', internalName: 'equal', propertyType: 'string', valueForQuery:'{0} == "{1}"'}),
@@ -46,29 +46,61 @@ export default Service.extend({
       ComparatorObject.create({label: 'Not equal', internalName: 'notEqual', propertyType: 'string', valueForQuery:'{0} != "{1}"'}),
       ComparatorObject.create({label: 'Not starts with', internalName: 'notStartsWith', propertyType: 'string', valueForQuery:'!({0}.StartsWith("{1}"))'}),
       ComparatorObject.create({label: 'Starts with', internalName: 'startsWith', propertyType: 'string', valueForQuery:'{0}.StartsWith("{1}")'}),
-      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'string', valueForQuery:'{0} == {1} || {0} == ""'}),
+      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'string', valueForQuery:'{0} == {1} || {0} == ""'})
+    ])
+  },
 
+  numberComparators() {
+    return A([
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'number', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '<', internalName: 'lessThan', propertyType: 'number', valueForQuery:'{0} < {1}'}),
       ComparatorObject.create({label: '<=', internalName: 'lessThanOrEqual', propertyType: 'number', valueForQuery:'{0} <= {1}'}),
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'number', valueForQuery:'{0} == {1}'}),
       ComparatorObject.create({label: '>', internalName: 'greaterThan', propertyType: 'number', valueForQuery:'{0} > {1}'}),
       ComparatorObject.create({label: '>=', internalName: 'greaterThanOrEqual', propertyType: 'number', valueForQuery:'{0} >= {1}'}),
-      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'number', valueForQuery:'{0} == {1}'}),
+      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'number', valueForQuery:'{0} == {1}'})
+    ])
+  },
 
+  dateComparators() {
+    return A([
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'date', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '<', internalName: 'lessThan', propertyType: 'date', valueForQuery:'{0} < {1}'}),
       ComparatorObject.create({label: '<=', internalName: 'lessThanOrEqual', propertyType: 'date', valueForQuery:'{0} <= {1}'}),
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'date', valueForQuery:'{0} == {1}'}),
       ComparatorObject.create({label: '>', internalName: 'greaterThan', propertyType: 'date', valueForQuery:'{0} > {1}'}),
       ComparatorObject.create({label: '>=', internalName: 'greaterThanOrEqual', propertyType: 'date', valueForQuery:'{0} >= {1}'}),
-      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1}'}),
+      ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1}'})
+    ])
+  },
 
+  booleanComparators() {
+    return A([
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'boolean', valueForQuery:'{0} != {1}'}),
-      ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'}),
+      ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'})
+    ])
+  },
 
+  dropdownComparators() {
+    return A([
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'dropdown', valueForQuery:'{0} != {1}'}),
       ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'dropdown', valueForQuery:'{0} == {1}'})
-    ]);
+    ])
+  },
+
+  defaultComparators(){
+    let stringComparators = this.stringComparators();
+    let numberComparators = this.numberComparators();
+    let dateComparators = this.dateComparators();
+    let booleanComparators = this.booleanComparators();
+    let dropdownComparators = this.dropdownComparators();
+
+    return A([].concat(
+      stringComparators,
+      numberComparators,
+      dateComparators,
+      booleanComparators,
+      dropdownComparators
+    ));
   }
 });

@@ -9,16 +9,19 @@ export default Component.extend({
 
   filter: null,
   propertyType: reads('filter.property.propertyType'),
+  showInput: reads('filter.comparator.showInput'),
 
   componentExist: computed('propertyType', function() {
     const componentName = `filter-input/${this.get('propertyType')}`;
     const owner = getOwner(this);
     const lookup = owner.lookup('component-lookup:main');
+
     if (!lookup.componentFor) {
       return !!lookup.lookupFactory(componentName);
     }
     return !!(lookup.componentFor(componentName, owner) || lookup.layoutFor(componentName, owner));
   }),
+
   resetValue: observer('showInput', function(){
     if (!this.get('showInput')){
       this.get('valueChange')();
