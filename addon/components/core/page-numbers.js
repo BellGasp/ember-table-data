@@ -71,37 +71,19 @@ export default Component.extend({
 
     if (currentPage < 1 ) {
       currentPage = 1;
-      if (currentPage === this.get('queryObj.currentPage')){
-        this.get('changePage')(currentPage);
-        return;
-      }
-    }
-    if (currentPage > lastPage) {
+    } else if (currentPage > lastPage) {
       currentPage = lastPage
-      if (currentPage === this.get('queryObj.currentPage')){
-        this.get('changePage')(currentPage);
-        return;
-      }
     }
+
+    if (currentPage === this.get('queryObj.currentPage')){
+      this.get('changePage')(currentPage);
+    }
+
     return currentPage;
   },
 
-  getFirstAndLastPageToShow() {
-    const currentPage = this.getCurrentPage();
-    let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
-
-    let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
-    let nbPagesAfter = nbPagesWithoutCurrent - nbPagesBefore;
-
-    let firstPageToShow = currentPage - nbPagesBefore;
-    let lastPageToShow = currentPage + nbPagesAfter;
-
-    return { firstPageToShow, lastPageToShow };
-  },
-
-  getArrayOfPagesToShow() {
+  updatePagesToShow({ firstPageToShow, lastPageToShow }) {
     const lastPage = this.get('lastPage');
-    let { firstPageToShow, lastPageToShow } = this.getFirstAndLastPageToShow();
 
     while (firstPageToShow < 1) {
       firstPageToShow++;
@@ -116,13 +98,29 @@ export default Component.extend({
         firstPageToShow--;
       }
     }
+    return { firstPageToShow, lastPageToShow };
+  },
 
-    let nbOfPagesToShow = lastPageToShow - firstPageToShow + 1;
-    return Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i);
+  getFirstAndLastPageToShow() {
+    const currentPage = this.getCurrentPage();
+    let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
+
+    let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
+    let nbPagesAfter = nbPagesWithoutCurrent - nbPagesBefore;
+
+    let firstPageToShow = currentPage - nbPagesBefore;
+    let lastPageToShow = currentPage + nbPagesAfter;
+
+    return this.updatePagesToShow({ firstPageToShow, lastPageToShow })
   },
 
   pageNumbers: computed('currentPageToShow', 'lastPage', function () {
-    return A(this.getArrayOfPagesToShow());
+    let { firstPageToShow, lastPageToShow } = this.getFirstAndLastPageToShow();
+
+    let nbOfPagesToShow = lastPageToShow - firstPageToShow + 1;
+    let array = Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i);
+
+    return A(array);
   }),
 
   actions: {
