@@ -6,7 +6,6 @@ import { getProperties, get } from '@ember/object';
 
 export default Component.extend({
   layout,
-  filter: null,
   options: null,
   data: null,
 

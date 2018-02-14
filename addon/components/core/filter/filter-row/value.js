@@ -2,13 +2,13 @@ import { getOwner } from '@ember/application';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import layout from '../../../../templates/components/core/filter/filter-row/value';
-import { alias } from '@ember/object/computed';
+import { reads } from '@ember/object/computed';
 
 export default Component.extend({
   layout,
 
   filter: null,
-  propertyType: alias('filter.property.propertyType'),
+  propertyType: reads('filter.property.propertyType'),
 
   componentExist: computed('propertyType', function() {
     const componentName = `filter-input/${this.get('propertyType')}`;
