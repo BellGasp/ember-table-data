@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { selectChoose, clickTrigger } from 'ember-power-select/test-support/helpers'
+import { selectChoose, clickTrigger, typeInSearch } from 'ember-power-select/test-support/helpers'
 import { Promise } from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -212,6 +212,169 @@ test('can select option using given property path', async function(assert) {
   await selectChoose('div.dropdown', '.ember-power-select-option', 0);
 });
 
+test('shows options with default label property', async function(assert) {
+  assert.expect(3);
+  var data = [
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' },
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].label);
+});
+
+test('shows options with given label property', async function(assert) {
+  assert.expect(3);
+  var data = [
+    { id: 1, label: 'test1', someProperty: 'some-name-1' },
+    { id: 2, label: 'test2', someProperty: 'some-name-2' },
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data labelPath='someProperty'}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].someProperty);
+});
+
+test('shows options with no label property', async function(assert) {
+  assert.expect(3);
+  var data = [
+    { id: 1, someProperty: 'some-name-1', toString() { return 'object1' } },
+    { id: 2, someProperty: 'some-name-2', toString() { return 'object2' } },
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data labelPath='label'}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1]);
+});
+
+test('can search based on label property - default label', async function(assert) {
+  assert.expect(5);
+  var data = [
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' },
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].label);
+
+  await typeInSearch('test1');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    1,
+    'There should be 1 option in the dropdown list after searching.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
+});
+
+test('can search based on label property - given label', async function(assert) {
+  assert.expect(5);
+  var data = [
+    { id: 1, someProperty: 'test1' },
+    { id: 2, someProperty: 'test2' },
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data labelPath='someProperty'}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].someProperty);
+
+  await typeInSearch('test1');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    1,
+    'There should be 1 option in the dropdown list after searching.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
+});
+
+test('can search based on label property - no label', async function(assert) {
+  assert.expect(5);
+  var data = [
+    'test1',
+    'test2',
+  ];
+
+  this.set('data', data);
+  this.render(hbs`{{filter-input/dropdown data=data}}`);
+
+  await clickTrigger('div.dropdown');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    2,
+    'There should be 2 options in the dropdown list.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
+  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1]);
+
+  await typeInSearch('test1');
+
+  assert.equal(
+    $('.ember-power-select-option').length,
+    1,
+    'There should be 1 option in the dropdown list after searching.'
+  );
+
+  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
+});
+
+
 // expectAssertion does not currently support async
 // test('can select option using given (undefined) property path', function(assert) {
 //   assert.expect(1);
@@ -241,18 +404,10 @@ test('can select option using given property path', async function(assert) {
 //   );
 // });
 
-test('shows options with default label property', function(assert) {
-  
-});
-
-test('shows options with given label property', function(assert) {
-
-});
-
-test('throws assertion if property path invalid', function(assert) {
-
-});
-
-test('throws assertion if label property path invalid', function(assert) {
-
-});
+// test('throws assertion if property path invalid', function(assert) {
+//
+// });
+//
+// test('throws assertion if label property path invalid', function(assert) {
+//
+// });

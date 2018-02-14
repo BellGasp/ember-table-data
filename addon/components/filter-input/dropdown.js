@@ -2,20 +2,19 @@ import Component from '@ember/component';
 import layout from '../../templates/components/filter-input/dropdown';
 import { assert } from '@ember/debug';
 import { isArray } from '@ember/array';
-import { get } from '@ember/object';
+import { getProperties, get } from '@ember/object';
 
 export default Component.extend({
   layout,
-  data: null,
+  filter: null,
   options: null,
+  data: null,
 
   valueChange: null,
   propertyPath: 'id',
-  labelPropertyPath: 'label',
+  labelPath: 'label',
 
-  didReceiveAttrs() {
-    this._super(...arguments);
-
+  assertData() {
     let data = this.get('data');
 
     if (!data) {
@@ -25,17 +24,47 @@ export default Component.extend({
     if (typeof(data) !== 'function' && !isArray(data)) {
       assert('dropdown: the property "data" must be a function or an array.');
     }
+  },
+
+  initDropdownProperties() {
+    let {
+      data,
+      labelPath,
+      propertyPath
+    } = getProperties(this, 'data', 'labelPath', 'propertyPath');
 
     if (typeof(data) === 'function') {
       this.set('options', data());
     } else if (isArray(data)) {
       this.set('options', data);
-    } else {
-      assert('dropdown: the property "data" must be a function or an array.');
+    }
+
+    if (labelPath) {
+      this.set('labelPath', labelPath);
+    }
+
+    if (propertyPath) {
+      this.set('propertyPath', propertyPath);
     }
   },
 
+  init() {
+    this._super(...arguments);
+    this.assertData();
+    this.initDropdownProperties();
+  },
+
   actions: {
+    customMatcher(value, search) {
+      const labelPath = this.get('labelPath');
+
+      if (typeof(value) === 'object' && value.hasOwnProperty(labelPath)) {
+        let label = get(value, labelPath);
+        return label.toString().toLowerCase().indexOf(search.toLowerCase());
+      }
+
+      return value.toString().toLowerCase().indexOf(search.toLowerCase());
+    },
     valueChanged(value) {
       if (value === null) {
         return;

@@ -65,7 +65,10 @@ export default Service.extend({
       ComparatorObject.create({label: 'Is Empty', internalName: 'isEmpty', showInput:false, propertyType: 'date', valueForQuery:'{0} == {1}'}),
 
       ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'boolean', valueForQuery:'{0} != {1}'}),
-      ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'})
+      ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'}),
+
+      ComparatorObject.create({label: '<>', internalName: 'notEqual', propertyType: 'dropdown', valueForQuery:'{0} != {1}'}),
+      ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'dropdown', valueForQuery:'{0} == {1}'})
     ]);
   }
 });

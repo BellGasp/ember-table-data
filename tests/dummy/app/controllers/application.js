@@ -5,6 +5,7 @@ import filterObject from 'ember-table-data/utils/filter-object';
 
 export default Controller.extend({
   queryObj: null,
+
   properties: new A([
     filterObject.create({ label:'Route', propertyType:'string',
       valueForQuery:'Route' }),
@@ -17,9 +18,8 @@ export default Controller.extend({
     filterObject.create({ label:'Last Inspection Date', propertyType:'date',
       valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
         + '.FirstOrDefault().CreationDate' }),
-    filterObject.create({ label:'Dropdown Test', propertyType:'dropdown',
-      valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
-        + '.FirstOrDefault().CreationDate' })
+    filterObject.create({ label:'Dropdown Test', propertyType:'dropdown', data:[{label: 'test'}, {label: 'tesometh'}],
+      valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate).FirstOrDefault().CreationDate' })
   ]),
 
   init(...args) {

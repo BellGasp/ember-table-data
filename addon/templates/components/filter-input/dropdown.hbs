@@ -3,12 +3,13 @@
     tagName='div'
     class='dropdown'
     selected=selectedValue
+    matcher=(action 'customMatcher')
     onchange=(action 'valueChanged')
     as |option|
 }}
-  {{!-- {{#if labelPropertyPath}}
-    {{get option labelPropertyPath}}
-  {{else}} --}}
+  {{#if (get option labelPath)}}
+    {{get option labelPath}}
+  {{else}}
     {{option}}
-  {{!-- {{/if}} --}}
+  {{/if}}
 {{/power-select}}
