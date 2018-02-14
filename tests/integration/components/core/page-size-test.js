@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { nativeMouseDown, nativeMouseUp } from 'dummy/tests/helpers/ember-power-select';
+import { nativeMouseDown, nativeMouseUp } from 'ember-power-select/test-support/helpers';
 
 moduleForComponent('core/page-size', 'Integration | Component | core/page size', {
   integration: true

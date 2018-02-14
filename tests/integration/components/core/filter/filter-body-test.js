@@ -3,8 +3,8 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';
-import { clickTrigger, typeInSearch, selectChoose } from 'dummy/tests/helpers/ember-power-select'
-import comparatorObject from 'ember-table-data/utils/comparator-object'
+import { clickTrigger, typeInSearch, selectChoose } from 'ember-power-select/test-support/helpers';
+import comparatorObject from 'ember-table-data/utils/comparator-object';
 import filterObject from 'ember-table-data/utils/filter-object';
 
 
