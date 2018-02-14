@@ -19,8 +19,11 @@ export default Component.extend({
 
   resetComparator: observer('filteredComparators.@each.label', function() {
     let currentComparator = this.get('filterRowObject.comparator');
-    let sameLogicComparator = this.get('filteredComparators')
-      .findBy('internalName', currentComparator.get('internalName'));
+
+    let sameLogicComparator = currentComparator
+      ? this.get('filteredComparators')
+        .findBy('internalName', currentComparator.get('internalName'))
+      : false;
 
     if (sameLogicComparator) {
       this.set('filterRowObject.comparator', sameLogicComparator);
