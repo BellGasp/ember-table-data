@@ -10,8 +10,13 @@ moduleForComponent('filter-input/dropdown', 'Integration | Component | filter in
 test('it renders', function(assert) {
   assert.expect(1);
 
-  this.set('data', ['test1', 'test2']);
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  let data = ['test1', 'test2']
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   assert.equal(this.$('div.dropdown').length, 1, 'Dropdown is showing.');
 });
@@ -31,10 +36,15 @@ test('must pass data', function(assert) {
 test('data must be valid', function(assert) {
   assert.expect(1);
 
-  this.set('data', 53);
+  let data = 53;
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
 
   assert.expectAssertion(() => {
-    this.render(hbs`{{filter-input/dropdown data=data}}`);
+    this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   },
   /"data"/,
   'Throws assertion error if data is invalid')
@@ -43,9 +53,14 @@ test('data must be valid', function(assert) {
 test('the dropdown has the right options - array', async function(assert) {
   assert.expect(3);
 
-  this.set('data', ['test1', 'test2']);
+  let data = ['test1', 'test2'];
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
 
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
   assert.equal(
@@ -70,11 +85,14 @@ test('the dropdown has the right options - array', async function(assert) {
 test('the dropdown has the right options - array function', async function(assert) {
   assert.expect(3);
 
-  this.set('data', function() {
-    return ['test3', 'test4'];
+  let data = () => ['test3', 'test4'];
+  this.set('filter', {
+    property: {
+      data
+    }
   });
 
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
   assert.equal(
@@ -99,18 +117,21 @@ test('the dropdown has the right options - array function', async function(asser
 test('the dropdown has the right options - promise function', async function(assert) {
   assert.expect(3);
 
-  this.set('data', function() {
-    return new Promise((resolve, reject) => {
-      let value = ['test5', 'test6'];
-      // on success
-      resolve(value);
+  let data = () => new Promise((resolve, reject) => {
+    let value = ['test5', 'test6'];
+    // on success
+    resolve(value);
 
-      // on failure
-      reject('error');
-    });
+    // on failure
+    reject('error');
+  });
+  this.set('filter', {
+    property: {
+      data
+    }
   });
 
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
   assert.equal(
@@ -139,8 +160,14 @@ test('the dropdown has the right options - promise function', async function(ass
 test('the dropdown has the right options - empty', async function(assert) {
   assert.expect(2);
 
-  this.set('data', []);
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  let data = [];
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
+
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -160,15 +187,18 @@ test('the dropdown has the right options - empty', async function(assert) {
 test('selecting an option triggers valueChanged', async function(assert) {
   assert.expect(1);
 
-  this.set('data', [
-    'test1', 'test2'
-  ]);
+  let data = ['test1', 'test2'];
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
 
   this.set('externalAction', (actual) => {
     assert.equal(actual, 'test1', 'The value was sent to the action.');
   });
 
-  this.render(hbs`{{filter-input/dropdown data=data valueChange=(action externalAction)}}`);
+  this.render(hbs`{{filter-input/dropdown filter=filter valueChange=(action externalAction)}}`);
 
   await selectChoose('div.dropdown', '.ember-power-select-option', 0);
 });
@@ -176,16 +206,21 @@ test('selecting an option triggers valueChanged', async function(assert) {
 test('can select option using default property path', async function(assert) {
   assert.expect(1);
 
-  this.set('data', [
+  let data = [
     { id: 1, label: 'test1'},
     { id: 2, label: 'test2'},
-  ]);
+  ];
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
 
   this.set('externalAction', (actual) => {
     assert.equal(actual, 1, 'The value was sent to the action.');
   });
 
-  this.render(hbs`{{filter-input/dropdown data=data valueChange=(action externalAction)}}`);
+  this.render(hbs`{{filter-input/dropdown filter=filter valueChange=(action externalAction)}}`);
 
   await selectChoose('div.dropdown', '.ember-power-select-option', 0);
 });
@@ -193,34 +228,38 @@ test('can select option using default property path', async function(assert) {
 test('can select option using given property path', async function(assert) {
   assert.expect(1);
 
-  this.set('data', [
+  let data = [
     { id: 1, label: 'test1'},
     { id: 2, label: 'test2'},
-  ]);
+  ];
+  this.set('filter', {
+    property: {
+      data,
+      propertyPath: 'label'
+    }
+  });
 
   this.set('externalAction', (actual) => {
     assert.equal(actual, 'test1', 'The value was sent to the action.');
   });
 
-  this.render(hbs`
-    {{filter-input/dropdown
-      data=data
-      valueChange=(action externalAction)
-      propertyPath='label'
-    }}`);
+  this.render(hbs` {{filter-input/dropdown filter=filter valueChange=(action externalAction) }}`);
 
   await selectChoose('div.dropdown', '.ember-power-select-option', 0);
 });
 
 test('shows options with default label property', async function(assert) {
   assert.expect(3);
-  var data = [
-    { id: 1, label: 'test1' },
-    { id: 2, label: 'test2' },
+  let data = [
+    { id: 1, label: 'test1'},
+    { id: 2, label: 'test2'},
   ];
-
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -241,8 +280,13 @@ test('shows options with given label property', async function(assert) {
     { id: 2, label: 'test2', someProperty: 'some-name-2' },
   ];
 
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data labelPath='someProperty'}}`);
+  this.set('filter', {
+    property: {
+      data,
+      labelPath: 'someProperty'
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -263,8 +307,13 @@ test('shows options with no label property', async function(assert) {
     { id: 2, someProperty: 'some-name-2', toString() { return 'object2' } },
   ];
 
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data labelPath='label'}}`);
+  this.set('filter', {
+    property: {
+      data,
+      labelPath: 'label'
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -285,8 +334,12 @@ test('can search based on label property - default label', async function(assert
     { id: 2, label: 'test2' },
   ];
 
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -317,8 +370,13 @@ test('can search based on label property - given label', async function(assert) 
     { id: 2, someProperty: 'test2' },
   ];
 
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data labelPath='someProperty'}}`);
+  this.set('filter', {
+    property: {
+      data,
+      labelPath: 'someProperty'
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -349,8 +407,12 @@ test('can search based on label property - no label', async function(assert) {
     'test2',
   ];
 
-  this.set('data', data);
-  this.render(hbs`{{filter-input/dropdown data=data}}`);
+  this.set('filter', {
+    property: {
+      data
+    }
+  });
+  this.render(hbs`{{filter-input/dropdown filter=filter}}`);
 
   await clickTrigger('div.dropdown');
 
@@ -379,20 +441,24 @@ test('can search based on label property - no label', async function(assert) {
 // test('can select option using given (undefined) property path', function(assert) {
 //   assert.expect(1);
 //
-//   this.set('data', [
-//     { id: 1, label: 'test1'},
-//     { id: 2, label: 'test2'},
-//   ]);
-//
+  // let data = [
+  //   { id: 1, label: 'test1'},
+  //   { id: 2, label: 'test2'},
+  // ];
+  // this.set('filter', {
+  //   property: {
+      // data,
+      // propertyPath: 'pogchamp'
+  //   }
+  // });
 //   this.set('externalAction', () => {
 //     assert.notOk(true, 'The test should not reach this assertion.');
 //   });
 //
 //   this.render(hbs`
 //     {{filter-input/dropdown
-//       data=data
+//       filter=filter
 //       valueChange=(action externalAction)
-//       propertyPath='pogchamp'
 //     }}`);
 //
 //   assert.expectAssertion(

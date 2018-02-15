@@ -14,7 +14,7 @@ export default Component.extend({
   labelPath: 'label',
 
   assertData() {
-    let data = this.get('data');
+    let data = this.get('filter.property.data');
 
     if (!data) {
       assert('dropdown: the property "data" must be passed.');
@@ -30,7 +30,7 @@ export default Component.extend({
       data,
       labelPath,
       propertyPath
-    } = getProperties(this, 'data', 'labelPath', 'propertyPath');
+    } = getProperties(this.get('filter.property'), 'data', 'labelPath', 'propertyPath');
 
     if (typeof(data) === 'function') {
       this.set('options', data());

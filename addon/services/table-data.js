@@ -54,6 +54,7 @@ export default Service.extend({
     if (!isBlank(showInput)) {
       comparator.set('showInput', showInput);
     }
+
     return comparator;
   },
 
