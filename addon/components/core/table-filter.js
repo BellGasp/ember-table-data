@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import filterRowObject from 'ember-table-data/utils/filter-row-object';
+import layout from '../../templates/components/core/table-filter';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
-import layout from '../../templates/components/core/table-filter';
 import { isBlank } from '@ember/utils';
 
 export default Component.extend({
@@ -44,16 +44,22 @@ export default Component.extend({
       this.initializeFilters();
       this.get('updateFilter')(this.get('filtersRows'));
     },
-
     filter(){
-      let validFilter = this.get('filtersRows').filter(filter =>
-        !isBlank(filter.get('property')) &&
-        !isBlank(filter.get('comparator')) &&
-        (!isBlank(filter.get('value')) || 
-          !filter.get('comparator.showInput')));
+      let filtersRows = this.get('filtersRows');
+      let validFilter = A(
+        filtersRows.filter(filter =>
+          !isBlank(filter.get('property')) &&
+          !isBlank(filter.get('comparator')) &&
+          (!isBlank(filter.get('value')) || !filter.get('comparator.showInput'))
+        )
+      );
 
-      let invalidFilter = this.get('filtersRows').filter(filter =>
-        validFilter.length === 0 || !validFilter.any(validFilter => validFilter === filter));
+      let invalidFilter = A(
+        filtersRows.filter(filter =>
+          validFilter.length === 0 ||
+          !validFilter.any(validFilter => validFilter === filter)
+        )
+      );
 
       this.get('updateFilter')(validFilter);
       this.send('deleteRow', invalidFilter);

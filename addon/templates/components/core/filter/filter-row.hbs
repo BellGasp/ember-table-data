@@ -1,7 +1,7 @@
 {{yield (hash
     property=(component 'core/filter/filter-row/property' filterRowObject=filterRowObject properties=properties)
     comparator=(component 'core/filter/filter-row/comparator' filterRowObject=filterRowObject filteredComparators=filteredComparators)
-    value=(component 'core/filter/filter-row/value' valueChange=(action 'inputChange') showInput=filterRowObject.comparator.showInput filter=filterRowObject)
+    value=(component 'core/filter/filter-row/value' valueChange=(action 'inputChange') filter=filterRowObject)
     deleteButton=(component 'core/filter/filter-button' click=(action deleteRow filterRowObject))
     count=count
   )

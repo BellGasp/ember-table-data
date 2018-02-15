@@ -1,6 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { A } from '@ember/array';
+import filterObject from 'ember-table-data/utils/filter-object';
 
 moduleForComponent('core/table-filter', 'Integration | Component | core/table filter', {
   integration: true
@@ -136,4 +137,106 @@ test('it execute updateFilter action correctly when action is executed', functio
   this.$('.header > button').click();
   this.$('button.clear').click();
   assert.equal(this.get('rows.length'), 0);
+});
+
+test('it can filter data with boolean comparator -- true', async function(assert) {
+  assert.expect(2);
+
+  this.set('properties', A([
+    filterObject.create({ label:'MH #', propertyType:'boolean',
+      valueForQuery:'PA' })
+  ]));
+
+  this.set('updateFilter', validFilters => {
+    assert.equal(validFilters.length, 1);
+    assert.equal(validFilters.get('firstObject.value'), true);
+  });
+
+  this.render(hbs`
+    {{#core/table-filter properties=properties updateFilter=(action updateFilter) as |filter|}}
+      {{#filter.header class="row pb-1" as |header|}}
+        {{#header.addButton class="add-button btn btn-primary col-1 offset-11"}}
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        {{/header.addButton}}
+      {{/filter.header}}
+
+      {{#filter.body as |body|}}
+        {{#body.row class="row pb-1" as |row|}}
+          {{row.property class="col-4"}}
+          {{row.comparator class="col-4"}}
+          {{row.value class="col-3 text-center"}}
+
+          {{#if (gt row.count 1)}}
+            {{#row.deleteButton class="btn btn-danger col-1"}}
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            {{/row.deleteButton}}
+          {{/if}}
+        {{/body.row}}
+      {{/filter.body}}
+
+      {{#filter.footer class="row" as |footer| }}
+        {{#footer.filterButton class="filter-button btn btn-primary col-1 offset-10"}}
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        {{/footer.filterButton}}
+        {{#footer.clearButton class="btn btn-primary col-1"}}
+          <i class="fa fa-refresh" aria-hidden="true"></i>
+        {{/footer.clearButton}}
+      {{/filter.footer}}
+    {{/core/table-filter}}
+    `);
+  await this.$('.add-button').click();
+  await this.$('input').click()
+
+  await this.$('.filter-button').click();
+
+});
+
+test('it can filter data with boolean comparator -- false', async function(assert) {
+  assert.expect(2);
+
+  this.set('properties', A([
+    filterObject.create({ label:'MH #', propertyType:'boolean',
+      valueForQuery:'PA' })
+  ]));
+
+  this.set('updateFilter', validFilters => {
+    assert.equal(validFilters.length, 1);
+    assert.equal(validFilters.get('firstObject.value'), false);
+  });
+
+  this.render(hbs`
+    {{#core/table-filter properties=properties updateFilter=(action updateFilter) as |filter|}}
+      {{#filter.header class="row pb-1" as |header|}}
+        {{#header.addButton class="add-button btn btn-primary col-1 offset-11"}}
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        {{/header.addButton}}
+      {{/filter.header}}
+
+      {{#filter.body as |body|}}
+        {{#body.row class="row pb-1" as |row|}}
+          {{row.property class="col-4"}}
+          {{row.comparator class="col-4"}}
+          {{row.value class="col-3 text-center"}}
+
+          {{#if (gt row.count 1)}}
+            {{#row.deleteButton class="btn btn-danger col-1"}}
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            {{/row.deleteButton}}
+          {{/if}}
+        {{/body.row}}
+      {{/filter.body}}
+
+      {{#filter.footer class="row" as |footer| }}
+        {{#footer.filterButton class="filter-button btn btn-primary col-1 offset-10"}}
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        {{/footer.filterButton}}
+        {{#footer.clearButton class="btn btn-primary col-1"}}
+          <i class="fa fa-refresh" aria-hidden="true"></i>
+        {{/footer.clearButton}}
+      {{/filter.footer}}
+    {{/core/table-filter}}
+    `);
+  await this.$('.add-button').click();
+
+  await this.$('.filter-button').click();
 });
