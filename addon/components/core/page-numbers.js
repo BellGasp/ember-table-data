@@ -65,9 +65,13 @@ export default Component.extend({
   currentPageToShow: 1,
   nbPagesToShow: 5,
 
-  getCurrentPage() {
+  currentPage: computed('lastPage', 'currentPageToShow', function () {
     const lastPage = this.get('lastPage');
     let currentPage = this.get('currentPageToShow');
+
+    if (!(currentPage < 1 || currentPage > lastPage)) {
+      return currentPage;
+    }
 
     if (currentPage < 1 ) {
       currentPage = 1;
@@ -80,11 +84,12 @@ export default Component.extend({
     }
 
     return currentPage;
-  },
+  }),
 
   updatePagesToShow({ firstPageToShow, lastPageToShow }) {
     const lastPage = this.get('lastPage');
 
+    // Shifts the pages to show if the firstPage is under the minimum
     while (firstPageToShow < 1) {
       firstPageToShow++;
       if (lastPageToShow < lastPage) {
@@ -92,17 +97,19 @@ export default Component.extend({
       }
     }
 
+    // Shifts the pages to show if the lastPage is over the maximum
     while (lastPageToShow > lastPage) {
       lastPageToShow--;
       if (firstPageToShow > 1) {
         firstPageToShow--;
       }
     }
+
     return { firstPageToShow, lastPageToShow };
   },
 
   getFirstAndLastPageToShow() {
-    const currentPage = this.getCurrentPage();
+    let currentPage = this.get('currentPage');
     let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
 
     let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);

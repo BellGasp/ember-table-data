@@ -36,6 +36,7 @@ export default Service.extend({
     let firstRecordIndex = currentPage * pageSize - pageSize;
     return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
   },
+
   stringComparators() {
     return A([
       ComparatorObject.create({label: 'Contains', internalName: 'contains', propertyType: 'string', valueForQuery:'{0}.Contains("{1}")'}),
@@ -89,18 +90,12 @@ export default Service.extend({
   },
 
   defaultComparators(){
-    let stringComparators = this.stringComparators();
-    let numberComparators = this.numberComparators();
-    let dateComparators = this.dateComparators();
-    let booleanComparators = this.booleanComparators();
-    let dropdownComparators = this.dropdownComparators();
-
     return A([].concat(
-      stringComparators,
-      numberComparators,
-      dateComparators,
-      booleanComparators,
-      dropdownComparators
+      this.stringComparators(),
+      this.numberComparators(),
+      this.dateComparators(),
+      this.booleanComparators(),
+      this.dropdownComparators()
     ));
   }
 });

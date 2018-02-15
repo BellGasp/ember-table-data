@@ -3,6 +3,7 @@ import filterRowObject from 'ember-table-data/utils/filter-row-object';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import layout from '../../templates/components/core/table-filter';
+import { isBlank } from '@ember/utils';
 
 export default Component.extend({
   layout,
@@ -43,9 +44,13 @@ export default Component.extend({
       this.initializeFilters();
       this.get('updateFilter')(this.get('filtersRows'));
     },
+
     filter(){
       let validFilter = this.get('filtersRows').filter(filter =>
-        filter.get('property') && filter.get('comparator') && (filter.get('value') || !filter.get('comparator.showInput')));
+        !isBlank(filter.get('property')) &&
+        !isBlank(filter.get('comparator')) &&
+        (!isBlank(filter.get('value')) || 
+          !filter.get('comparator.showInput')));
 
       let invalidFilter = this.get('filtersRows').filter(filter =>
         validFilter.length === 0 || !validFilter.any(validFilter => validFilter === filter));
