@@ -21,7 +21,7 @@ The Table-data component serves as the main container of the component. It's use
 It currently exposes 'pagination', 'pageSize' and 'table'.
 
 | Property Key | Default Value | Type | Description |
-|---|:-------------:|:------:|:-------------:|
+|---|:-------------:|:------:|:-------------|
 | records | null (required) | [] or function | This is the way to get the data. Either you pass 'records' as an array directly, and then it'll paginate it locally (_not done yet_) or you pass a function returning a _promise_ that'll be called to get the data. A Query object is passed to the function, but you decide how you use it. If you've got any special case to do, usually you'd do it here.|
 
 ##### Example
@@ -44,7 +44,7 @@ The `pagination` component is used to show the currently shown page and navigate
 Here are the parameters that are available.
 
 | Property Key | Default Value | Type | Description |
-|---|:-------------:|:------:|:-------------:|
+|---|:-------------:|:------:|:-------------|
 | showFL | true | boolean | Shows first/last pagination buttons |
 | showPN | true | boolean | Shows previous/next pagination buttons |
 | showHasMore | true | boolean | Shows ... if some pages aren't shown |
@@ -57,7 +57,7 @@ The `pageSize` component is used to select the number of records to show per pag
 Here are the parameters that are available.
 
 | Property Key | Default Value | Type | Description |
-|---|:-------------:|:------:|:-------------:|
+|---|:-------------:|:------:|:-------------|
 | pageSize | 10 | int | Selected (starting) page-size |
 | pageSizes | [5, 10, 15, 25, 50, 100] | int array | Page-size options |
 
@@ -69,13 +69,14 @@ The filter component is used as a block component. It expose 3 component: 'heade
 Here are the parameters that are available.
 
 | Properties | Default Value | Type | Description |
-|---|:-------------:|:------:|:-------------:|
+|------------|:-------------:|:----:|:------------|
 | properties | Ember array | array | Represents the available properties to be able to filter |
 | comparators | see below the default comparators | array | Represents the comparator to override/add to the default comparators |  
 
 We provide the filter-object in the utils. The filter-object contains 3 properties.
+
 | Properties | Description |
-|---|:-------------:|
+|------------|:------------|
 | label | Represents the label that will be show in the dropdown to select the property for filter |
 | propertyType | Represents the type of the property to filter comparators |
 | valueForQuery | Represents the value that will be used when we will construct the serialized object |
@@ -114,7 +115,7 @@ properties: computed('i18n.locale', function () {
 For filter that require a dropdown (for a belongsTo relationships for example), you must provide additional properties.
 
 | Properties | Default Value | Type | Description |
-|---|:-------------:|:------:|:-------------:|
+|---|:-------------:|:------:|:-------------|
 | data | null | array / function returning an array | Represents options to show in the dropdown |
 | labelPath | 'label' | string | Represents the path of the label to show in the dropdown if data is an array of object |
 | propertyPath | 'id' | string | Represents the path of the property to select in the dropdown if data is an array of object |
@@ -137,8 +138,9 @@ properties: computed('i18n.locale', function () {
 ##### Comparators
 
 We provide a default list of comparators for each type. When you want to add a comparator or override an existing one, you need to provide a list of comparator, using the comparator-object available in the utils.
+
 | Properties | Description |
-|---|:-------------:|
+|---|:-------------|
 | label | Represent the label that will be show in the dropdown to select the comparator for filter |
 | internalName | Represents the unique name of the comparator for a specific type (uniqueness is based on internalName + propertyType)|
 | propertyType | Represents the type of the property |
