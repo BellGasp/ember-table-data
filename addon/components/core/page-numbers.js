@@ -65,32 +65,31 @@ export default Component.extend({
   currentPageToShow: 1,
   nbPagesToShow: 5,
 
-  pageNumbers: computed('currentPageToShow', 'lastPage', function () {
-    let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
+  currentPage: computed('lastPage', 'currentPageToShow', function () {
+    const lastPage = this.get('lastPage');
     let currentPage = this.get('currentPageToShow');
-    let lastPage = this.get('lastPage');
+
+    if (!(currentPage < 1 || currentPage > lastPage)) {
+      return currentPage;
+    }
 
     if (currentPage < 1 ) {
       currentPage = 1;
-      if (currentPage === this.get('queryObj.currentPage')){
-        this.get('changePage')(currentPage);
-        return;
-      }
-    }
-    if (currentPage > lastPage) {
+    } else if (currentPage > lastPage) {
       currentPage = lastPage
-      if (currentPage === this.get('queryObj.currentPage')){
-        this.get('changePage')(currentPage);
-        return;
-      }
     }
 
-    let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
-    let nbPagesAfter = nbPagesWithoutCurrent - nbPagesBefore;
+    if (currentPage === this.get('queryObj.currentPage')){
+      this.get('changePage')(currentPage);
+    }
 
-    let firstPageToShow = currentPage - nbPagesBefore;
-    let lastPageToShow = currentPage + nbPagesAfter;
+    return currentPage;
+  }),
 
+  updatePagesToShow({ firstPageToShow, lastPageToShow }) {
+    const lastPage = this.get('lastPage');
+
+    // Shifts the pages to show if the firstPage is under the minimum
     while (firstPageToShow < 1) {
       firstPageToShow++;
       if (lastPageToShow < lastPage) {
@@ -98,6 +97,7 @@ export default Component.extend({
       }
     }
 
+    // Shifts the pages to show if the lastPage is over the maximum
     while (lastPageToShow > lastPage) {
       lastPageToShow--;
       if (firstPageToShow > 1) {
@@ -105,8 +105,29 @@ export default Component.extend({
       }
     }
 
+    return { firstPageToShow, lastPageToShow };
+  },
+
+  getFirstAndLastPageToShow() {
+    let currentPage = this.get('currentPage');
+    let nbPagesWithoutCurrent = this.get('nbPagesToShow') - 1;
+
+    let nbPagesBefore = parseInt(nbPagesWithoutCurrent / 2);
+    let nbPagesAfter = nbPagesWithoutCurrent - nbPagesBefore;
+
+    let firstPageToShow = currentPage - nbPagesBefore;
+    let lastPageToShow = currentPage + nbPagesAfter;
+
+    return this.updatePagesToShow({ firstPageToShow, lastPageToShow })
+  },
+
+  pageNumbers: computed('currentPageToShow', 'lastPage', function () {
+    let { firstPageToShow, lastPageToShow } = this.getFirstAndLastPageToShow();
+
     let nbOfPagesToShow = lastPageToShow - firstPageToShow + 1;
-    return A(Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i));
+    let array = Array.from(new Array(nbOfPagesToShow), (x, i) => firstPageToShow + i);
+
+    return A(array);
   }),
 
   actions: {

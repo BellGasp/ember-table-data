@@ -6,20 +6,24 @@ moduleForComponent('filter-input/boolean', 'Integration | Component | filter inp
 });
 
 test('it renders', function(assert) {
-  this.render(hbs`{{filter-input/boolean}}`);
+  assert.expect(2);
+  this.set('testValueChange', () => {
+    assert.ok(true);
+  });
+
+  this.render(hbs`{{filter-input/boolean valueChange=(action testValueChange)}}`);
 
   assert.equal(this.$('.inputValue').length, 1, 'The input for boolean should be there');
 });
 
 test('it execute action on value change', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
+
   this.set('testValueChange', () => {
     assert.ok(true);
   });
 
-  this.set('_selectedValue', true);
+  this.render(hbs`{{filter-input/boolean valueChange=(action testValueChange)}}`);
 
-  this.render(hbs`{{filter-input/boolean valueChange=(action testValueChange) _selectedValue=_selectedValue}}`);
-
-  this.set('_selectedValue', false);
+  this.$('input').click();
 });

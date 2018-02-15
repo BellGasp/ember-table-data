@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import Component from '@ember/component';
 import { on } from '@ember/object/evented';
-import { observer, computed } from '@ember/object';
+import { observer, computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
@@ -65,6 +65,20 @@ export default Component.extend({
 
     return true;
   },
+
+  updateTotalCount(data) {
+    if (get(data, 'meta.totalCount')) {
+      this.set('totalCount', get(data, 'meta.totalCount'));
+    } else {
+      if (data.get){
+      this.set('totalCount', data.get('length'));
+    } else
+      {
+        this.set('totalCount', data.length);
+      }
+    }
+  },
+
   loadPage(page) {
     let service = this.get('tableData');
     let pageSize = this.get('queryObj.pageSize');
@@ -73,8 +87,10 @@ export default Component.extend({
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
       let loadedPage = loadedPages.findBy('page', page);
-      let shoudLoadPage = !loadedPage || !this.get('eagerLoading') || this.shouldReloadPage(
-        loadedPage);
+      let shoudLoadPage = !loadedPage ||
+        !this.get('eagerLoading') ||
+        this.shouldReloadPage(loadedPage);
+
       if (shoudLoadPage) {
         loadedPages.removeObject(loadedPage);
 
@@ -83,18 +99,7 @@ export default Component.extend({
         queryObj.set('currentPage', page);
 
         loadedPage = service.loadPage(records, queryObj);
-        loadedPage.get('records').then(data => {
-          if (data.get && data.get('meta') && data.get('meta.totalCount')) {
-            this.set('totalCount', data.get('meta.totalCount'));
-          } else {
-            if (data.get){
-            this.set('totalCount', data.get('length'));
-          } else
-            {
-              this.set('totalCount', data.length);
-            }
-          }
-        });
+        loadedPage.get('records').then(data => this.updateTotalCount(data));
         loadedPage.set('forceReload', false);
         loadedPages.pushObject(loadedPage);
 

@@ -1,3 +1,15 @@
-<p>
-  No implemented yet.
-</p>
+{{#power-select
+    options=options
+    tagName='div'
+    class='dropdown'
+    selected=selectedValue
+    matcher=(action 'customMatcher')
+    onchange=(action 'valueChanged')
+    as |option|
+}}
+  {{#if (get option labelPath)}}
+    {{get option labelPath}}
+  {{else}}
+    {{option}}
+  {{/if}}
+{{/power-select}}

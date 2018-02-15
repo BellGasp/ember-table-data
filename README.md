@@ -107,6 +107,30 @@ properties: computed('i18n.locale', function () {
     return array;
   }),
 ```
+
+##### Dropdown filters
+For filter that require a dropdown (for a belongsTo relationships for example), you must provide additional properties:
+| Properties | Default Value | Type | Description |
+|---|:-------------:|:------:|:-------------:|
+| data | null | array / function returning an array | Represents options to show in the dropdown |
+| labelPath | 'label' | string | Represents the path of the label to show in the dropdown if data is an array of object |
+| propertyPath | 'id' | string | Represents the path of the property to select in the dropdown if data is an array of object |
+
+For example:
+```javascript
+import filterObject from 'ember-table-data/utils/filter-object';
+[...]
+properties: computed('i18n.locale', function () {
+    return [
+      filterObject.create({
+        labelPath:'other-label',
+        propertyPath: 'other-id',
+        propertyType:'dropdown',
+        valueForQuery:'Label4'
+      })
+    ];
+  }),
+```
 ##### Comparators
 
 We provide a default list of comparators for each type. When you want to add a comparator or override an existing one, you need to provide a list of comparator, using the comparator-object available in the utils.
@@ -147,7 +171,7 @@ new A([
   ComparatorObject.create({label: '=', internalName: 'equal', propertyType: 'boolean', valueForQuery:'{0} == {1}'})
 ]);
 ```
-###### Override an comparators
+###### Override a comparator
 
 If you provide a list of comparators in the filters, we will match the internalName and the type. If you provide a label and/or a valueForQuery, we will override the default one with the new value.
 

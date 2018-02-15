@@ -19,18 +19,18 @@ export default Component.extend({
 
   resetComparator: observer('filteredComparators.@each.label', function() {
     let currentComparator = this.get('filterRowObject.comparator');
-    let sameLogicComparator = this.get('filteredComparators')
-      .findBy('internalName', currentComparator.get('internalName'));
 
-    if (sameLogicComparator) {
-      this.set('filterRowObject.comparator', sameLogicComparator);
-    } else {
-      let firstComparator = this.get('filteredComparators.firstObject')
-      if (firstComparator) {
-        this.set('filterRowObject.comparator', firstComparator);
-      } else {
-        this.set('filterRowObject.comparator', null);
-      }
+    if (currentComparator) {
+      let internalName = currentComparator.get('internalName');
+      
+      var comparator = this.get('filteredComparators').findBy('internalName', internalName);
     }
+
+    if (!comparator) {
+      // defaults to undefined if you get the firstObject of an empty array
+      comparator = this.get('filteredComparators.firstObject');
+    }
+
+    this.set('filterRowObject.comparator', comparator);
   })
 });
