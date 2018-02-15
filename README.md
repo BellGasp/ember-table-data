@@ -73,7 +73,9 @@ Here are the parameters that are available.
 | properties | Ember array | array | Represents the available properties to be able to filter |
 | comparators | see below the default comparators | array | Represents the comparator to override/add to the default comparators |  
 
-We provide the filter-object in the utils. The filter-object contains 3 properties:
+We provide the filter-object in the utils. The filter-object contains 3 properties.
+| Properties | Description |
+|---|:-------------:|
 | label | Represents the label that will be show in the dropdown to select the property for filter |
 | propertyType | Represents the type of the property to filter comparators |
 | valueForQuery | Represents the value that will be used when we will construct the serialized object |
@@ -109,7 +111,8 @@ properties: computed('i18n.locale', function () {
 ```
 
 ##### Dropdown filters
-For filter that require a dropdown (for a belongsTo relationships for example), you must provide additional properties:
+For filter that require a dropdown (for a belongsTo relationships for example), you must provide additional properties.
+
 | Properties | Default Value | Type | Description |
 |---|:-------------:|:------:|:-------------:|
 | data | null | array / function returning an array | Represents options to show in the dropdown |
@@ -134,6 +137,8 @@ properties: computed('i18n.locale', function () {
 ##### Comparators
 
 We provide a default list of comparators for each type. When you want to add a comparator or override an existing one, you need to provide a list of comparator, using the comparator-object available in the utils.
+| Properties | Description |
+|---|:-------------:|
 | label | Represent the label that will be show in the dropdown to select the comparator for filter |
 | internalName | Represents the unique name of the comparator for a specific type (uniqueness is based on internalName + propertyType)|
 | propertyType | Represents the type of the property |
