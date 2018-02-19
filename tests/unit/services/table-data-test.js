@@ -1,4 +1,7 @@
+import QueryObj from 'dummy/utils/query-obj';
 import { moduleFor, test } from 'ember-qunit';
+import { get } from '@ember/object';
+import { Promise } from 'rsvp';
 
 moduleFor('service:table-data', 'Unit | Service | table data');
 
@@ -109,4 +112,56 @@ test('Cannot get negative page', function(assert) {
 test('Cannot get page x != 1 if no records', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(3, 15, 0));
+});
+
+test('Can load records -- array single page', async function(assert) {
+  let service = this.subject();
+  let records = ['test1', 'test2'];
+  let queryObj = QueryObj.create({ currentPage: 1, pageSize: 5 });
+
+  let result = await service.loadRecords(records, queryObj);
+  assert.equal(get(result, 'length'), 2);
+});
+
+test('Can load records -- array multiple pages', async function(assert) {
+  let service = this.subject();
+  let records = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  let queryObj = QueryObj.create({ currentPage: 1, pageSize: 5 });
+
+  let result = await service.loadRecords(records, queryObj);
+  assert.equal(get(result, 'length'), 5);
+  assert.equal(get(result, 'firstObject'), 1);
+  assert.equal(get(result, 'lastObject'), 5);
+});
+
+test('Can load records -- function -> array', async function(assert) {
+  let service = this.subject();
+  let records = () => [1, 2, 3, 4, 5];
+  let queryObj = QueryObj.create({ currentPage: 1, pageSize: 5 });
+
+  let result = await service.loadRecords(records, queryObj);
+  assert.equal(get(result, 'length'), 5);
+});
+
+test('Can load records -- function -> promise', async function(assert) {
+  let service = this.subject();
+  let records = () => new Promise((resolve, reject) => {
+    resolve([1, 2, 3, 4, 5]);
+    reject();
+  });
+
+  let queryObj = QueryObj.create({ currentPage: 1, pageSize: 5 });
+
+  let result = await service.loadRecords(records, queryObj);
+  assert.equal(get(result, 'length'), 5);
+});
+
+test('Can load page', async function(assert) {
+  let service = this.subject();
+  let records = ['test1', 'test2'];
+  let queryObj = QueryObj.create({ currentPage: 1, pageSize: 5 });
+
+  let result = await service.loadPage(records, queryObj);
+  assert.equal(get(result, 'records.length'), 2);
+  assert.equal(get(result, 'page'), 1);
 });

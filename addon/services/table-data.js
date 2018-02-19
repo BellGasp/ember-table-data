@@ -27,7 +27,7 @@ export default Service.extend({
     if (typeof(records) === 'function') {
       recordsPromise = records(queryObj.toQueryableObject(), queryObj.toSerializableObject());
     } else {
-      recordsPromise = this.paginateRecords(records);
+      recordsPromise = this.paginateRecords(records, queryObj);
     }
 
     return PromiseArray.create({
@@ -36,7 +36,7 @@ export default Service.extend({
   },
   paginateRecords(records, { currentPage, pageSize }) {
     let firstRecordIndex = currentPage * pageSize - pageSize;
-    return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
+    return A(records.slice(firstRecordIndex,firstRecordIndex + pageSize));
   },
 
   createComparator(propertyType, label, internalName, valueForQuery, showInput) {
