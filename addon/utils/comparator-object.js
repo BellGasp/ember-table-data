@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 
 export default EmberObject.extend({
-  label:null,
+  label: null,
   internalName: null,
   propertyType: null,
   valueForQuery:null,

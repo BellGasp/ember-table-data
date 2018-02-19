@@ -1,9 +1,10 @@
 import EmberObject from '@ember/object';
 import { A } from '@ember/array';
+import { get, set } from '@ember/object';
 
 let sortState = EmberObject.extend({
   setNext(nextState) {
-    this.set('nextState', nextState);
+    set(this, 'nextState', nextState);
   },
   nextState: null,
   class: ''
@@ -20,7 +21,7 @@ export default EmberObject.extend({
   sortProperty: null,
 
   getSortArray() {
-    let state = this.get('state');
+    let state = get(this, 'state');
 
     if (state === this.states.unsorted) {
       return A();
@@ -29,7 +30,7 @@ export default EmberObject.extend({
     return A([
       EmberObject.create({
         column: this.sortProperty,
-        asc: this.get('state') === this.states.asc
+        asc: get(this, 'state') === this.states.asc
       })
     ]);
   },
@@ -38,11 +39,11 @@ export default EmberObject.extend({
     let sortProperty = this.get('sortProperty');
 
     if (sortProperty != property) {
-      this.set('sortProperty', property);
-      this.set('state', this.states.unsorted);
+      set(this, 'sortProperty', property);
+      set(this, 'state', this.states.unsorted);
     }
 
-    this.set('state', this.get('state').nextState);
+    set(this, 'state', get(this, 'state').nextState);
 
   },
 
@@ -51,6 +52,6 @@ export default EmberObject.extend({
     this.states.asc.setNext(this.states.desc);
     this.states.desc.setNext(this.states.unsorted);
 
-    this.set('state', this.states.unsorted);
+    set(this, 'state', this.states.unsorted);
   },
 });

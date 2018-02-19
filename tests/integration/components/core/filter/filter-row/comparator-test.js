@@ -15,7 +15,7 @@ test('it renders', function(assert) {
     'The power select should be visible with no options');
 });
 
- test('it renders the comparators when provided', function(assert) {
+test('it renders the comparators when provided', function(assert) {
   this.set('filteredComparators',
     new A([
       { label: 'test' },
@@ -25,7 +25,11 @@ test('it renders', function(assert) {
   );
   this.set('filterRowObject', {});
 
-  this.render(hbs `{{core/filter/filter-row/comparator filterRowObject=filterRowObject filteredComparators=filteredComparators}}`);
+  this.render(hbs `{{core/filter/filter-row/comparator
+    filterRowObject=filterRowObject
+    filteredComparators=filteredComparators}}`
+  );
 
-  assert.equal(this.$(".comparator-selector").text().trim(), 'test', 'The component should select the first comparator available');
+  assert.equal(this.$('.comparator-selector').text().trim(), 'test',
+    'The component should select the first comparator available');
 });

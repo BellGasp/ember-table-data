@@ -10,7 +10,8 @@ moduleForComponent('core/table-filter', 'Integration | Component | core/table fi
 test('it renders nothing without error when you don\'t use the inner component', function(assert) {
 
   this.render(hbs`{{core/table-filter}}`);
-  assert.equal(this.$().text().trim(), '', 'This component is block component using exposed component');
+  assert.equal(this.$().text().trim(), '',
+    'This component is block component using exposed component');
 });
 
 test('it renders header when you use the inner component', function(assert) {

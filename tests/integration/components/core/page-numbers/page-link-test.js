@@ -1,9 +1,11 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('core/page-numbers/page-link', 'Integration | Component | core/page numbers/page link', {
-  integration: true
-});
+moduleForComponent('core/page-numbers/page-link',
+  'Integration | Component | core/page numbers/page link', {
+    integration: true
+  }
+);
 
 test('it renders', function(assert) {
 

@@ -72,13 +72,13 @@ test('the dropdown has the right options - array', async function(assert) {
   assert.equal(
     $('.ember-power-select-option:eq(0)').text().trim(),
     'test1',
-    'The first option should be \"test1\".'
+    'The first option should be "test1".'
   );
 
   assert.equal(
     $('.ember-power-select-option:eq(1)').text().trim(),
     'test2',
-    'The second option should be \"test2\".'
+    'The second option should be "test2".'
   );
 });
 
@@ -104,13 +104,13 @@ test('the dropdown has the right options - array function', async function(asser
   assert.equal(
     $('.ember-power-select-option:eq(0)').text().trim(),
     'test3',
-    'The first option should be \"test3\".'
+    'The first option should be "test3".'
   );
 
   assert.equal(
     $('.ember-power-select-option:eq(1)').text().trim(),
     'test4',
-    'The second option should be \"test4\".'
+    'The second option should be "test4".'
   );
 });
 
@@ -143,13 +143,13 @@ test('the dropdown has the right options - promise function', async function(ass
   assert.equal(
     $('.ember-power-select-option:eq(0)').text().trim(),
     'test5',
-    'The first option should be \"test5\".'
+    'The first option should be "test5".'
   );
 
   assert.equal(
     $('.ember-power-select-option:eq(1)').text().trim(),
     'test6',
-    'The second option should be \"test6\".'
+    'The second option should be "test6".'
   );
 });
 
@@ -180,7 +180,7 @@ test('the dropdown has the right options - empty', async function(assert) {
   assert.equal(
     $('.ember-power-select-option:eq(0)').text().trim(),
     'No results found',
-    'The only option should be \"No results found\".'
+    'The only option should be "No results found".'
   );
 });
 
@@ -207,8 +207,8 @@ test('can select option using default property path', async function(assert) {
   assert.expect(1);
 
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' }
   ];
   this.set('filter', {
     property: {
@@ -229,8 +229,8 @@ test('can select option using given property path', async function(assert) {
   assert.expect(1);
 
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' }
   ];
   this.set('filter', {
     property: {
@@ -251,8 +251,8 @@ test('can select option using given property path', async function(assert) {
 test('shows options with default label property', async function(assert) {
   assert.expect(3);
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' }
   ];
   this.set('filter', {
     property: {
@@ -441,16 +441,16 @@ test('can search based on label property - no label', async function(assert) {
 // test('can select option using given (undefined) property path', function(assert) {
 //   assert.expect(1);
 //
-  // let data = [
-  //   { id: 1, label: 'test1'},
-  //   { id: 2, label: 'test2'},
-  // ];
-  // this.set('filter', {
-  //   property: {
-      // data,
-      // propertyPath: 'pogchamp'
-  //   }
-  // });
+//   let data = [
+//     { id: 1, label: 'test1' },
+//     { id: 2, label: 'test2' }
+//   ];
+//   this.set('filter', {
+//     property: {
+//       data,
+//       propertyPath: 'pogchamp'
+//     }
+//   });
 //   this.set('externalAction', () => {
 //     assert.notOk(true, 'The test should not reach this assertion.');
 //   });

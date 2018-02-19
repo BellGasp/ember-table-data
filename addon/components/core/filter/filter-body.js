@@ -9,26 +9,32 @@ export default Component.extend({
 
   tableData: service(),
 
-  availableComparators: computed('comparators.@each.{label,valueForQuery,propertyType,internalName}', function(){
-    let defaultComparators = this.get('tableData').defaultComparators();
-    let userComparator = this.get('comparators');
+  availableComparators: computed(
+    'comparators.@each.{label,valueForQuery,propertyType,internalName}', function(){
+      let defaultComparators = this.get('tableData').defaultComparators();
+      let userComparator = this.get('comparators');
 
-    if(userComparator){
-      userComparator.forEach(comp => {
-        var defaultTypeComparators = A(defaultComparators.filterBy('propertyType', comp.get('propertyType')));
-        if (defaultTypeComparators.length > 0){
-          let sameComparator = defaultTypeComparators.findBy('internalName', comp.get('internalName'));
-          if (sameComparator) {
-            Object.assign(sameComparator, comp);
+      if(userComparator){
+        userComparator.forEach(comp => {
+          let defaultTypeComparators = A(defaultComparators
+            .filterBy('propertyType', comp.get('propertyType')));
+
+          if (defaultTypeComparators.length > 0){
+            let sameComparator = defaultTypeComparators
+              .findBy('internalName', comp.get('internalName'));
+
+            if (sameComparator) {
+              Object.assign(sameComparator, comp);
+            } else {
+              defaultComparators.pushObject(comp);
+            }
           } else {
             defaultComparators.pushObject(comp);
           }
-        } else {
-          defaultComparators.pushObject(comp);
-        }
-      });
-    }
+        });
+      }
 
-    return A(defaultComparators.filterBy('showComparator'));
-  })
+      return A(defaultComparators.filterBy('showComparator'));
+    }
+  )
 });

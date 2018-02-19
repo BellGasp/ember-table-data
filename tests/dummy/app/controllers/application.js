@@ -18,8 +18,13 @@ export default Controller.extend({
     filterObject.create({ label:'Last Inspection Date', propertyType:'date',
       valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
         + '.FirstOrDefault().CreationDate' }),
-    filterObject.create({ label:'Dropdown Test', propertyType:'dropdown', data:[{ id: 1, label: 'test' }, { id: 2, label: 'tesometh' }],
-      valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate).FirstOrDefault().CreationDate' })
+    filterObject.create({
+      label:'Dropdown Test',
+      propertyType:'dropdown',
+      data:[{ id: 1, label: 'test' }, { id: 2, label: 'tesometh' }],
+      valueForQuery: 'ManholeInspections.OrderByDescending(m => m.CreationDate).' +
+        'FirstOrDefault().CreationDate'
+    })
   ]),
 
   init(...args) {
@@ -30,7 +35,7 @@ export default Controller.extend({
     }));
   },
   records() {
-    return ["test", "test3", "test2"];
+    return ['test', 'test3', 'test2'];
   },
   actions: {
     changePage(page) {

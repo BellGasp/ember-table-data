@@ -15,5 +15,5 @@ export default Controller.extend({
     filterObject.create({ label:'Last Inspection Date', propertyType:'date',
       valueForQuery:'ManholeInspections.OrderByDescending(m => m.CreationDate)'
         + '.FirstOrDefault().CreationDate' })
-      ])
+  ])
 });

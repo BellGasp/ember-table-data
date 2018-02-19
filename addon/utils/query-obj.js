@@ -1,15 +1,17 @@
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';
+import { get, set, getProperties } from '@ember/object';
+import { classify } from '@ember/string';
 
 export default EmberObject.extend({
   init(...args) {
     this._super(...args);
 
-    if (!this.get('sorts')) {
-      this.set('sorts', A());
+    if (!get(this, 'sorts')) {
+      set(this, 'sorts', A());
     }
-    if (!this.get('filters')) {
-      this.set('filters', A());
+    if (!get(this, 'filters')) {
+      set(this, 'filters', A());
     }
   },
 
@@ -19,33 +21,36 @@ export default EmberObject.extend({
   filters: null,
 
   toQueryableObject() {
-    return {
-      filters: this.get('filters'),
-      sorts: this.get('sorts'),
-      currentPage: this.get('currentPage'),
-      pageSize: this.get('pageSize')
-    };
+    return getProperties(this, 'filters', 'sorts', 'currentPage', 'pageSize');
   },
-  toSerializableObject() {
-    let serializedObj = {
-      currentPage: this.get('currentPage'),
-      pageSize: this.get('pageSize')
-    };
 
-    this.get('filters').forEach((filter, index) => {
-      let type = filter.get('property.propertyType');
-      serializedObj[`Filters[${index}].FieldName`] = filter.get('property.valueFor' + filter.get('comparator.internalName')) || filter.get('property.valueForQuery');
-      serializedObj[`Filters[${index}].FieldValue`] = filter.get('value');
-      serializedObj[`Filters[${index}].FieldType`] = type === 'number' ? 'int' :
-        type === 'date' ? 'datetime' :
-          type;
-      serializedObj[`Filters[${index}].Operator`] = filter.get('comparator.valueForQuery');
-      serializedObj[`Filters[${index}].ColumnWrapper`] = filter.get('property.columnWrapperFor' + filter.get('comparator.internalName')) || filter.get('property.columnWrapperForQuery');
+  toSerializableObject() {
+    let serializedObj = getProperties(this, 'currentPage', 'pageSize');
+
+    get(this, 'filters').forEach((filter, index) => {
+      let comparatorInternalName = classify(get(filter, 'comparator.internalName'));
+      let type = get(filter, 'property.propertyType');
+
+      serializedObj[`Filters[${index}].FieldName`] =
+        get(filter, `property.valueFor${comparatorInternalName}`) ||
+        get(filter, 'property.valueForQuery');
+
+      serializedObj[`Filters[${index}].ColumnWrapper`] =
+        get(filter, `property.columnWrapperFor${comparatorInternalName}`) ||
+        get(filter, 'property.columnWrapperForQuery');
+
+      serializedObj[`Filters[${index}].FieldValue`] = get(filter, 'value');
+      serializedObj[`Filters[${index}].Operator`] = get(filter, 'comparator.valueForQuery');
+      serializedObj[`Filters[${index}].FieldType`] = type === 'number'
+        ? 'int'
+        : type === 'date'
+          ? 'datetime'
+          : type;
     });
 
-    this.get('sorts').forEach((sort, index) => {
-      serializedObj[`Sorts[${index}].Column`] = sort.get('column');
-      serializedObj[`Sorts[${index}].Asc`] = sort.get('asc');
+    get(this, 'sorts').forEach((sort, index) => {
+      serializedObj[`Sorts[${index}].Column`] = get(sort, 'column');
+      serializedObj[`Sorts[${index}].Asc`] = get(sort, 'asc');
     });
 
     return serializedObj;

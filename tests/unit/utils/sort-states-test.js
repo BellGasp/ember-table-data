@@ -1,7 +1,7 @@
 import SortStates from 'dummy/utils/sort-states';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | sort states');
+module('Unit | Utility | Sort States');
 
 test('it inits as unsorted', function(assert) {
   let sortStates = SortStates.create();

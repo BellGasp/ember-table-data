@@ -70,12 +70,7 @@ export default Component.extend({
     if (get(data, 'meta.totalCount')) {
       this.set('totalCount', get(data, 'meta.totalCount'));
     } else {
-      if (data.get){
-      this.set('totalCount', data.get('length'));
-    } else
-      {
-        this.set('totalCount', data.length);
-      }
+      this.set('totalCount', get(data, 'length'));
     }
   },
 
