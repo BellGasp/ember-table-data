@@ -103,6 +103,7 @@ export default Component.extend({
   },
 
   loadPageData(loadedPage, page, onDataChange){
+    let service = this.get('tableData');
     let loadedPages = this.get('loadedPages');
     loadedPages.removeObject(loadedPage);
 
@@ -119,6 +120,7 @@ export default Component.extend({
     loadedPages.pushObject(loadedPage);
 
     queryObj.destroy();
+    return loadedPage;
   },
 
   loadPage(page, onDataChange) {
@@ -133,7 +135,7 @@ export default Component.extend({
         !this.get('eagerLoading') ||
         this.shouldReloadPage(loadedPage);
       if (shoudLoadPage) {
-        this.loadPageData(loadedPage, page, onDataChange);
+        loadedPage = this.loadPageData(loadedPage, page, onDataChange);
       } else {
         this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange);
       }
