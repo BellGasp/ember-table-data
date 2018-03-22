@@ -111,7 +111,7 @@ test('it execute updateFilter action correctly when action is executed', functio
   this.$('button.filter').click();
 });
 
-test('it execute updateFilter action correctly when action is executed', function(assert) {
+test('it execute updateFilter action correctly when action is executed and clear filter', function(assert) {
   assert.expect(2);
   this.set('rows', new A());
   this.set('externalAction', () => {
@@ -119,7 +119,7 @@ test('it execute updateFilter action correctly when action is executed', functio
   });
 
   this.render(hbs`
-    {{#core/table-filter rows=rows updateFilter=(action externalAction) as |filter|}}
+    {{#core/table-filter _rows=rows updateFilter=(action externalAction) as |filter|}}
       {{#filter.header class="header" as |header|}}
         {{header.addButton }}
       {{/filter.header}}
@@ -135,7 +135,10 @@ test('it execute updateFilter action correctly when action is executed', functio
   this.$('.header > button').click();
   this.$('.header > button').click();
   this.$('.header > button').click();
+
+
   this.$('button.clear').click();
+
   assert.equal(this.get('rows.length'), 0);
 });
 
