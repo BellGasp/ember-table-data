@@ -87,22 +87,38 @@ export default Component.extend({
   updateTotalCount(loadedPage, data) {
     if (get(data, 'meta.totalCount')) {
       this.set('_totalCount', get(data, 'meta.totalCount'));
-      loadedPage.set('totalCount', get(data, 'meta.totalCount'));
     } else {
       if (data.get){
-      this.set('_totalCount', data.get('length'));
-      loadedPage.set('totalCount', data.get('length'));
-    } else
-      {
+        this.set('_totalCount', data.get('length'));
+      } else {
         this.set('_totalCount', data.length);
-        loadedPage.set('totalCount', data.length);
       }
     }
   },
-  triggerOnDataChangeAction(queryObj, onDataChange, onDataChangeClosureAction, totalCount){
+  triggerOnDataChangeAction(queryObj, onDataChange){
+    let onDataChangeClosureAction = this.get('onDataChange');
     if (onDataChange && onDataChangeClosureAction){
-      onDataChangeClosureAction(queryObj, totalCount);
+      onDataChangeClosureAction(queryObj, this.get('_totalCount'));
     }
+  },
+
+  loadPageData(loadedPage, page, onDataChange){
+    let loadedPages = this.get('loadedPages');
+    loadedPages.removeObject(loadedPage);
+
+    let records = this.get('records');
+    let queryObj = QueryObj.create(this.get('_queryObj'));
+    queryObj.set('currentPage', page);
+
+    loadedPage = service.loadPage(records, queryObj);
+    loadedPage.get('records').then(data => {
+      this.updateTotalCount(loadedPage, data);
+      this.triggerOnDataChangeAction(queryObj, onDataChange);
+    });
+    loadedPage.set('forceReload', false);
+    loadedPages.pushObject(loadedPage);
+
+    queryObj.destroy();
   },
 
   loadPage(page, onDataChange) {
@@ -116,28 +132,11 @@ export default Component.extend({
       let shoudLoadPage = !loadedPage ||
         !this.get('eagerLoading') ||
         this.shouldReloadPage(loadedPage);
-
-      let onDataChangeClosureAction = this.get('onDataChange');
-
       if (shoudLoadPage) {
-        loadedPages.removeObject(loadedPage);
-
-        let records = this.get('records');
-        let queryObj = QueryObj.create(this.get('_queryObj'));
-        queryObj.set('currentPage', page);
-
-        loadedPage = service.loadPage(records, queryObj);
-        loadedPage.get('records').then(data => {
-          this.updateTotalCount(loadedPage, data);
-          this.triggerOnDataChangeAction(queryObj,onDataChange, onDataChangeClosureAction, totalCount);
-        });
-        loadedPage.set('forceReload', false);
-        loadedPages.pushObject(loadedPage);
-
-        queryObj.destroy();
+        this.loadPageData(loadedPage, page, onDataChange);
       } else {
-        this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange, onDataChangeClosureAction, totalCount);
-      }      
+        this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange);
+      }
       return loadedPage;
     }
   },
