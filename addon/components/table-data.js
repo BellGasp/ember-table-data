@@ -99,6 +99,11 @@ export default Component.extend({
       }
     }
   },
+  triggerOnDataChangeAction(queryObj, onDataChange, onDataChangeClosureAction, totalCount){
+    if (onDataChange && onDataChangeClosureAction){
+      onDataChangeClosureAction(queryObj, totalCount);
+    }
+  },
 
   loadPage(page, onDataChange) {
     let service = this.get('tableData');
@@ -124,21 +129,15 @@ export default Component.extend({
         loadedPage = service.loadPage(records, queryObj);
         loadedPage.get('records').then(data => {
           this.updateTotalCount(loadedPage, data);
-          if (onDataChange && onDataChangeClosureAction){
-            onDataChangeClosureAction(queryObj, data.meta.totalCount);
-          }
+          this.triggerOnDataChangeAction(queryObj,onDataChange, onDataChangeClosureAction, totalCount);
         });
         loadedPage.set('forceReload', false);
         loadedPages.pushObject(loadedPage);
 
         queryObj.destroy();
-      } else if (onDataChange && onDataChangeClosureAction ){
-        onDataChangeClosureAction(
-          this.get('_queryObj'),
-          loadedPage.totalCount
-        );
-      }
-
+      } else {
+        this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange, onDataChangeClosureAction, totalCount);
+      }      
       return loadedPage;
     }
   },

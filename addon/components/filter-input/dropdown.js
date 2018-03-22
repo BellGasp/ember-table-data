@@ -29,9 +29,8 @@ export default Component.extend({
     let {
       data,
       labelPath,
-      propertyPath,
-      selectedValue
-    } = getProperties(this.get('filter.property'), 'data', 'labelPath', 'propertyPath', 'value');
+      propertyPath
+    } = getProperties(this.get('filter.property'), 'data', 'labelPath', 'propertyPath');
 
     if (typeof(data) === 'function') {
       this.set('options', data());
@@ -46,7 +45,8 @@ export default Component.extend({
     if (propertyPath) {
       this.set('propertyPath', propertyPath);
     }
-
+    
+    let selectedValue = this.get('filter.value');
     if(selectedValue){
       this.set('selectedValue', selectedValue);
     }
