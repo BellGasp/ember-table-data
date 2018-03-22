@@ -9,35 +9,39 @@ export default Component.extend({
   layout,
 
   rows: null,
+  _rows: null,
 
   init() {
     this._super(...arguments);
 
-    if(!this.get('rows')){
+    let rows = this.get('rows')
+    if(!rows){
       this.initializeFilters();
+    }else{
+      this.set('_rows', rows);
     }
   },
 
   initializeFilters(){
-    this.set('rows', A());
+    this.set('_rows', A());
   },
 
-  filtersRows: computed('rows', function(){
-    let rows = this.get('rows');
+  filtersRows: computed('_rows', function(){
+    let rows = this.get('_rows');
 
     return rows;
   }),
 
   actions:{
     addRow(){
-      let rows = this.get('rows');
+      let rows = this.get('_rows');
       rows.pushObject(filterRowObject.create());
     },
     deleteRow(row){
       if (row.length){
-        this.get('rows').removeObjects(row)
+        this.get('_rows').removeObjects(row)
       } else {
-        this.get('rows').removeObject(row);
+        this.get('_rows').removeObject(row);
       }
     },
     clearFilters(){

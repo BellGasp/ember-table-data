@@ -12,7 +12,7 @@ export default Component.extend({
     let filterRowObject = this.get('filterRowObject');
     let filteredComparators = this.get('filteredComparators');
 
-    if (filterRowObject && filteredComparators && filteredComparators.get('length') > 0) {
+    if (filterRowObject && !filterRowObject.comparator && filteredComparators && filteredComparators.get('length') > 0) {
       set(filterRowObject, 'comparator', filteredComparators.get('firstObject'));
     }
   },
