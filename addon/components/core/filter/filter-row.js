@@ -11,7 +11,7 @@ export default Component.extend({
   filteredComparators: computed('comparators', 'filterRowObject.property', function() {
     let comparators = this.get('comparators');
     if (comparators){
-      let propertyType = this.get('filterRowObject.property.propertyType')
+      let propertyType = this.get('filterRowObject.property.propertyType');
       return A(comparators.filterBy('propertyType', propertyType));
     }
 

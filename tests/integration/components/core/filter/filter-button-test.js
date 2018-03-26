@@ -26,7 +26,7 @@ test('it render the component with blocks (button)', function(assert) {
 });
 
 test('it execute action when click', function(assert) {
-  assert.expect(1)
+  assert.expect(1);
   this.set('externalAction', () =>{
       assert.ok(true);
   });

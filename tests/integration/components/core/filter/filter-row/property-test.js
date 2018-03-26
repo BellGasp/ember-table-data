@@ -25,5 +25,5 @@ test('it renders the comparators when provided', function(assert) {
 
  this.render(hbs `{{core/filter/filter-row/property filterRowObject=filterRowObject properties=properties}}`);
 
- assert.equal(this.$(".property-selector").text().trim(), 'test', 'The component should select the first comparator available');
+ assert.equal(this.$('.property-selector').text().trim(), 'test', 'The component should select the first comparator available');
 });

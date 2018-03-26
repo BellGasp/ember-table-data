@@ -14,7 +14,8 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    let rows = this.get('rows')
+    let rows = this.get('rows');
+
     if(!rows){
       this.initializeFilters();
     }else{
@@ -39,7 +40,7 @@ export default Component.extend({
     },
     deleteRow(row){
       if (row.length){
-        this.get('_rows').removeObjects(row)
+        this.get('_rows').removeObjects(row);
       } else {
         this.get('_rows').removeObject(row);
       }

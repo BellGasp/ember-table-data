@@ -47,11 +47,11 @@ test('it filter comparator when using the showComparator boolean', function(asse
       {{/body.row}}
     {{/core/filter/filter-body}}`);
 
-  clickTrigger(".comparator-selector");
-  typeInSearch("is Emp");
+  clickTrigger('.comparator-selector');
+  typeInSearch('is Emp');
   assert.equal($('.ember-power-select-option--no-matches-message').length, 1,
     'The no match found message is shown');
-  clickTrigger(".comparator-selector");
+  clickTrigger('.comparator-selector');
 
   this.set('comparators', new A([
     comparatorObject.create({
@@ -61,8 +61,8 @@ test('it filter comparator when using the showComparator boolean', function(asse
     })
   ]));
 
-  clickTrigger(".comparator-selector");
-  typeInSearch("is Emp");
+  clickTrigger('.comparator-selector');
+  typeInSearch('is Emp');
   assert.equal($('.ember-power-select-option').length, 1, 'The is Empty options is present');
   assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
     'The no match found message is not shown');
@@ -89,7 +89,7 @@ test('it hide input when showInput is false', function(assert) {
 
 
   assert.equal(this.$('.inputValue').length, 1, 'The input is shown');
-  clickTrigger(".comparator-selector");
+  clickTrigger('.comparator-selector');
   selectChoose('.comparator-selector', 'Is Empty');
   assert.equal(this.$('.inputValue').length, 0, 'The input is not shown by default with is Empty comparator');
 });
@@ -124,8 +124,8 @@ test('it add comparator when propertyType does not exist', function(assert) {
       {{/body.row}}
     {{/core/filter/filter-body}}`);
 
-  clickTrigger(".comparator-selector");
-  typeInSearch("Cust");
+  clickTrigger('.comparator-selector');
+  typeInSearch('Cust');
   assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
   assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
     'The no match found message is not shown');
@@ -161,8 +161,8 @@ test('it add comparator when propertyType exist', function(assert) {
       {{/body.row}}
     {{/core/filter/filter-body}}`);
 
-  clickTrigger(".comparator-selector");
-  typeInSearch("Cust");
+  clickTrigger('.comparator-selector');
+  typeInSearch('Cust');
   assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
   assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
     'The no match found message is not shown');

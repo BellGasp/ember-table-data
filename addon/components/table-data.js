@@ -44,7 +44,7 @@ export default Component.extend({
 
     if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(query) && isPresent(totalCount)))
     {
-      assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.')
+      assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.');
     }
 
     if (totalCount){
@@ -69,15 +69,15 @@ export default Component.extend({
         this.loadPage(pageNumber - 1);
         this.loadPage(pageNumber + 1);
       }
-    })
-    return records
+    });
+    return records;
   }),
   shouldReloadPage(loadedPage) {
     if (!loadedPage.get('forceReload')){
       let lastUpdated = loadedPage.get('lastUpdated');
       let now = Date.now();
       let diffInMin = (lastUpdated - now) / 1000 / 60;
-      let maxDiffInMin = this.get('updatePageAfter')
+      let maxDiffInMin = this.get('updatePageAfter');
       return diffInMin >= maxDiffInMin;
     }
 

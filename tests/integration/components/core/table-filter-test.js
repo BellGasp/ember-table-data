@@ -188,7 +188,7 @@ test('it can filter data with boolean comparator -- true', async function(assert
     {{/core/table-filter}}
     `);
   await this.$('.add-button').click();
-  await this.$('input').click()
+  await this.$('input').click();
 
   await this.$('.filter-button').click();
 

@@ -19,7 +19,7 @@ export default Component.extend({
         if (defaultTypeComparators.length > 0){
           let sameComparator = defaultTypeComparators.findBy('internalName', comp.get('internalName'));
           if (sameComparator) {
-            sameComparator.assignFrom(comp)            
+            sameComparator.assignFrom(comp);
           } else {
             defaultComparators.pushObject(comp);
           }

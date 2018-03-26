@@ -37,5 +37,5 @@ test('it throws assertion error without records', function(assert) {
       {{/table-data}}`);
   },
   /"records"/,
-  'Throws assertion error if records isn\'t passed')
+  'Throws assertion error if records isn\'t passed');
 });
