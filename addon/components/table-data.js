@@ -1,12 +1,12 @@
 import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import Component from '@ember/component';
-import { on } from '@ember/object/evented';
 import { observer, computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import QueryObj from '../utils/query-obj';
 import layout from '../templates/components/table-data';
 import SortStates from '../utils/sort-states';
+import { isPresent } from '@ember/utils';
 
 export default Component.extend({
   layout,
@@ -14,32 +14,50 @@ export default Component.extend({
   tableData: service(),
 
   queryObj: null,
+  _queryObj: null,
 
   eagerLoading: true,
   updatePageAfter: 10,
 
   loadedPages: null,
-  totalCount: 0,
+  totalCount: null,
+  _totalCount:0,
 
-
-  setup: on('init', function() {
+  init() {
+    this._super(...arguments);
     if (!this.get('records'))
       assert('table-data: the property "records" must be passed.');
 
     this.set('loadedPages', new A());
     this.resetQueryObj(this.get('queryObj'));
-  }),
-  resetLoadedPages: observer('records', 'records.[]', 'queryObj.pageSize', function() {
+  },
+
+  resetLoadedPages: observer('records', 'records.[]', '_queryObj.pageSize', function() {
     this.get('loadedPages').clear();
     this.send('updatePage', 1);
   }),
+
   resetQueryObj(queryObj) {
-    this.set('queryObj', QueryObj.create(queryObj));
+    // Create the query object from the one that user can pass when declaring table data component
+    let query = QueryObj.create(queryObj);
+    let totalCount = this.get('totalCount');
+
+    if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(query) && isPresent(totalCount)))
+    {
+      assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.');
+    }
+
+    if (totalCount){
+      this.set('_totalCount', totalCount);
+    }
+
+    this.set('_queryObj', query);
   },
 
-  pageRecords: computed('queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
-    let currentPage = this.get('queryObj.currentPage');
-    let loadedPage = this.loadPage(currentPage);
+  pageRecords: computed('_queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
+    let currentPage = this.get('_queryObj.currentPage');
+    let onDataChange = true;
+    let loadedPage = this.loadPage(currentPage, onDataChange);
 
     let records = loadedPage.get('records');
     records.then(data => {
@@ -51,38 +69,64 @@ export default Component.extend({
         this.loadPage(pageNumber - 1);
         this.loadPage(pageNumber + 1);
       }
-    })
-    return records
+    });
+    return records;
   }),
   shouldReloadPage(loadedPage) {
     if (!loadedPage.get('forceReload')){
       let lastUpdated = loadedPage.get('lastUpdated');
       let now = Date.now();
       let diffInMin = (lastUpdated - now) / 1000 / 60;
-      let maxDiffInMin = this.get('updatePageAfter')
+      let maxDiffInMin = this.get('updatePageAfter');
       return diffInMin >= maxDiffInMin;
     }
 
     return true;
   },
 
-  updateTotalCount(data) {
+  updateTotalCount(loadedPage, data) {
     if (get(data, 'meta.totalCount')) {
-      this.set('totalCount', get(data, 'meta.totalCount'));
+      this.set('_totalCount', get(data, 'meta.totalCount'));
     } else {
       if (data.get){
-      this.set('totalCount', data.get('length'));
-    } else
-      {
-        this.set('totalCount', data.length);
+        this.set('_totalCount', data.get('length'));
+      } else {
+        this.set('_totalCount', data.length);
       }
     }
   },
+  triggerOnDataChangeAction(queryObj, onDataChange){
+    let onDataChangeClosureAction = this.get('onDataChange');
+    if (onDataChange && onDataChangeClosureAction){
+      onDataChangeClosureAction(queryObj, this.get('_totalCount'));
+    }
+  },
 
-  loadPage(page) {
+  loadPageData(loadedPage, page, onDataChange){
     let service = this.get('tableData');
-    let pageSize = this.get('queryObj.pageSize');
-    let totalCount = this.get('totalCount');
+    let loadedPages = this.get('loadedPages');
+    loadedPages.removeObject(loadedPage);
+
+    let records = this.get('records');
+    let queryObj = QueryObj.create(this.get('_queryObj'));
+    queryObj.set('currentPage', page);
+
+    loadedPage = service.loadPage(records, queryObj);
+    loadedPage.get('records').then(data => {
+      this.updateTotalCount(loadedPage, data);
+      this.triggerOnDataChangeAction(queryObj, onDataChange);
+    });
+    loadedPage.set('forceReload', false);
+    loadedPages.pushObject(loadedPage);
+
+    queryObj.destroy();
+    return loadedPage;
+  },
+
+  loadPage(page, onDataChange) {
+    let service = this.get('tableData');
+    let pageSize = this.get('_queryObj.pageSize');
+    let totalCount = this.get('_totalCount');
 
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
@@ -90,20 +134,10 @@ export default Component.extend({
       let shoudLoadPage = !loadedPage ||
         !this.get('eagerLoading') ||
         this.shouldReloadPage(loadedPage);
-
       if (shoudLoadPage) {
-        loadedPages.removeObject(loadedPage);
-
-        let records = this.get('records');
-        let queryObj = QueryObj.create(this.get('queryObj'));
-        queryObj.set('currentPage', page);
-
-        loadedPage = service.loadPage(records, queryObj);
-        loadedPage.get('records').then(data => this.updateTotalCount(data));
-        loadedPage.set('forceReload', false);
-        loadedPages.pushObject(loadedPage);
-
-        queryObj.destroy();
+        loadedPage = this.loadPageData(loadedPage, page, onDataChange);
+      } else {
+        this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange);
       }
       return loadedPage;
     }
@@ -112,7 +146,7 @@ export default Component.extend({
   sortStates: SortStates.create(),
 
   forceReload(page) {
-    let pageToReload = page || this.get('queryObj.currentPage');
+    let pageToReload = page || this.get('_queryObj.currentPage');
     let loadedCurrentPage = this.get('loadedPages').findBy('page', pageToReload);
     loadedCurrentPage.set('forceReload', true);
   },
@@ -125,21 +159,21 @@ export default Component.extend({
 
       this.forceReload();
 
-      this.set('queryObj.sorts', sortStates.getSortArray());
+      this.set('_queryObj.sorts', sortStates.getSortArray());
     },
     updatePageSize(pageSize) {
-      this.set('queryObj.pageSize', pageSize);
+      this.set('_queryObj.pageSize', pageSize);
     },
     updatePage(page) {
-      this.set('queryObj.currentPage', page);
+      this.set('_queryObj.currentPage', page);
     },
     refreshPage(page) {
       this.forceReload(page);
-      this.notifyPropertyChange('queryObj.currentPage');
+      this.notifyPropertyChange('_queryObj.currentPage');
     },
     updateFilter(filters){
       this.resetLoadedPages();
-      this.set('queryObj.filters', filters);
+      this.set('_queryObj.filters', filters);
     }
   }
 });

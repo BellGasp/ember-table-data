@@ -9,8 +9,12 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    // Trigger initial set to make sure the filter as the value 'false' instead of null/undefined
-    this.set('_selectedValue', false);
+    let value = this.get('filter.value');
+    if(!value)
+    {
+      // Trigger initial set to make sure the filter as the value 'false' instead of null/undefined
+      this.set('_selectedValue', false);
+    }
   },
 
   selectedValueObserver: observer('_selectedValue', function(){

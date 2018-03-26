@@ -11,7 +11,7 @@ export default Component.extend({
     let filterRowObject = this.get('filterRowObject');
     let properties = this.get('properties');
 
-    if (filterRowObject && properties && properties.get('length') > 0) {
+    if (filterRowObject && !filterRowObject.property && properties && properties.get('length') > 0) {
       set(filterRowObject, 'property', properties.get('firstObject'));
     }
   },

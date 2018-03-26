@@ -4,6 +4,15 @@ import layout from '../../templates/components/filter-input/date';
 export default Component.extend({
   layout,
 
+  init() {
+    this._super(...arguments);
+    let currentValue = this.get('filter.value');
+
+    if(currentValue){
+      this.set('_selectedValue', currentValue);
+    }
+  },
+
   actions:{
     inputChange(){
       this.get('valueChange')(this.get('_selectedValue'));

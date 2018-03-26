@@ -19,6 +19,6 @@ test('it execute action on value change', function(assert) {
 
   this.render(hbs`{{filter-input/date valueChange=(action testValueChange)}}`);
 
-  this.$('.inputValue').val("2016-01-02");
+  this.$('.inputValue').val('2016-01-02');
   this.$('.inputValue').change();
 });

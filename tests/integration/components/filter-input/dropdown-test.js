@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { selectChoose, clickTrigger, typeInSearch } from 'ember-power-select/test-support/helpers'
+import { selectChoose, clickTrigger, typeInSearch } from 'ember-power-select/test-support/helpers';
 import { Promise } from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -10,7 +10,7 @@ moduleForComponent('filter-input/dropdown', 'Integration | Component | filter in
 test('it renders', function(assert) {
   assert.expect(1);
 
-  let data = ['test1', 'test2']
+  let data = ['test1', 'test2'];
   this.set('filter', {
     property: {
       data
@@ -47,7 +47,7 @@ test('data must be valid', function(assert) {
     this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   },
   /"data"/,
-  'Throws assertion error if data is invalid')
+  'Throws assertion error if data is invalid');
 });
 
 test('the dropdown has the right options - array', async function(assert) {
@@ -207,8 +207,8 @@ test('can select option using default property path', async function(assert) {
   assert.expect(1);
 
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' },
   ];
   this.set('filter', {
     property: {
@@ -229,8 +229,8 @@ test('can select option using given property path', async function(assert) {
   assert.expect(1);
 
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' },
   ];
   this.set('filter', {
     property: {
@@ -251,8 +251,8 @@ test('can select option using given property path', async function(assert) {
 test('shows options with default label property', async function(assert) {
   assert.expect(3);
   let data = [
-    { id: 1, label: 'test1'},
-    { id: 2, label: 'test2'},
+    { id: 1, label: 'test1' },
+    { id: 2, label: 'test2' },
   ];
   this.set('filter', {
     property: {
@@ -303,8 +303,8 @@ test('shows options with given label property', async function(assert) {
 test('shows options with no label property', async function(assert) {
   assert.expect(3);
   var data = [
-    { id: 1, someProperty: 'some-name-1', toString() { return 'object1' } },
-    { id: 2, someProperty: 'some-name-2', toString() { return 'object2' } },
+    { id: 1, someProperty: 'some-name-1', toString() { return 'object1'; } },
+    { id: 2, someProperty: 'some-name-2', toString() { return 'object2'; } },
   ];
 
   this.set('filter', {

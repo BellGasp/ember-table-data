@@ -34,7 +34,7 @@ export default Service.extend({
       promise: resolve(recordsPromise)
     });
   },
-  paginateRecords(records, {currentPage, pageSize}) {
+  paginateRecords(records, { currentPage, pageSize }) {
     let firstRecordIndex = currentPage * pageSize - pageSize;
     return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
   },
@@ -81,7 +81,7 @@ export default Service.extend({
       { propertyType: 'number', label: '>', internalName: 'greaterThan', valueForQuery:'{0} > {1}' },
       { propertyType: 'number', label: '>=', internalName: 'greaterThanOrEqual', valueForQuery:'{0} >= {1}' },
       { propertyType: 'number', label: 'Is Empty', internalName: 'isEmpty', valueForQuery:'{0} == {1}', showInput: false }
-    ])
+    ]);
   }),
 
   dateComparators: computed(function() {
@@ -93,21 +93,21 @@ export default Service.extend({
       { propertyType: 'date', label: '>', internalName: 'greaterThan', valueForQuery:'{0} > {1}' },
       { propertyType: 'date', label: '>=', internalName: 'greaterThanOrEqual', valueForQuery:'{0} >= {1}' },
       { propertyType: 'date', label: 'Is Empty', internalName: 'isEmpty', valueForQuery:'{0} == {1}', showInput: false }
-    ])
+    ]);
   }),
 
   booleanComparators: computed(function() {
     return this.createComparators([
       { propertyType: 'boolean', label: '<>', internalName: 'notEqual', valueForQuery:'{0} != {1}' },
       { propertyType: 'boolean', label: '=', internalName: 'equal', valueForQuery:'{0} == {1}' }
-    ])
+    ]);
   }),
 
   dropdownComparators: computed(function() {
     return this.createComparators([
       { propertyType: 'dropdown', label: '<>', internalName: 'notEqual', valueForQuery:'{0} != {1}' },
       { propertyType: 'dropdown', label: '=', internalName: 'equal', valueForQuery:'{0} == {1}' }
-    ])
+    ]);
   }),
 
   defaultComparators(){

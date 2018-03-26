@@ -45,6 +45,12 @@ export default Component.extend({
     if (propertyPath) {
       this.set('propertyPath', propertyPath);
     }
+    
+    let selectedValue = this.get('filter.value');
+    if(selectedValue){
+      this.set('selectedValue', selectedValue);
+    }
+
   },
 
   init() {

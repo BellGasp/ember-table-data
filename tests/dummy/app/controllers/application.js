@@ -30,7 +30,7 @@ export default Controller.extend({
     }));
   },
   records() {
-    return ["test", "test3", "test2"];
+    return ['test', 'test3', 'test2'];
   },
   actions: {
     changePage(page) {

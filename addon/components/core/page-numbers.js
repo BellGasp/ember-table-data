@@ -76,7 +76,7 @@ export default Component.extend({
     if (currentPage < 1 ) {
       currentPage = 1;
     } else if (currentPage > lastPage) {
-      currentPage = lastPage
+      currentPage = lastPage;
     }
 
     if (currentPage === this.get('queryObj.currentPage')){
@@ -118,7 +118,7 @@ export default Component.extend({
     let firstPageToShow = currentPage - nbPagesBefore;
     let lastPageToShow = currentPage + nbPagesAfter;
 
-    return this.updatePagesToShow({ firstPageToShow, lastPageToShow })
+    return this.updatePagesToShow({ firstPageToShow, lastPageToShow });
   },
 
   pageNumbers: computed('currentPageToShow', 'lastPage', function () {
@@ -152,7 +152,7 @@ export default Component.extend({
 
       let newPage = currentPage + nbOfPagesShown;
       if (before){
-        newPage = currentPage - nbOfPagesShown
+        newPage = currentPage - nbOfPagesShown;
       }
 
       this.set('currentPageToShow', newPage);
