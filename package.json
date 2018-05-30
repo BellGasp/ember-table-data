@@ -1,6 +1,6 @@
 {
   "name": "ember-table-data",
-  "version": "0.0.0-beta.13",
+  "version": "0.0.0-beta.14",
   "description": "This Ember Addon exposes an easily customizable table-data component. The component is mainly responsible for building a 'Query object' as of yet.",
   "keywords": [
     "ember-addon",
