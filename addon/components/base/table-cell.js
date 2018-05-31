@@ -13,6 +13,11 @@ export default Component.extend({
     return this.get('sortProperty') &&
       this.get('sortProperty') === this.get('sortStates.sortProperty');
   }),
+
+  isHeader: computed('sortProperty', function () {
+    return this.get('sortProperty');
+  }),
+
   sortProperty: null,
   sortStates: null,
 
