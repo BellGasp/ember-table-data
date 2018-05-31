@@ -1,6 +1,5 @@
 {{yield}}
-{{#if isSorted}}
-  <span class={{sortStates.state.class}}></span>
-{{else if isHeader}}
-  <span class="fa fa-sort text-muted"></span>
+
+{{#if sortState}}
+  <span class={{sortState.class}}></span>
 {{/if}}

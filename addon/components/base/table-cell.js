@@ -9,13 +9,17 @@ export default Component.extend({
   attributeBindings: ['colspan'],
   colspan: 1,
 
-  isSorted: computed('sortProperty', 'sortStates.sortProperty', function () {
-    return this.get('sortProperty') &&
-      this.get('sortProperty') === this.get('sortStates.sortProperty');
-  }),
+  sortState: computed('sortProperty', 'sortStates.{sortProperty,state}', function () {
+    let sortProperty = this.get('sortProperty');
+    let sortStates = this.get('sortStates');
 
-  isHeader: computed('sortProperty', function () {
-    return this.get('sortProperty');
+    if(!sortProperty) return null;
+
+    if(sortProperty === sortStates.get('sortProperty')) {
+      return sortStates.get('state');
+    }
+
+    return sortStates.get('states.unsorted');
   }),
 
   sortProperty: null,

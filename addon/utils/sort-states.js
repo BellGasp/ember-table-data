@@ -11,7 +11,7 @@ let sortState = EmberObject.extend({
 
 export default EmberObject.extend({
   states: {
-    unsorted: sortState.create({ class: 'fa fa-sort' }),
+    unsorted: sortState.create({ class: 'fa fa-sort text-muted' }),
     asc: sortState.create({ class: 'fa fa-sort-asc' }),
     desc: sortState.create({ class: 'fa fa-sort-desc' })
   },
