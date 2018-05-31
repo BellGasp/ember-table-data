@@ -11,7 +11,7 @@ test('it inits as unsorted', function(assert) {
 test('Unsorted state the right class/next state', function(assert) {
   let sortStates = SortStates.create();
 
-  assert.equal(sortStates.states.unsorted.class, '');
+  assert.equal(sortStates.states.unsorted.class, 'fa fa-sort text-muted');
   assert.equal(sortStates.states.unsorted.nextState, sortStates.states.asc);
 });
 

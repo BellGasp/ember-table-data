@@ -52,6 +52,23 @@ export default Component.extend({
     }
 
     this.set('_queryObj', query);
+
+    this.initSort();
+  },
+
+  initSort() {
+    let sorts = this.get('_queryObj.sorts');
+    let sortStates = this.get('sortStates.states');
+
+    if (sorts && sorts.length) {
+      let initState = sorts[0] ? sortStates.asc : sortStates.desc;
+      let initProperty = sorts[0].column;
+
+      this.get('sortStates').setProperties({
+        state: initState,
+        sortProperty: initProperty
+      });
+    }
   },
 
   pageRecords: computed('_queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
