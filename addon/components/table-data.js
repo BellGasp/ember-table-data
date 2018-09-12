@@ -38,8 +38,15 @@ export default Component.extend({
     this.send('updatePage', 1);
   }),
 
+  assignUserValue(queryObject, totalCount){
+    if (totalCount){
+      this.set('_totalCount', totalCount);
+    }
+
+    return queryObject != null ? QueryObj.create(queryObject) : QueryObj.create();
+  },
+
   validateUserParamAndCreateObject(queryObj){
-    let validObject =  queryObj != null ? QueryObj.create(queryObj) : QueryObj.create();
     let totalCount = this.get('totalCount');
 
     if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(queryObj) && isPresent(totalCount)))
@@ -47,11 +54,7 @@ export default Component.extend({
       assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.');
     }
 
-    if (totalCount){
-      this.set('_totalCount', totalCount);
-    }
-
-    return validObject;
+    return this.assignUserValue(queryObj, totalCount);
   },
 
   resetQueryObj(queryObj) {
