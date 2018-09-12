@@ -29,7 +29,10 @@ export default Component.extend({
       assert('table-data: the property "records" must be passed.');
 
     this.set('loadedPages', new A());
-    this.resetQueryObj(this.get('queryObj'));
+    let userQueryObject = this.get('queryObj');
+    let userDidntProvideObject = !userQueryObject;
+
+    this.resetQueryObj(userDidntProvideObject ? QueryObj.create() : QueryObj.create(userQueryObject), userDidntProvideObject);
   },
 
   resetLoadedPages: observer('records', 'records.[]', '_queryObj.pageSize', function() {
@@ -37,21 +40,19 @@ export default Component.extend({
     this.send('updatePage', 1);
   }),
 
-  resetQueryObj(queryObj) {
-    // Create the query object from the one that user can pass when declaring table data component
-    let query = queryObj != null ? QueryObj.create(queryObj) : QueryObj.create();
+  resetQueryObj(queryObj, userDidntProvideObject) {        
     let totalCount = this.get('totalCount');
 
-    if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(query) && isPresent(totalCount)))
+    if ((!userDidntProvideObject && !isPresent(totalCount)) || (userDidntProvideObject && isPresent(totalCount)))
     {
       assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.');
     }
 
     if (totalCount){
       this.set('_totalCount', totalCount);
-    }    
+    }
 
-    this.set('_queryObj', query);
+    this.set('_queryObj', queryObj);
 
     this.initSort();
   },
