@@ -39,7 +39,7 @@ export default Component.extend({
 
   resetQueryObj(queryObj) {
     // Create the query object from the one that user can pass when declaring table data component
-    let query = queryObj != null ? QueryObj.create(queryObj) : null;
+    let query = queryObj != null ? QueryObj.create(queryObj) : QueryObj.create();
     let totalCount = this.get('totalCount');
 
     if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(query) && isPresent(totalCount)))
@@ -49,10 +49,7 @@ export default Component.extend({
 
     if (totalCount){
       this.set('_totalCount', totalCount);
-    }
-
-    //Generate empty object in case user didnt pass anything
-    query = query || QueryObj.create();
+    }    
 
     this.set('_queryObj', query);
 
