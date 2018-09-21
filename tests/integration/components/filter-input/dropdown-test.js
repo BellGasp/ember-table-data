@@ -63,23 +63,9 @@ test('the dropdown has the right options - array', async function(assert) {
   this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(0)').text().trim(),
-    'test1',
-    'The first option should be \"test1\".'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(1)').text().trim(),
-    'test2',
-    'The second option should be \"test2\".'
-  );
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText('test1');
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText('test2');
 });
 
 test('the dropdown has the right options - array function', async function(assert) {
@@ -95,23 +81,9 @@ test('the dropdown has the right options - array function', async function(asser
   this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(0)').text().trim(),
-    'test3',
-    'The first option should be \"test3\".'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(1)').text().trim(),
-    'test4',
-    'The second option should be \"test4\".'
-  );
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText('test3');
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText('test4');
 });
 
 test('the dropdown has the right options - promise function', async function(assert) {
@@ -134,28 +106,10 @@ test('the dropdown has the right options - promise function', async function(ass
   this.render(hbs`{{filter-input/dropdown filter=filter}}`);
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(0)').text().trim(),
-    'test5',
-    'The first option should be \"test5\".'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(1)').text().trim(),
-    'test6',
-    'The second option should be \"test6\".'
-  );
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText('test5');
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText('test6');
 });
-
-// test('the dropdown has the right options - promise error', function(assert) {
-//
-// });
 
 test('the dropdown has the right options - empty', async function(assert) {
   assert.expect(2);
@@ -171,17 +125,8 @@ test('the dropdown has the right options - empty', async function(assert) {
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    1,
-    'There should be 1 option in the dropdown list.'
-  );
-
-  assert.equal(
-    $('.ember-power-select-option:eq(0)').text().trim(),
-    'No results found',
-    'The only option should be \"No results found\".'
-  );
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText('No results found');
 });
 
 test('selecting an option triggers valueChanged', async function(assert) {
@@ -263,14 +208,9 @@ test('shows options with default label property', async function(assert) {
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].label);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].label);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1].label);
 });
 
 test('shows options with given label property', async function(assert) {
@@ -290,14 +230,9 @@ test('shows options with given label property', async function(assert) {
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].someProperty);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].someProperty);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1].someProperty);
 });
 
 test('shows options with no label property', async function(assert) {
@@ -317,14 +252,9 @@ test('shows options with no label property', async function(assert) {
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1]);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0]);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1]);
 });
 
 test('can search based on label property - default label', async function(assert) {
@@ -343,24 +273,14 @@ test('can search based on label property - default label', async function(assert
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].label);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].label);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1].label);
 
   await typeInSearch('test1');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    1,
-    'There should be 1 option in the dropdown list after searching.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].label);
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].label);
 });
 
 test('can search based on label property - given label', async function(assert) {
@@ -380,24 +300,14 @@ test('can search based on label property - given label', async function(assert) 
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1].someProperty);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].someProperty);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1].someProperty);
 
   await typeInSearch('test1');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    1,
-    'There should be 1 option in the dropdown list after searching.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0].someProperty);
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0].someProperty);
 });
 
 test('can search based on label property - no label', async function(assert) {
@@ -416,24 +326,14 @@ test('can search based on label property - no label', async function(assert) {
 
   await clickTrigger('div.dropdown');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    2,
-    'There should be 2 options in the dropdown list.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
-  assert.equal($('.ember-power-select-option:eq(1)').text().trim(), data[1]);
+  assert.dom('.ember-power-select-option').exists({ count: 2 });
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0]);
+  assert.dom('.ember-power-select-option:nth-of-type(2)').containsText(data[1]);
 
   await typeInSearch('test1');
 
-  assert.equal(
-    $('.ember-power-select-option').length,
-    1,
-    'There should be 1 option in the dropdown list after searching.'
-  );
-
-  assert.equal($('.ember-power-select-option:eq(0)').text().trim(), data[0]);
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option:nth-of-type(1)').containsText(data[0]);
 });
 
 
