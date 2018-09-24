@@ -6,7 +6,7 @@ export default Controller.extend({
   store: service(),
 
   actions: {
-    fetchRecords(query) {
+    fetchCharacters(query) {
       return this.store.query('character', query);
     }
   }

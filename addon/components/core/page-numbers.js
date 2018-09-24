@@ -10,10 +10,12 @@ import layout from '../../templates/components/core/page-numbers';
 export default Component.extend({
   layout,
 
-  setup: on('init', function () {
+  init() {
+    this._super(...arguments);
+
     this.assertRequiredProperties();
     this.set('currentPageToShow', this.get('queryObj.currentPage'));
-  }),
+  },
 
   assertRequiredProperties() {
     if (!isPresent(this.get('queryObj')))

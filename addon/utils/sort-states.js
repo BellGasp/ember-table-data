@@ -10,6 +10,7 @@ let sortState = EmberObject.extend({
 });
 
 export default EmberObject.extend({
+  // eslint-disable-next-line
   states: {
     unsorted: sortState.create({ class: 'fa fa-sort text-muted' }),
     asc: sortState.create({ class: 'fa fa-sort-asc' }),

@@ -1,1 +1,5 @@
-{{yield (hash cell=(component 'base/table-cell' tagName=cellsTagName sortStates=sortStates updateSort=updateSort))}}
+{{yield (hash
+  cell=(component 'base/table-cell' tagName=cellsTagName sortStates=sortStates updateSort=updateSort)
+
+  th=(component 'base/table-th')
+)}}

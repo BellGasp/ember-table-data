@@ -179,6 +179,10 @@ export default Component.extend({
   },
 
   actions: {
+    updateSortedProperties(properties) {
+      this.set('_queryObj.sort', properties);
+      this.get('records')(this.get('_queryObj'));
+    },
     updateSort(property) {
       let sortStates = this.get('sortStates');
 

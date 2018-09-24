@@ -25,7 +25,8 @@ export default Service.extend({
   loadRecords(records, queryObj) {
     let recordsPromise;
     if (typeof(records) === 'function') {
-      recordsPromise = records(queryObj.toQueryableObject(), queryObj.toSerializableObject());
+      recordsPromise = records(queryObj.toQueryableObject());
+      // recordsPromise = records(queryObj.toQueryableObject(), queryObj.toSerializableObject());
     } else {
       recordsPromise = this.paginateRecords(records);
     }
