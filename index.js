@@ -2,10 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-table-data',
-
-  isDevelopingAddon(){
-    return false;
-  }
-
+  name: 'ember-table-data'
 };

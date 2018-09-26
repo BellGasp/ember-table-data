@@ -88,6 +88,8 @@ export default Component.extend({
 
     let records = loadedPage.get('records');
     records.then(data => {
+      if (!data) return;
+
       if (!data.get) {
         data = A(data);
       }
@@ -99,6 +101,7 @@ export default Component.extend({
     });
     return records;
   }),
+
   shouldReloadPage(loadedPage) {
     if (!loadedPage.get('forceReload')){
       let lastUpdated = loadedPage.get('lastUpdated');
@@ -112,6 +115,7 @@ export default Component.extend({
   },
 
   updateTotalCount(loadedPage, data) {
+    if (!data) return;
     if (get(data, 'meta.totalCount')) {
       this.set('_totalCount', get(data, 'meta.totalCount'));
     } else {

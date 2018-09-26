@@ -67,7 +67,7 @@ function sort() {
     const parameter = request.queryParams['sort'];
 
     if (parameter) {
-      const properties = parameter.trim(',').map(string => ({
+      const properties = parameter.split(',').map(string => ({
         key: string.replace(/-/, ''),
         asc: !string.includes('-')
       }));

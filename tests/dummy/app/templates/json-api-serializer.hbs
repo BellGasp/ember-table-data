@@ -1,6 +1,6 @@
-{{#table-data class="table table-bordered" records=(action "fetchCharacters") as |tableData|}}
+{{#table-data class="table table-bordered" records=(action "fetchCharacters") as |table-data|}}
 
-  {{#tableData.filter properties=properties as |filter|}}
+  {{#table-data.filter properties=properties comparators=comparators as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
       {{#header.addButton class="btn btn-primary col-1 offset-11"}}
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -20,22 +20,22 @@
       {{/body.row}}
     {{/filter.body}}
 
-    {{#filter.footer class="row" as |footer| }}
-          {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
-            <i class="fa fa-filter" aria-hidden="true"></i>
-          {{/footer.filterButton}}
-          {{#footer.clearButton class="btn btn-primary col-1"}}
-            <i class="fa fa-refresh" aria-hidden="true"></i>
-          {{/footer.clearButton}}
+    {{#filter.footer class="row" as |footer|}}
+      {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
+        <i class="fa fa-filter" aria-hidden="true"></i>
+      {{/footer.filterButton}}
+      {{#footer.clearButton class="btn btn-primary col-1"}}
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+      {{/footer.clearButton}}
     {{/filter.footer}}
-  {{/tableData.filter}}
+  {{/table-data.filter}}
 
   <div class="row">
-    {{tableData.pageSize class="col-2"}}
-    {{tableData.pagination class="col-6"}}
+    {{table-data.pageSize class="col-2"}}
+    {{table-data.pagination class="col-6"}}
   </div>
 
-  {{#tableData.table class="table-striped col-12" as |table|}}
+  {{#table-data.table class="table-striped col-12" as |table|}}
     {{#table.header as |header|}}
       {{#header.row as |row|}}
         {{#row.cell sortProperty="name"}}Name{{/row.cell}}
@@ -44,18 +44,12 @@
       {{/header.row}}
     {{/table.header}}
 
-    {{#table.body as |body record|}}
+    {{#table.body as |body character|}}
       {{#body.row as |row|}}
-        {{#row.cell}}
-          c1 {{record}}
-        {{/row.cell}}
-        {{#row.cell}}
-          c2 {{record}}
-        {{/row.cell}}
-        {{#row.cell}}
-          c3 {{record}}
-        {{/row.cell}}
+        {{#row.cell}} {{character.name}} {{/row.cell}}
+        {{#row.cell}} {{character.age}} {{/row.cell}}
+        {{#row.cell}} {{character.evil}} {{/row.cell}}
       {{/body.row}}
     {{/table.body}}
-  {{/tableData.table}}
+  {{/table-data.table}}
 {{/table-data}}
