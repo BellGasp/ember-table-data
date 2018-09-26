@@ -36,7 +36,9 @@ export default Ember.Controller.extend({
     if (filters.length > 0) {
       filters.forEach(({ value, comparator: { valueForQuery: comparator }, property: { valueForQuery: key } }) => {
         const param = comparator.replace('*', value);
-        params[`filter[${key}]`] = param;
+
+        const current = params[`filter[${key}]`];
+        params[`filter[${key}]`] = current ? current + param : param;
       });
     }
 
