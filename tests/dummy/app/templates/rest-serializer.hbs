@@ -1,0 +1,67 @@
+{{#table-data class="table table-bordered" records=records as |tableData|}}
+
+  {{#tableData.filter properties=properties as |filter|}}
+    {{#filter.header class="row pb-1" as |header|}}
+      {{#header.addButton class="btn btn-primary col-1 offset-11"}}
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      {{/header.addButton}}
+    {{/filter.header}}
+
+    {{#filter.body as |body|}}
+      {{#body.row class="row pb-1" as |row|}}
+        {{row.property class="col-4"}}
+        {{row.comparator class="col-4"}}
+        {{row.value class="col-3 text-center"}}
+        {{#if (gt row.count 1)}}
+          {{#row.deleteButton class="btn btn-danger col-1"}}
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          {{/row.deleteButton}}
+        {{/if}}
+      {{/body.row}}
+    {{/filter.body}}
+
+    {{#filter.footer class="row" as |footer| }}
+          {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
+            <i class="fa fa-filter" aria-hidden="true"></i>
+          {{/footer.filterButton}}
+          {{#footer.clearButton class="btn btn-primary col-1"}}
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+          {{/footer.clearButton}}
+    {{/filter.footer}}
+  {{/tableData.filter}}
+
+  <div class="row">
+    {{tableData.pageSize class="col-2"}}
+    {{tableData.pagination class="col-6"}}
+  </div>
+
+  {{#tableData.table class="table-striped col-12" as |table|}}
+    {{#table.header as |header|}}
+      {{#header.row as |row|}}
+        {{#row.cell sortProperty="some-test"}}
+          First cell
+        {{/row.cell}}
+        {{#row.cell}}
+          Second cell
+        {{/row.cell}}
+        {{#row.cell}}
+          Third cell
+        {{/row.cell}}
+      {{/header.row}}
+    {{/table.header}}
+
+    {{#table.body as |body record|}}
+      {{#body.row as |row|}}
+        {{#row.cell}}
+          c1 {{record}}
+        {{/row.cell}}
+        {{#row.cell}}
+          c2 {{record}}
+        {{/row.cell}}
+        {{#row.cell}}
+          c3 {{record}}
+        {{/row.cell}}
+      {{/body.row}}
+    {{/table.body}}
+  {{/tableData.table}}
+{{/table-data}}
