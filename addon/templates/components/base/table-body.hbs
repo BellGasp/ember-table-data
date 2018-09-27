@@ -1,16 +1,19 @@
 {{#if records.isSettled}}
   {{#each records as |record|}}
-      {{yield (hash row=(component 'base/table-row')
-          emptyRow=(component 'base/table-none')
-          loadingRow=(component 'base/table-none'))
-        record}}
-    {{else}}
-      {{yield (hash emptyRow=(component 'base/table-row')
-          row=(component 'base/table-none')
-          loadingRow=(component 'base/table-none'))}}
+    {{yield (hash
+      row=(component 'base/table-row')
+      emptyRow=(component 'base/table-none')
+      loadingRow=(component 'base/table-none'))
+      record}}
+  {{else}}
+    {{yield (hash
+      emptyRow=(component 'base/table-row')
+      row=(component 'base/table-none')
+      loadingRow=(component 'base/table-none'))}}
   {{/each}}
 {{else}}
-  {{yield (hash loadingRow=(component 'base/table-row')
-      emptyRow=(component 'base/table-none')
-      row=(component 'base/table-none'))}}
+  {{yield (hash
+    loadingRow=(component 'base/table-row')
+    emptyRow=(component 'base/table-none')
+    row=(component 'base/table-none'))}}
 {{/if}}

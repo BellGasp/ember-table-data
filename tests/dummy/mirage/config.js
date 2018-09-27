@@ -89,15 +89,17 @@ function sort() {
 
 function paginate() {
   return (records, request) => {
-    let pageSize = request.queryParams['pageSize'];
-    let totalCount = records.models.length;
-    let page = request.queryParams['currentPage'];
+    let page = request.queryParams['page[number]'] || request.queryParams['currentPage'];
+    let pageSize = request.queryParams['page[size]'] || request.queryParams['pageSize'];
+
+    let total = records.models.length;
+
     let start = (page - 1) * pageSize;
     let end = (page) * pageSize;
 
     let paginatedRecords = records.slice(start, end);
 
-    paginatedRecords.meta = { totalCount };
+    paginatedRecords.meta = { totalCount: total };
 
     return paginatedRecords;
   };

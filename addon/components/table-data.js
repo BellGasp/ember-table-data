@@ -83,22 +83,24 @@ export default Component.extend({
 
   pageRecords: computed('_queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
     let currentPage = this.get('_queryObj.currentPage');
-    let onDataChange = true;
-    let loadedPage = this.loadPage(currentPage, onDataChange);
+    let loadedPage = this.loadPage(currentPage, true);
 
     let records = loadedPage.get('records');
+
     records.then(data => {
       if (!data) return;
 
       if (!data.get) {
         data = A(data);
       }
+
       if (this.get('eagerLoading')) {
         let pageNumber = loadedPage.get('page');
         this.loadPage(pageNumber - 1);
         this.loadPage(pageNumber + 1);
       }
     });
+
     return records;
   }),
 

@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
 
   actions: {
     fetchCharacters(query) {
-      this.store.query('character', this.prepareQueryParams(query));
+      return this.store.query('character', this.prepareQueryParams(query));
     }
   }
 
