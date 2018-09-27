@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Filter from 'ember-table-data/utils/filter-object';
 import Comparator from 'ember-table-data/utils/comparator-object';
+import JSONAPIQueryParser from 'ember-table-data/utils/query-parsers/json-api';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
@@ -23,31 +24,10 @@ export default Ember.Controller.extend({
     ]);
   }),
 
-  prepareQueryParams({ currentPage, pageSize, sorts = [], filters = [] }) {
-    const params = {};
-
-    params['page[number]'] = currentPage;
-    params['page[size]'] = pageSize;
-
-    if (sorts.length > 0) {
-      params['sort'] = sorts.map(s => s.asc === true ? s.column : `-${s.column}`).join(',');
-    }
-
-    if (filters.length > 0) {
-      filters.forEach(({ value, comparator: { valueForQuery: comparator }, property: { valueForQuery: key } }) => {
-        const param = comparator.replace('*', value);
-
-        const current = params[`filter[${key}]`];
-        params[`filter[${key}]`] = current ? current + param : param;
-      });
-    }
-
-    return params;
-  },
-
   actions: {
     fetchCharacters(query) {
-      return this.store.query('character', this.prepareQueryParams(query));
+      const queryParams = new JSONAPIQueryParser().parse(query);
+      return this.store.query('character', queryParams);
     }
   }
 

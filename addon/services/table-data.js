@@ -24,6 +24,7 @@ export default Service.extend({
 
   loadRecords(records, queryObj) {
     let recordsPromise;
+
     if (typeof(records) === 'function') {
       recordsPromise = records(queryObj.toQueryableObject(), queryObj.toSerializableObject());
     } else {
