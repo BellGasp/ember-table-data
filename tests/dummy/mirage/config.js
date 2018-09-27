@@ -28,6 +28,12 @@ export default function() {
     sort(),
     paginate()
   ]));
+
+  this.get('/animals', recordsFor('animals', [
+    filter(['name', 'age', 'species']),
+    sort(),
+    paginate()
+  ]));
 }
 
 function recordsFor(resourceName, transforms=[]) {

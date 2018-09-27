@@ -6,4 +6,5 @@ export default function(server) {
   */
 
   server.createList('character', 100);
+  server.createList('animal', 100);
 }

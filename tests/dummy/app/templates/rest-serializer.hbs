@@ -1,4 +1,4 @@
-{{#table-data class="table table-bordered" records=records as |tableData|}}
+{{#table-data class="table table-bordered" records=(action 'fetchAnimals') as |tableData|}}
 
   {{#tableData.filter properties=properties as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
@@ -38,29 +38,17 @@
   {{#tableData.table class="table-striped col-12" as |table|}}
     {{#table.header as |header|}}
       {{#header.row as |row|}}
-        {{#row.cell sortProperty="some-test"}}
-          First cell
-        {{/row.cell}}
-        {{#row.cell}}
-          Second cell
-        {{/row.cell}}
-        {{#row.cell}}
-          Third cell
-        {{/row.cell}}
+        {{#row.cell sortProperty="name"}}Name{{/row.cell}}
+        {{#row.cell sortProperty="age"}}Age{{/row.cell}}
+        {{#row.cell sortProperty="species"}}Species{{/row.cell}}
       {{/header.row}}
     {{/table.header}}
 
-    {{#table.body as |body record|}}
+    {{#table.body as |body animal|}}
       {{#body.row as |row|}}
-        {{#row.cell}}
-          c1 {{record}}
-        {{/row.cell}}
-        {{#row.cell}}
-          c2 {{record}}
-        {{/row.cell}}
-        {{#row.cell}}
-          c3 {{record}}
-        {{/row.cell}}
+        {{#row.cell}} {{animal.name}} {{/row.cell}}
+        {{#row.cell}} {{animal.age}} {{/row.cell}}
+        {{#row.cell}} {{animal.species}} {{/row.cell}}
       {{/body.row}}
     {{/table.body}}
   {{/tableData.table}}

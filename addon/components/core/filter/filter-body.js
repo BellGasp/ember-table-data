@@ -12,6 +12,6 @@ export default Component.extend({
     let defaults = this.get('tableData').defaultComparators();
     let comparators = this.get('comparators');
 
-    return comparators.length > 0 ? comparators : defaults;
+    return comparators && comparators.length > 0 ? comparators : defaults;
   })
 });
