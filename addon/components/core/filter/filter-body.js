@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import layout from '../../../templates/components/core/filter/filter-body';
+import { A } from '@ember/array';
 
 export default Component.extend({
   layout,
@@ -9,9 +10,13 @@ export default Component.extend({
   tableData: service(),
 
   availableComparators: computed('comparators.@each.{label,valueForQuery,propertyType,internalName}', function(){
-    let defaults = this.get('tableData').defaultComparators();
-    let comparators = this.get('comparators');
+    const defaults = this.get('tableData').defaultComparators();
+    const comparators = this.get('comparators');
 
-    return comparators && comparators.length > 0 ? comparators : defaults;
+    const selection = comparators && comparators.length > 0 ? comparators : defaults;
+
+    const filteredSelection = selection.filterBy('showComparator', true);
+
+    return A(filteredSelection);
   })
 });

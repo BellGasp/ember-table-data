@@ -107,10 +107,6 @@ function paginate() {
 
 function sortObjects(key, reverse) {
   return function(a, b) {
-    if (typeof a[key] === 'number') {
-      return (a[key] - b[key]);
-    }
-
     if (a[key] < b[key]) {
       return reverse ? 1 : -1;
     }

@@ -7,8 +7,6 @@ import { clickTrigger, typeInSearch, selectChoose } from 'ember-power-select/tes
 import comparatorObject from 'ember-table-data/utils/comparator-object';
 import filterObject from 'ember-table-data/utils/filter-object';
 
-
-
 moduleForComponent('core/filter/filter-body', 'Integration | Component | core/filter/filter body', {
   integration: true,
   need: ['service:table-data']
@@ -21,7 +19,7 @@ test('it renders with out error if nothing is pass', function(assert) {
     'Should be empty if you dont use yeld component');
 });
 
-test('it filter comparator when using the showComparator boolean', function(assert) {
+test('it filters comparator when using the showComparator boolean', function(assert) {
   this.set('deleteRow', () => {});
   this.set('filtersRows',
     new A([
@@ -34,6 +32,7 @@ test('it filter comparator when using the showComparator boolean', function(asse
   );
   this.set('comparators', new A([
     comparatorObject.create({
+      label: 'Is Empty',
       showComparator: false,
       propertyType: 'string',
       internalName: 'isEmpty'
@@ -49,12 +48,14 @@ test('it filter comparator when using the showComparator boolean', function(asse
 
   clickTrigger('.comparator-selector');
   typeInSearch('is Emp');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 1,
-    'The no match found message is shown');
+
+  assert.dom('.ember-power-select-option--no-matches-message').exists();
+
   clickTrigger('.comparator-selector');
 
   this.set('comparators', new A([
     comparatorObject.create({
+      label: 'Is Empty',
       showComparator: true,
       propertyType: 'string',
       internalName: 'isEmpty'
@@ -63,9 +64,9 @@ test('it filter comparator when using the showComparator boolean', function(asse
 
   clickTrigger('.comparator-selector');
   typeInSearch('is Emp');
-  assert.equal($('.ember-power-select-option').length, 1, 'The is Empty options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
+
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
 });
 
 test('it hide input when showInput is false', function(assert) {

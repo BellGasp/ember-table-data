@@ -13,12 +13,9 @@ export default EmberObject.extend({
     }
 
     if (filters.length > 0) {
-      filters.forEach(({ value, comparator: { valueForQuery: comparator }, property: { valueForQuery: key } }) => {
-        const param = comparator.replace('*', value);
-
-        const current = params[`filter[${key}]`];
-        params[`filter[${key}]`] = current ? current + param : param;
-      });
+      params['filter'] = filters.map(({ value, comparator: { valueForQuery: comparator }, property: { valueForQuery: key } }) => {
+        return `${key} ${comparator} ${value}`;
+      }).join(' and ');
     }
 
     return params;
