@@ -1,4 +1,4 @@
-import EmberObject from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { A } from '@ember/array';
 
 let sortState = EmberObject.extend({
@@ -10,14 +10,25 @@ let sortState = EmberObject.extend({
 });
 
 export default EmberObject.extend({
+
+  state: null,
+  sortProperty: null,
+
+  // TODO: Refactoring
+  // eslint-disable-next-line
   states: {
     unsorted: sortState.create({ class: 'fa fa-sort text-muted' }),
     asc: sortState.create({ class: 'fa fa-sort-asc' }),
     desc: sortState.create({ class: 'fa fa-sort-desc' })
   },
 
-  state: null,
-  sortProperty: null,
+  init() {
+    this.states.unsorted.setNext(this.states.asc);
+    this.states.asc.setNext(this.states.desc);
+    this.states.desc.setNext(this.states.unsorted);
+
+    this.set('state', this.states.unsorted);
+  },
 
   getSortArray() {
     let state = this.get('state');
@@ -44,13 +55,6 @@ export default EmberObject.extend({
 
     this.set('state', this.get('state').nextState);
 
-  },
+  }
 
-  init() {
-    this.states.unsorted.setNext(this.states.asc);
-    this.states.asc.setNext(this.states.desc);
-    this.states.desc.setNext(this.states.unsorted);
-
-    this.set('state', this.states.unsorted);
-  },
 });

@@ -1,4 +1,3 @@
-/* global $ */
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { A } from '@ember/array';
@@ -127,9 +126,9 @@ test('it add comparator when propertyType does not exist', function(assert) {
 
   clickTrigger('.comparator-selector');
   typeInSearch('Cust');
-  assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
+
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
 });
 
 test('it add comparator when propertyType exist', function(assert) {
@@ -164,7 +163,7 @@ test('it add comparator when propertyType exist', function(assert) {
 
   clickTrigger('.comparator-selector');
   typeInSearch('Cust');
-  assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
+
+  assert.dom('.ember-power-select-option').exists();
+  assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
 });

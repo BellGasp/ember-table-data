@@ -10,11 +10,13 @@ export default Controller.extend({
 
   store: service(),
 
-  properties: new A([
-    Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
-    Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
-    Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
-  ]),
+  properties: computed(function() {
+    return new A([
+      Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
+      Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
+      Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
+    ]);
+  }),
 
   comparators: computed(function() {
     return A([
