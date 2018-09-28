@@ -1,10 +1,10 @@
 {{#power-select
     options=options
-    tagName='div'
-    class='dropdown'
+    tagName="div"
+    class="dropdown"
     selected=selectedValue
-    matcher=(action 'customMatcher')
-    onchange=(action 'valueChanged')
+    matcher=(action "customMatcher")
+    onchange=(action "valueChanged")
     as |option|
 }}
   {{#if (get option labelPath)}}
