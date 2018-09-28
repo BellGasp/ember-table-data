@@ -2,18 +2,20 @@ import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
-import { on } from '@ember/object/evented';
 import { isPresent } from '@ember/utils';
 
 import layout from '../../templates/components/core/page-numbers';
 
 export default Component.extend({
+
   layout,
 
-  setup: on('init', function () {
+  init() {
+    this._super(...arguments);
+
     this.assertRequiredProperties();
     this.set('currentPageToShow', this.get('queryObj.currentPage'));
-  }),
+  },
 
   assertRequiredProperties() {
     if (!isPresent(this.get('queryObj')))
@@ -38,6 +40,7 @@ export default Component.extend({
   isLastPage: computed('queryObj.currentPage', 'lastPage', function () {
     return this.get('lastPage') === this.get('queryObj.currentPage');
   }),
+
   isFirstPage: computed('queryObj.currentPage', function () {
     return this.get('queryObj.currentPage') === 1;
   }),
@@ -47,6 +50,7 @@ export default Component.extend({
     let showHasMore = this.get('showHasMore');
     return firstPageShown !== 1 && showHasMore;
   }),
+
   hasMoreAfter: computed('pageNumbers.lastObject', 'showHasMore', function () {
     let lastPageShown = this.get('pageNumbers.lastObject');
     let lastPage = this.get('lastPage');
@@ -131,21 +135,27 @@ export default Component.extend({
   }),
 
   actions: {
+
     goToPage(page) {
       this.get('changePage')(page);
     },
+
     goToNext() {
       this.send('goToPage', this.get('queryObj.currentPage') + 1);
     },
+
     goToPrev() {
       this.send('goToPage', this.get('queryObj.currentPage') - 1);
     },
+
     goToFirst() {
       this.send('goToPage', 1);
     },
+
     goToLast() {
       this.send('goToPage', this.get('lastPage'));
     },
+
     showMore(before) {
       let nbOfPagesShown = this.get('pageNumbers.length');
       let currentPage = this.get('currentPageToShow');
@@ -157,5 +167,6 @@ export default Component.extend({
 
       this.set('currentPageToShow', newPage);
     }
+
   }
 });

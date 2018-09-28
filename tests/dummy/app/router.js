@@ -7,6 +7,8 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('json-api-serializer');
+  this.route('rest-serializer');
 });
 
 export default Router;

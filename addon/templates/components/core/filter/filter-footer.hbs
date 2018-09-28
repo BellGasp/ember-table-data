@@ -1,7 +1,6 @@
 {{#if filtersRows.length}}
-    {{yield (hash
-      filterButton=(component 'core/filter/filter-button' click=filter)
-      clearButton=(component 'core/filter/filter-button' click=clearFilters)
-      )
-    }}
+  {{yield (hash
+    filterButton=(component "core/filter/filter-button" click=filter)
+    clearButton=(component "core/filter/filter-button" click=clearFilters)
+  )}}
 {{/if}}

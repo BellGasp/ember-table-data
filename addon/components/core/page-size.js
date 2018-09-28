@@ -1,15 +1,23 @@
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import { on } from '@ember/object/evented';
 import Component from '@ember/component';
 import { isEmpty } from '@ember/utils';
 import layout from '../../templates/components/core/page-size';
 
 export default Component.extend({
+
   layout,
+
   classNames: ['page-size'],
-  _defaultOptions: [5, 10, 15, 25, 50, 100],
+
+  pageSizes: null,
+  pageSize: null,
+
   _pageSize: 10,
+
+  _defaultOptions: computed(function () {
+    return [5, 10, 15, 25, 50, 100];
+  }),
 
   _pageSizes: computed('_defaultOptions.[]', 'pageSizes.[]', function() {
     let pageSizes = A(this.get('pageSizes'));
@@ -17,10 +25,9 @@ export default Component.extend({
     return isEmpty(pageSizes) ? defaultOptions : pageSizes;
   }),
 
-  pageSizes: null,
-  pageSize: null,
+  didReceiveAttrs() {
+    this._super(...arguments);
 
-  setupPageSizes: on('didReceiveAttrs', function () {
     let pageSize = this.get('pageSize');
     let pageSizes = this.get('_pageSizes');
     if (pageSize && pageSizes.includes(pageSize)) {
@@ -28,11 +35,13 @@ export default Component.extend({
     } else {
       this.send('updatePageSize', this.get('_pageSizes.firstObject'));
     }
-  }),
+  },
+
   actions: {
     updatePageSize(pageSize) {
       this.set('_pageSize', pageSize);
       this.get('updatePageSize')(pageSize);
     }
   }
+
 });

@@ -1,169 +1,168 @@
-/* global $ */
-import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { A } from '@ember/array';
 import EmberObject from '@ember/object';
-import { clickTrigger, typeInSearch, selectChoose } from 'ember-power-select/test-support/helpers';
-import comparatorObject from 'ember-table-data/utils/comparator-object';
-import filterObject from 'ember-table-data/utils/filter-object';
+import Comparator from 'ember-table-data/utils/comparator-object';
+import Filter from 'ember-table-data/utils/filter-object';
+import { A } from '@ember/array';
+import { render } from '@ember/test-helpers';
+import { selectSearch } from 'ember-power-select/test-support/helpers';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 
+module('Integration | Component | core/filter/filter-body', function(hooks) {
+  setupRenderingTest(hooks);
 
+  test('it renders without errors when nothing is passed', async function(assert) {
+    assert.expect(1);
 
-moduleForComponent('core/filter/filter-body', 'Integration | Component | core/filter/filter body', {
-  integration: true,
-  need: ['service:table-data']
-});
+    await render(hbs `{{core/filter/filter-body}}`);
 
-test('it renders with out error if nothing is pass', function(assert) {
-  this.render(hbs `{{core/filter/filter-body}}`);
+    assert.dom('').containsText('');
+  });
 
-  assert.equal(this.$().text().trim(), '', 'Theres no default layout to the component. ' +
-    'Should be empty if you dont use yeld component');
-});
+  test('it filters comparator using `showComparator`', async function(assert) {
+    assert.expect(3);
 
-test('it filter comparator when using the showComparator boolean', function(assert) {
-  this.set('deleteRow', () => {});
-  this.set('filtersRows',
-    new A([
-      EmberObject.create({
-        property: filterObject.create({
-          propertyType: 'string'
-        })
-      })
-    ])
-  );
-  this.set('comparators', new A([
-    comparatorObject.create({
-      showComparator: false,
-      propertyType: 'string',
-      internalName: 'isEmpty'
-    })
-  ]));
-
-  this.render(hbs `
-    {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
-      {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
-        {{row.comparator}}
-      {{/body.row}}
-    {{/core/filter/filter-body}}`);
-
-  clickTrigger('.comparator-selector');
-  typeInSearch('is Emp');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 1,
-    'The no match found message is shown');
-  clickTrigger('.comparator-selector');
-
-  this.set('comparators', new A([
-    comparatorObject.create({
-      showComparator: true,
-      propertyType: 'string',
-      internalName: 'isEmpty'
-    })
-  ]));
-
-  clickTrigger('.comparator-selector');
-  typeInSearch('is Emp');
-  assert.equal($('.ember-power-select-option').length, 1, 'The is Empty options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
-});
-
-test('it hide input when showInput is false', function(assert) {
-  this.set('deleteRow', () => {});
-  this.set('filtersRows',
-    new A([
-      EmberObject.create({
-        property: filterObject.create({
-          propertyType: 'string'
-        })
-      })
-    ])
-  );
-  this.render(hbs `
-    {{#core/filter/filter-body filtersRows=filtersRows as |body|}}
-      {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
-        {{row.comparator}}
-        {{row.value}}
-      {{/body.row}}
-    {{/core/filter/filter-body}}`);
-
-
-  assert.equal(this.$('.inputValue').length, 1, 'The input is shown');
-  clickTrigger('.comparator-selector');
-  selectChoose('.comparator-selector', 'Is Empty');
-  assert.equal(this.$('.inputValue').length, 0, 'The input is not shown by default with is Empty comparator');
-});
-
-test('it add comparator when propertyType does not exist', function(assert) {
-  this.set('deleteRow', () => {});
-  this.set('filtersRows',
-    new A([
-      EmberObject.create({
-        property: filterObject.create({
-          propertyType: 'stringCUSTOM',
-          label:'Custom String'
-        })
-      })
-    ])
-  );
-
-  this.set('comparators', new A([
-    comparatorObject.create({
-      propertyType: 'stringCUSTOM',
-      internalName: 'isEmpty',
-      label:'Custom'
-    })
-  ]));
-
-  this.render(hbs `
-    {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
-      {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
-        {{row.property}}
-        {{row.comparator}}
-        {{row.value}}
-      {{/body.row}}
-    {{/core/filter/filter-body}}`);
-
-  clickTrigger('.comparator-selector');
-  typeInSearch('Cust');
-  assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
-});
-
-test('it add comparator when propertyType exist', function(assert) {
-  this.set('deleteRow', () => {});
-  this.set('filtersRows',
-    new A([
-      EmberObject.create({
-        property: filterObject.create({
+    this.setProperties({
+      deleteRow: () => {},
+      filtersRows: new A([
+        new EmberObject({ property: new Filter({ propertyType: 'string' }) })
+      ]),
+      comparators: new A([
+        new Comparator({
+          label: 'Is Empty',
+          showComparator: false,
           propertyType: 'string',
-          label:'Custom String'
+          internalName: 'isEmpty'
         })
+      ])
+    });
+
+    await render(hbs`
+      {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
+        {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
+          {{row.comparator}}
+        {{/body.row}}
+      {{/core/filter/filter-body}}
+    `);
+
+    await selectSearch('.comparator-selector', 'Is E');
+
+    assert.dom('.ember-power-select-option--no-matches-message').exists();
+
+    this.set('comparators', new A([
+      new Comparator({
+        label: 'Is Empty',
+        showComparator: true,
+        propertyType: 'string',
+        internalName: 'isEmpty'
       })
-    ])
-  );
+    ]));
 
-  this.set('comparators', new A([
-    comparatorObject.create({
-      propertyType: 'string',
-      internalName: 'custom',
-      label:'Custom'
-    })
-  ]));
+    await selectSearch('.comparator-selector', 'Is E');
 
-  this.render(hbs `
-    {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
-      {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
-        {{row.property}}
-        {{row.comparator}}
-        {{row.value}}
-      {{/body.row}}
-    {{/core/filter/filter-body}}`);
+    assert.dom('.ember-power-select-option').exists();
+    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+  });
 
-  clickTrigger('.comparator-selector');
-  typeInSearch('Cust');
-  assert.equal($('.ember-power-select-option').length, 1, 'The Custom comparator options is present');
-  assert.equal($('.ember-power-select-option--no-matches-message').length, 0,
-    'The no match found message is not shown');
+  /*
+  test('it hides the input when `showInput` is false', async function(assert) {
+    assert.expect(2);
+
+    this.set('deleteRow', () => {});
+    this.set('filtersRows', new A([
+        new EmberObject({ property: new Filter({ propertyType: 'string' }) })
+    ]));
+
+    await render(hbs`
+      {{#core/filter/filter-body filtersRows=filtersRows as |body|}}
+        {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
+          {{row.comparator}}
+          {{row.value}}
+        {{/body.row}}
+      {{/core/filter/filter-body}}
+    `);
+
+    assert.dom('.inputValue').exists();
+
+    await selectSearch('.comparator-selector', 'Is Empty');
+
+    assert.dom('.inputValue').doesNotExist();
+  });
+  */
+
+  test('it adds comparator when propertyType does not exist', async function(assert) {
+    assert.expect(2);
+
+    this.set('deleteRow', () => {});
+    this.set('filtersRows',
+      new A([
+        EmberObject.create({
+          property: Filter.create({
+            propertyType: 'stringCUSTOM',
+            label:'Custom String'
+          })
+        })
+      ])
+    );
+
+    this.set('comparators', new A([
+      Comparator.create({
+        propertyType: 'stringCUSTOM',
+        internalName: 'isEmpty',
+        label:'Custom'
+      })
+    ]));
+
+    await render(hbs`
+      {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
+        {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
+          {{row.property}}
+          {{row.comparator}}
+          {{row.value}}
+        {{/body.row}}
+      {{/core/filter/filter-body}}
+    `);
+
+    await selectSearch('.comparator-selector', 'Cust');
+
+    assert.dom('.ember-power-select-option').exists();
+    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+  });
+
+  test('it adds comparator when propertyType exists', async function(assert) {
+    this.set('deleteRow', () => {});
+    this.set('filtersRows',
+      new A([
+        EmberObject.create({
+          property: Filter.create({
+            propertyType: 'string',
+            label:'Custom String'
+          })
+        })
+      ])
+    );
+
+    this.set('comparators', new A([
+      Comparator.create({
+        propertyType: 'string',
+        internalName: 'custom',
+        label:'Custom'
+      })
+    ]));
+
+    await render(hbs`
+      {{#core/filter/filter-body filtersRows=filtersRows comparators=comparators as |body|}}
+        {{#body.row deleteRow=deleteRow class="row pb-1" as |row|}}
+          {{row.property}}
+          {{row.comparator}}
+          {{row.value}}
+        {{/body.row}}
+      {{/core/filter/filter-body}}
+    `);
+
+    await selectSearch('.comparator-selector', 'Cust');
+
+    assert.dom('.ember-power-select-option').exists();
+    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+  });
 });
