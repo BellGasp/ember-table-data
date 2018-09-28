@@ -1,6 +1,5 @@
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import { on } from '@ember/object/evented';
 import Component from '@ember/component';
 import { isEmpty } from '@ember/utils';
 import layout from '../../templates/components/core/page-size';

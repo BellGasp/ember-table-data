@@ -1,4 +1,4 @@
-{{#table-data class="table table-bordered" records=(action 'fetchAnimals') as |tableData|}}
+{{#table-data class="table table-bordered" records=(action "fetchAnimals") as |tableData|}}
 
   {{#tableData.filter properties=properties as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
@@ -21,12 +21,12 @@
     {{/filter.body}}
 
     {{#filter.footer class="row" as |footer| }}
-          {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
-            <i class="fa fa-filter" aria-hidden="true"></i>
-          {{/footer.filterButton}}
-          {{#footer.clearButton class="btn btn-primary col-1"}}
-            <i class="fa fa-refresh" aria-hidden="true"></i>
-          {{/footer.clearButton}}
+      {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
+        <i class="fa fa-filter" aria-hidden="true"></i>
+      {{/footer.filterButton}}
+      {{#footer.clearButton class="btn btn-primary col-1"}}
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+      {{/footer.clearButton}}
     {{/filter.footer}}
   {{/tableData.filter}}
 

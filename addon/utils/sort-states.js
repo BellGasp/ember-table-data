@@ -1,4 +1,4 @@
-import EmberObject, { computed } from '@ember/object';
+import EmberObject from '@ember/object';
 import { A } from '@ember/array';
 
 let sortState = EmberObject.extend({
