@@ -3,9 +3,8 @@ import EmberObject from '@ember/object';
 import Comparator from 'ember-table-data/utils/comparator-object';
 import Filter from 'ember-table-data/utils/filter-object';
 import { A } from '@ember/array';
-import { render, pauseTest } from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import { selectSearch } from 'ember-power-select/test-support/helpers';
-
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 

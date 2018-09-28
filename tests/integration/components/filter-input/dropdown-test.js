@@ -1,7 +1,7 @@
 import { selectChoose, clickTrigger, typeInSearch } from 'ember-power-select/test-support/helpers';
 import { Promise } from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
-import { render, pauseTest } from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 
