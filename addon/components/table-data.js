@@ -118,16 +118,14 @@ export default Component.extend({
 
   updateTotalCount(loadedPage, data) {
     if (!data) return;
+
     if (get(data, 'meta.totalCount')) {
       this.set('_totalCount', get(data, 'meta.totalCount'));
     } else {
-      if (data.get){
-        this.set('_totalCount', data.get('length'));
-      } else {
-        this.set('_totalCount', data.length);
-      }
+      this.set('_totalCount', data.length);
     }
   },
+
   triggerOnDataChangeAction(queryObj, onDataChange){
     let onDataChangeClosureAction = this.get('onDataChange');
     if (onDataChange && onDataChangeClosureAction){
