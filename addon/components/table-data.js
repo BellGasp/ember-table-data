@@ -3,10 +3,10 @@ import { assert } from '@ember/debug';
 import Component from '@ember/component';
 import { observer, computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
-import QueryObj from '../utils/query-obj';
+import Query from '../utils/query-obj';
 import layout from '../templates/components/table-data';
-import SortStates from '../utils/sort-states';
-import { isPresent } from '@ember/utils';
+
+const DEFAULT_PAGE = 1, DEFAULT_PAGE_SIZE = 10, DEFAULT_COUNT = 0;
 
 export default Component.extend({
   layout,
@@ -21,16 +21,31 @@ export default Component.extend({
 
   loadedPages: null,
   totalCount: null,
-  _totalCount:0,
 
   init() {
     this._super(...arguments);
-    if (!this.get('records'))
-      assert('table-data: the property "records" must be passed.');
 
-    this.set('loadedPages', new A());
+    this.validateParameters();
 
-    this.resetQueryObj(this.get('queryObj'));
+    this.setProperties({
+      _queryObj: new Query(),
+      loadedPages: new A()
+    });
+
+    // Setup the query with the passed in params or default values.
+    const query = this.queryObj || {};
+    const {
+      currentPage = DEFAULT_PAGE,
+      pageSize = DEFAULT_PAGE_SIZE,
+      filters = A(),
+      sorts = A()
+    } = query;
+
+    this.get('_queryObj').setProperties({ currentPage, pageSize, filters, sorts });
+
+    // Setup `totalCount` with the passed-in params or default values.
+    const totalCount = this.totalCount || DEFAULT_COUNT;
+    this.set('totalCount', totalCount);
   },
 
   resetLoadedPages: observer('records', 'records.[]', '_queryObj.pageSize', function() {
@@ -38,46 +53,15 @@ export default Component.extend({
     this.send('updatePage', 1);
   }),
 
-  assignUserValue(queryObject, totalCount){
-    if (totalCount){
-      this.set('_totalCount', totalCount);
+  validateParameters() {
+    const { records, queryObj, totalCount } = this.getProperties(['records', 'queryObj', 'totalCount']);
+
+    if (!records) {
+      assert('ember-table-data: The property `records` must be passed.');
     }
 
-    return queryObject != null ? QueryObj.create(queryObject) : QueryObj.create();
-  },
-
-  validateUserParamAndCreateObject(queryObj){
-    let totalCount = this.get('totalCount');
-
-    if ((isPresent(queryObj) && !isPresent(totalCount)) || (!isPresent(queryObj) && isPresent(totalCount)))
-    {
-      assert('table-data: If you pass either "queryObj" or "totalCount" param, both should be pass.');
-    }
-
-    return this.assignUserValue(queryObj, totalCount);
-  },
-
-  resetQueryObj(queryObj) {
-    // Create the query object from the one that user can pass when declaring table data component
-    let query = this.validateUserParamAndCreateObject(queryObj);
-
-    this.set('_queryObj', query);
-
-    this.initSort();
-  },
-
-  initSort() {
-    let sorts = this.get('_queryObj.sorts');
-    let sortStates = this.get('sortStates.states');
-
-    if (sorts && sorts.length) {
-      let initState = sorts[0] ? sortStates.asc : sortStates.desc;
-      let initProperty = sorts[0].column;
-
-      this.get('sortStates').setProperties({
-        state: initState,
-        sortProperty: initProperty
-      });
+    if (queryObj && !totalCount || !queryObj && totalCount) {
+      assert('ember-table-data: If you pass either `queryObj` or `totalCount` param, both should be passed.');
     }
   },
 
@@ -120,16 +104,16 @@ export default Component.extend({
     if (!data) return;
 
     if (get(data, 'meta.totalCount')) {
-      this.set('_totalCount', get(data, 'meta.totalCount'));
+      this.set('totalCount', get(data, 'meta.totalCount'));
     } else {
-      this.set('_totalCount', data.length);
+      this.set('totalCount', data.length);
     }
   },
 
   triggerOnDataChangeAction(queryObj, onDataChange){
     let onDataChangeClosureAction = this.get('onDataChange');
     if (onDataChange && onDataChangeClosureAction){
-      onDataChangeClosureAction(queryObj, this.get('_totalCount'));
+      onDataChangeClosureAction(queryObj, this.get('totalCount'));
     }
   },
 
@@ -139,7 +123,7 @@ export default Component.extend({
     loadedPages.removeObject(loadedPage);
 
     let records = this.get('records');
-    let queryObj = QueryObj.create(this.get('_queryObj'));
+    let queryObj = Query.create(this.get('_queryObj'));
     queryObj.set('currentPage', page);
 
     loadedPage = service.loadPage(records, queryObj);
@@ -157,7 +141,7 @@ export default Component.extend({
   loadPage(page, onDataChange) {
     let service = this.get('tableData');
     let pageSize = this.get('_queryObj.pageSize');
-    let totalCount = this.get('_totalCount');
+    let totalCount = this.get('totalCount');
 
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
@@ -174,8 +158,6 @@ export default Component.extend({
     }
   },
 
-  sortStates: SortStates.create(),
-
   forceReload(page) {
     let pageToReload = page || this.get('_queryObj.currentPage');
     let loadedCurrentPage = this.get('loadedPages').findBy('page', pageToReload);
@@ -183,28 +165,29 @@ export default Component.extend({
   },
 
   actions: {
-    updateSort(property) {
-      let sortStates = this.get('sortStates');
 
-      sortStates.changeState(property);
-
+    updateSorts(sorts) {
+      this.set('_queryObj.sorts', sorts);
       this.forceReload();
-
-      this.set('_queryObj.sorts', sortStates.getSortArray());
     },
+
     updatePageSize(pageSize) {
       this.set('_queryObj.pageSize', pageSize);
     },
+
     updatePage(page) {
       this.set('_queryObj.currentPage', page);
     },
+
     refreshPage(page) {
       this.forceReload(page);
       this.notifyPropertyChange('_queryObj.currentPage');
     },
+
     updateFilter(filters){
       this.resetLoadedPages();
       this.set('_queryObj.filters', filters);
     }
+
   }
 });

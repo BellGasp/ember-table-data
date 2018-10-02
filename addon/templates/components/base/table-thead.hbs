@@ -1,0 +1,5 @@
+<tr>
+  {{yield (hash
+    th=(component "base/table-th" sorts=filteredSorts notifyObservers=(action "updateSortParameters"))
+  )}}
+</tr>

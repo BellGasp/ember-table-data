@@ -1,0 +1,52 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/base/table-th';
+import { computed } from '@ember/object';
+import { A } from '@ember/array';
+
+export default Component.extend({
+
+  layout,
+
+  index: 0,
+  sort: '',
+  sorts: null,
+
+  tagName: 'th',
+
+  classNameBindings: ['sort:clickable'],
+  attributeBindings: ['colspan'],
+
+  states: computed(function () {
+    return A([
+      { direction: 'unsorted', class: 'fa-sort' },
+      { direction: 'asc', class: 'fa-sort-asc' },
+      { direction: 'desc', class: 'fa-sort-desc' }
+    ]);
+  }),
+
+  state: computed('index', 'states', function() {
+    const { states, index } = this.getProperties(['states', 'index']);
+    return states[index % states.length];
+  }),
+
+  sortOrder: computed('sort', 'sorts.[]', function () {
+    const sorts = this.get('sorts') || A();
+    const match = sorts.find(s => s.key === this.sort);
+
+    return sorts.indexOf(match) + 1;
+  }),
+
+  notifyObservers() {},
+
+  click() {
+    if (this.sort) {
+      this.incrementProperty('index');
+
+      this.notifyObservers({
+        key: this.get('sort'),
+        direction: this.get('state.direction')
+      });
+    }
+  }
+
+});

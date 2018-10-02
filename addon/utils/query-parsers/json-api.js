@@ -9,7 +9,7 @@ export default EmberObject.extend({
     params['page[size]'] = pageSize;
 
     if (sorts.length > 0) {
-      params['sort'] = sorts.map(s => s.asc === true ? s.column : `-${s.column}`).join(',');
+      params['sort'] = sorts.map(s => s.direction === 'asc' ? s.key : `-${s.key}`).join(',');
     }
 
     if (filters.length > 0) {

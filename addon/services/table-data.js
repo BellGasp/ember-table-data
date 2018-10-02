@@ -22,11 +22,11 @@ export default Service.extend({
     return recordPage;
   },
 
-  loadRecords(records, queryObj) {
+  loadRecords(records, query) {
     let recordsPromise;
 
     if (typeof(records) === 'function') {
-      recordsPromise = records(queryObj.toQueryableObject(), queryObj.toSerializableObject());
+      recordsPromise = records(query);
     } else {
       recordsPromise = this.paginateRecords(records);
     }

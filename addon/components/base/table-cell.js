@@ -13,9 +13,9 @@ export default Component.extend({
     let sortProperty = this.get('sortProperty');
     let sortStates = this.get('sortStates');
 
-    if(!sortProperty) return null;
+    if (!sortProperty) return null;
 
-    if(sortProperty === sortStates.get('sortProperty')) {
+    if (sortProperty === sortStates.get('sortProperty')) {
       return sortStates.get('state');
     }
 
