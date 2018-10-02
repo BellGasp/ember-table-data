@@ -36,13 +36,11 @@
   </div>
 
   {{#table-data.table class="table-striped col-12" as |table|}}
-    {{#table.header as |header|}}
-      {{#header.row as |row|}}
-        {{#row.cell sortProperty="name"}}Name{{/row.cell}}
-        {{#row.cell sortProperty="age"}}Age{{/row.cell}}
-        {{#row.cell sortProperty="species"}}Species{{/row.cell}}
-      {{/header.row}}
-    {{/table.header}}
+    {{#table.thead as |thead|}}
+      {{#thead.th sort="name" data-test-sort-name=true}}Name{{/thead.th}}
+      {{#thead.th sort="age" data-test-sort-age=true}}Age{{/thead.th}}
+      {{#thead.th sort="species" data-test-sort-species=true}}Species{{/thead.th}}
+    {{/table.thead}}
 
     {{#table.body as |body animal|}}
       {{#body.row as |row|}}

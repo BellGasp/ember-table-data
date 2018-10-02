@@ -110,14 +110,14 @@ export default Component.extend({
     }
   },
 
-  triggerOnDataChangeAction(queryObj, onDataChange){
+  triggerOnDataChangeAction(queryObj, onDataChange) {
     let onDataChangeClosureAction = this.get('onDataChange');
     if (onDataChange && onDataChangeClosureAction){
       onDataChangeClosureAction(queryObj, this.get('totalCount'));
     }
   },
 
-  loadPageData(loadedPage, page, onDataChange){
+  loadPageData(loadedPage, page, onDataChange) {
     let service = this.get('tableData');
     let loadedPages = this.get('loadedPages');
     loadedPages.removeObject(loadedPage);
