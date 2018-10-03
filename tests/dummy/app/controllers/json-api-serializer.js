@@ -12,17 +12,17 @@ export default Controller.extend({
 
   properties: computed(function() {
     return new A([
-      new Filter({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
-      new Filter({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
-      new Filter({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
+      Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
+      Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
+      Filter.craete({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
     ]);
   }),
 
   comparators: computed(function() {
     return A([
-      new Comparator({ label: 'Equal', propertyType: 'string', valueForQuery: 'eq' }),
-      new Comparator({ label: 'Not Equal', propertyType: 'string', valueForQuery: 'neq' }),
-      new Comparator({ label: 'Contains', propertyType: 'string', valueForQuery: 'contains' }),
+      Comparator.create({ label: 'Equal', propertyType: 'string', valueForQuery: 'eq' }),
+      Comparator.create({ label: 'Not Equal', propertyType: 'string', valueForQuery: 'neq' }),
+      Comparator.create({ label: 'Contains', propertyType: 'string', valueForQuery: 'contains' }),
     ]);
   }),
 
