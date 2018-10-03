@@ -17,7 +17,7 @@ export default Component.extend({
   },
 
   filteredSorts: computed('sorts.[]', function() {
-    return this.sorts.filter(p => p.direction !== 'unsorted');
+    return this.get('sorts').filter(p => p.direction !== 'unsorted');
   }),
 
   notifySortObservers() {},
