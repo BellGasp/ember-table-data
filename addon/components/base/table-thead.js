@@ -33,7 +33,7 @@ export default Component.extend({
       // Add the new sort to the sorts array.
       sorts.pushObject(sort);
 
-      this.notifySortObservers(this.filteredSorts);
+      this.notifySortObservers(this.get('filteredSorts'));
     }
   }
 

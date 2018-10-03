@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/base/table-th';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { A } from '@ember/array';
 
 export default Component.extend({
@@ -18,20 +18,21 @@ export default Component.extend({
 
   states: computed(function () {
     return A([
-      { direction: 'unsorted', class: 'fa-sort' },
-      { direction: 'asc', class: 'fa-sort-asc' },
-      { direction: 'desc', class: 'fa-sort-desc' }
+      new EmberObject({ direction: 'unsorted', class: 'fa-sort' }),
+      new EmberObject({ direction: 'asc', class: 'fa-sort-asc' }),
+      new EmberObject({ direction: 'desc', class: 'fa-sort-desc' }),
     ]);
   }),
 
   state: computed('index', 'states', function() {
     const { states, index } = this.getProperties(['states', 'index']);
-    return states[index % states.length];
+    return states[index % states.get('length')];
   }),
 
   sortOrder: computed('sort', 'sorts.[]', function () {
+    const sort = this.get('sort');
     const sorts = this.get('sorts') || A();
-    const match = sorts.find(s => s.key === this.sort);
+    const match = sorts.find(s => s.key === sort);
 
     return sorts.indexOf(match) + 1;
   }),
@@ -39,11 +40,13 @@ export default Component.extend({
   notifyObservers() {},
 
   click() {
-    if (this.sort) {
+    const sort = this.get('sort');
+
+    if (sort) {
       this.incrementProperty('index');
 
       this.notifyObservers({
-        key: this.get('sort'),
+        key: sort,
         direction: this.get('state.direction')
       });
     }
