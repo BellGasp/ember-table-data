@@ -33,7 +33,7 @@ export default Component.extend({
     });
 
     // Setup the query with the passed in params or default values.
-    const query = this.queryObj || {};
+    const query = this.get('queryObj') || {};
     const {
       currentPage = DEFAULT_PAGE,
       pageSize = DEFAULT_PAGE_SIZE,
@@ -44,7 +44,7 @@ export default Component.extend({
     this.get('_queryObj').setProperties({ currentPage, pageSize, filters, sorts });
 
     // Setup `totalCount` with the passed-in params or default values.
-    const totalCount = this.totalCount || DEFAULT_COUNT;
+    const totalCount = this.get('totalCount') || DEFAULT_COUNT;
     this.set('totalCount', totalCount);
   },
 
