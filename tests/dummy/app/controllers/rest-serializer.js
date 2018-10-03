@@ -10,9 +10,9 @@ export default Controller.extend({
 
   properties: computed(function() {
     return new A([
-      new Filter({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
-      new Filter({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
-      new Filter({ label: 'Species', propertyType: 'string', valueForQuery: 'species' }),
+      Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
+      Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
+      Filter.create({ label: 'Species', propertyType: 'string', valueForQuery: 'species' }),
     ]);
   }),
 

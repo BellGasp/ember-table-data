@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import filterRowObject from 'ember-table-data/utils/filter-row-object';
+import FilterRow from 'ember-table-data/utils/filter-row-object';
 import layout from '../../templates/components/core/table-filter';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
@@ -36,7 +36,7 @@ export default Component.extend({
   actions:{
     addRow(){
       let rows = this.get('_rows');
-      rows.pushObject(filterRowObject.create());
+      rows.pushObject(FilterRow.create());
     },
     deleteRow(row){
       if (row.length){

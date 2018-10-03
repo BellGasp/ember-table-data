@@ -28,7 +28,7 @@ export default Component.extend({
     this.validateParameters();
 
     this.setProperties({
-      _queryObj: new Query(),
+      _queryObj: Query.create(),
       loadedPages: new A()
     });
 
