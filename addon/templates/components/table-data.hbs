@@ -1,9 +1,9 @@
 {{yield (hash
-  pageSize=(component "core/page-size" pageSizes=pageSizes pageSize=_queryObj.pageSize totalCount=_totalCount updatePageSize=(action "updatePageSize"))
-  pagination=(component "core/page-numbers" queryObj=_queryObj totalCount=_totalCount changePage=(action "updatePage"))
-  table=(component "base/table-container" records=pageRecords sortStates=sortStates updateSort=(action "updateSort"))
+  pageSize=(component "core/page-size" pageSizes=pageSizes pageSize=_queryObj.pageSize totalCount=totalCount updatePageSize=(action "updatePageSize"))
+  pagination=(component "core/page-numbers" queryObj=_queryObj totalCount=totalCount changePage=(action "updatePage"))
+  table=(component "base/table-container" records=pageRecords notifySortObservers=(action "updateSorts"))
   filter=(component "core/table-filter" updateFilter=(action "updateFilter"))
-  totalCount=_totalCount
+  totalCount=totalCount
 )
 (action "refreshPage")
 }}

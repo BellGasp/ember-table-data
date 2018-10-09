@@ -1,6 +1,6 @@
-{{#table-data class="table table-bordered" records=(action "fetchAnimals") as |tableData|}}
+{{#table-data class="table table-bordered" records=(action "fetchAnimals") as |table-data|}}
 
-  {{#tableData.filter properties=properties as |filter|}}
+  {{#table-data.filter properties=properties as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
       {{#header.addButton class="btn btn-primary col-1 offset-11"}}
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -28,21 +28,19 @@
         <i class="fa fa-refresh" aria-hidden="true"></i>
       {{/footer.clearButton}}
     {{/filter.footer}}
-  {{/tableData.filter}}
+  {{/table-data.filter}}
 
   <div class="row">
-    {{tableData.pageSize class="col-2"}}
-    {{tableData.pagination class="col-6"}}
+    {{table-data.pageSize class="col-2"}}
+    {{table-data.pagination class="col-6"}}
   </div>
 
-  {{#tableData.table class="table-striped col-12" as |table|}}
-    {{#table.header as |header|}}
-      {{#header.row as |row|}}
-        {{#row.cell sortProperty="name"}}Name{{/row.cell}}
-        {{#row.cell sortProperty="age"}}Age{{/row.cell}}
-        {{#row.cell sortProperty="species"}}Species{{/row.cell}}
-      {{/header.row}}
-    {{/table.header}}
+  {{#table-data.table class="table-striped col-12" as |table|}}
+    {{#table.thead as |thead|}}
+      {{#thead.th sort="name" data-test-sort-name=true}}Name{{/thead.th}}
+      {{#thead.th sort="age" data-test-sort-age=true}}Age{{/thead.th}}
+      {{#thead.th sort="species" data-test-sort-species=true}}Species{{/thead.th}}
+    {{/table.thead}}
 
     {{#table.body as |body animal|}}
       {{#body.row as |row|}}
@@ -51,5 +49,5 @@
         {{#row.cell}} {{animal.species}} {{/row.cell}}
       {{/body.row}}
     {{/table.body}}
-  {{/tableData.table}}
+  {{/table-data.table}}
 {{/table-data}}

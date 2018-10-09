@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('table-data', 'Integration | Component | table data', {
+moduleForComponent('table-data', 'Integration | Component | table-data', {
   integration: true
 });
 
@@ -36,6 +36,6 @@ test('it throws assertion error without records', function(assert) {
         </tr>
       {{/table-data}}`);
   },
-  /"records"/,
+  /`records`/,
   'Throws assertion error if records isn\'t passed');
 });

@@ -96,8 +96,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
     this.set('deleteRow', () => {});
     this.set('filtersRows',
       new A([
-        EmberObject.create({
-          property: Filter.create({
+        new EmberObject({
+          property: new Filter({
             propertyType: 'stringCUSTOM',
             label:'Custom String'
           })
@@ -106,7 +106,7 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
     );
 
     this.set('comparators', new A([
-      Comparator.create({
+      new Comparator({
         propertyType: 'stringCUSTOM',
         internalName: 'isEmpty',
         label:'Custom'
@@ -133,8 +133,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
     this.set('deleteRow', () => {});
     this.set('filtersRows',
       new A([
-        EmberObject.create({
-          property: Filter.create({
+        new EmberObject({
+          property: new Filter({
             propertyType: 'string',
             label:'Custom String'
           })
@@ -143,7 +143,7 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
     );
 
     this.set('comparators', new A([
-      Comparator.create({
+      new Comparator({
         propertyType: 'string',
         internalName: 'custom',
         label:'Custom'

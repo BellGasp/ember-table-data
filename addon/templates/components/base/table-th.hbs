@@ -1,0 +1,9 @@
+{{yield}}
+
+{{#if (and sort state)}}
+  <span class={{concat "sort-direction fa" " " state.class}}></span>
+{{/if}}
+
+{{#if (and (gt sortOrder 0) (gt sorts.length 1))}}
+  <span class="sort-order">{{sortOrder}}</span>
+{{/if}}

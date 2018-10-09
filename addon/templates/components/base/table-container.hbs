@@ -1,4 +1,4 @@
 {{yield (hash
-  header=(component "base/table-header" sortStates=sortStates updateSort=updateSort)
+  thead=(component "base/table-thead" notifySortObservers=notifySortObservers)
   body=(component "base/table-body" records=records)
 )}}
