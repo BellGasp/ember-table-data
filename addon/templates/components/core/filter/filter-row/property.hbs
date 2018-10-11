@@ -1,11 +1,15 @@
-{{#power-select
-    selected=filterRowObject.property
-    options=properties
-    onchange=(action (mut filterRowObject.property))
-    tagName="div"
-    searchField="label"
-    class="property-selector"
-    as |filter|
-}}
-  {{get filter "label"}}
-{{/power-select}}
+{{#if (has-block)}}
+  {{yield properties filterRowObject.property }}
+{{else}}
+  {{#power-select
+      selected=filterRowObject.property
+      options=properties
+      onchange=(action (mut filterRowObject.property))
+      tagName="div"
+      searchField="label"
+      class="property-selector"
+      as |filter|
+  }}
+    {{get filter "label"}}
+  {{/power-select}}
+{{/if}}
