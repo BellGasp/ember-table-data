@@ -1,10 +1,15 @@
-{{#power-select
-  selected=_pageSize
-  options=_pageSizes
-  onchange=(action "updatePageSize")
-  class="page-size-selector"
-  tagName="div"
-  as |page-size|
-}}
-  {{page-size}}
-{{/power-select}}
+
+{{#if (has-block)}}
+  {{yield _pageSizes _pageSize (action "updatePageSize")}}
+{{else}}
+  {{#power-select
+    selected=_pageSize
+    options=_pageSizes
+    onchange=(action "updatePageSize")
+    class="page-size-selector"
+    tagName="div"
+    as |page-size|
+  }}
+    {{page-size}}
+  {{/power-select}}
+{{/if}}

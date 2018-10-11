@@ -103,8 +103,9 @@ export default Component.extend({
   updateTotalCount(loadedPage, data) {
     if (!data) return;
 
-    if (get(data, 'meta.totalCount')) {
-      this.set('totalCount', get(data, 'meta.totalCount'));
+    let totalCount = get(data, 'meta.totalCount') || get(data, 'meta.total-count');
+    if (totalCount) {
+      this.set('totalCount', totalCount);
     } else {
       this.set('totalCount', data.length);
     }
