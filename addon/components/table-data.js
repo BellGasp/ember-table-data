@@ -57,7 +57,7 @@ export default Component.extend({
   validateParameters() {
     const { records, queryObj, totalCount } = this.getProperties(['records', 'queryObj', 'totalCount']);
 
-    if (records) {
+    if (!records) {
       assert('ember-table-data: The property `records` must be passed.');
     }
 
