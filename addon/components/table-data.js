@@ -5,6 +5,7 @@ import { observer, computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Query from '../utils/query-obj';
 import layout from '../templates/components/table-data';
+import { isEmpty } from '@ember/utils';
 
 const DEFAULT_PAGE = 1, DEFAULT_PAGE_SIZE = 10, DEFAULT_COUNT = 0;
 
@@ -60,7 +61,7 @@ export default Component.extend({
       assert('ember-table-data: The property `records` must be passed.');
     }
 
-    if (queryObj && !totalCount || !queryObj && totalCount) {
+    if (queryObj && isEmpty(totalCount) || !queryObj && !isEmpty(totalCount)) {
       assert('ember-table-data: If you pass either `queryObj` or `totalCount` param, both should be passed.');
     }
   },
