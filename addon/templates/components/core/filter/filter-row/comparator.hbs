@@ -1,11 +1,15 @@
-{{#power-select
-    selected=filterRowObject.comparator
-    options=filteredComparators
-    onchange=(action (mut filterRowObject.comparator))
-    class="comparator-selector"
-    searchField="label"
-    tagName="div"
-    as |comparator|
-}}
-  {{get comparator "label"}}
-{{/power-select}}
+{{#if (has-block)}}
+  {{yield filteredComparators filterRowObject.comparator }}
+{{else}}
+  {{#power-select
+      selected=filterRowObject.comparator
+      options=filteredComparators
+      onchange=(action (mut filterRowObject.comparator))
+      class="comparator-selector"
+      searchField="label"
+      tagName="div"
+      as |comparator|
+  }}
+    {{get comparator "label"}}
+  {{/power-select}}
+{{/if}}

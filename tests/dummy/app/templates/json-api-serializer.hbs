@@ -1,11 +1,22 @@
 {{#table-data class="table table-bordered" records=(action "fetchCharacters") as |table-data|}}
 
-  {{#table-data.filter properties=properties comparators=comparators as |filter|}}
-    {{#filter.header class="row pb-1" as |header|}}
-      {{#header.addButton class="btn btn-primary col-1 offset-11"}}
-        <i class="fa fa-plus" aria-hidden="true"></i>
-      {{/header.addButton}}
-    {{/filter.header}}
+  {{#table-data.filter properties=properties comparators=comparators as |filter actions|}}
+
+    <div class="row mx-2 my-2">
+      <div class="w-100 text-right">
+        <button class="btn btn-sm btn-success" {{action actions.add}}>
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+
+        <button class="btn btn-sm btn-primary" {{action actions.filter}}>
+          <i class="fa fa-filter" aria-hidden="true"></i>
+        </button>
+
+        <button class="btn btn-sm btn-outline-primary" {{action actions.clear}}>
+          <i class="fa fa-refresh" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
 
     {{#filter.body as |body|}}
       {{#body.row class="row pb-1" as |row|}}
@@ -13,21 +24,13 @@
         {{row.comparator class="col-4"}}
         {{row.value class="col-3 text-center"}}
         {{#if (gt row.count 1)}}
-          {{#row.deleteButton class="btn btn-danger col-1"}}
+          {{#row.deleteButton class="btn btn-sm btn-danger col-1"}}
             <i class="fa fa-trash" aria-hidden="true"></i>
           {{/row.deleteButton}}
         {{/if}}
       {{/body.row}}
     {{/filter.body}}
 
-    {{#filter.footer class="row" as |footer|}}
-      {{#footer.filterButton class="btn btn-primary col-1 offset-10"}}
-        <i class="fa fa-filter" aria-hidden="true"></i>
-      {{/footer.filterButton}}
-      {{#footer.clearButton class="btn btn-primary col-1"}}
-        <i class="fa fa-refresh" aria-hidden="true"></i>
-      {{/footer.clearButton}}
-    {{/filter.footer}}
   {{/table-data.filter}}
 
   <div class="row">

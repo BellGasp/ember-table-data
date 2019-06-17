@@ -13,7 +13,7 @@ export default Component.extend({
   currentPage: null,
   page: null,
 
-  isActive: computed('currentPage', 'page', function () {
+  isActive: computed('currentPage', 'page', function() {
     let page = this.get('page');
     let currentPage = this.get('currentPage');
     return page && page === currentPage;
@@ -21,7 +21,9 @@ export default Component.extend({
 
   actions: {
     triggerAction() {
-      this.get('action')(this.get('page'));
+      if (!this.get('isDisabled')) {
+        this.get('action')(this.get('page'));
+      }
     }
   }
 });
