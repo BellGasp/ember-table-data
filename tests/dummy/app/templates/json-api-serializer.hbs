@@ -1,4 +1,4 @@
-{{#table-data class="table table-bordered" records=(action "fetchCharacters") as |table-data|}}
+{{#table-data queryObj=querySnapshot totalCount=0 class="table table-bordered" records=(action "fetchCharacters") as |table-data|}}
 
   {{#table-data.filter properties=properties comparators=comparators as |filter actions|}}
 
