@@ -12,7 +12,7 @@ const { PromiseArray } = DS;
 export default Service.extend({
   isPossiblePage(page, pageSize, totalCount) {
     let maxPage = Math.ceil(totalCount / pageSize);
-    return page === 1 || page > 0 && page <= maxPage;
+    return page === 1 || page > 0 && (page <= maxPage || totalCount === 0);
   },
 
   loadPage(records, queryObj) {
