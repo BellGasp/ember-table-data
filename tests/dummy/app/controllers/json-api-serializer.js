@@ -5,10 +5,13 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
+import { next } from '@ember/runloop';
 
 export default Controller.extend({
 
   store: service(),
+
+  querySnapshot: {},
 
   properties: computed(function() {
     return new A([
@@ -29,6 +32,9 @@ export default Controller.extend({
   actions: {
     fetchCharacters(query) {
       const params = new JSONAPIQueryParser().parse(query);
+
+      next(this, () => this.set('querySnapshot', query));
+
       return this.store.query('character', params);
     }
   }

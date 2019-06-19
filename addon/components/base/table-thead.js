@@ -13,7 +13,9 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('sorts', A());
+
+    const sorts = this.get('initialState.sorts');
+    if (sorts) this.set('sorts', A(sorts));
   },
 
   filteredSorts: computed('sorts.[]', function() {
