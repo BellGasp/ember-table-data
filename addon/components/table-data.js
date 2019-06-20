@@ -166,19 +166,26 @@ export default Component.extend({
     loadedCurrentPage.set('forceReload', true);
   },
 
-  actions: {
+  notifySortsObservers() {},
+  notifyCurrentPageObservers() {},
+  notifyPageSizeObservers() {},
+  notifyFiltersObservers() {},
 
+  actions: {
     updateSorts(sorts) {
       this.set('_queryObj.sorts', sorts);
+      this.notifySortsObservers(sorts);
       this.forceReload();
     },
 
     updatePageSize(pageSize) {
       this.set('_queryObj.pageSize', pageSize);
+      this.notifyPageSizeObservers(pageSize);
     },
 
     updatePage(page) {
       this.set('_queryObj.currentPage', page);
+      this.notifyCurrentPageObservers(page);
     },
 
     refreshPage(page) {
@@ -189,7 +196,7 @@ export default Component.extend({
     updateFilter(filters){
       this.resetLoadedPages();
       this.set('_queryObj.filters', filters);
+      this.notifyFiltersObservers(filters);
     }
-
   }
 });

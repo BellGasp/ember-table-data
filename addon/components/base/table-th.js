@@ -13,6 +13,23 @@ export default Component.extend({
 
   tagName: 'th',
 
+  init() {
+    this._super(...arguments);
+
+    if (!this.sorts) {
+        this.set('sorts', A());
+    }
+
+    const match = this.sorts.find(s => s.key === this.sort);
+
+    if (match) {
+      const state = this.states.find(s => s.direction === match.direction);
+      const index = this.states.indexOf(state);
+
+      this.set('index', index);
+    }
+  },
+
   classNameBindings: ['sort:clickable'],
   attributeBindings: ['colspan'],
 
