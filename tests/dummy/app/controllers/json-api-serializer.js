@@ -11,7 +11,15 @@ export default Controller.extend({
 
   store: service(),
 
-  querySnapshot: {},
+  querySnapshot: null,
+
+  init() {
+    this._super(...arguments);
+
+    if (!this.get('querySnapshot')) {
+      this.set('querySnapshot', {});
+    }
+  },
 
   properties: computed(function() {
     return new A([

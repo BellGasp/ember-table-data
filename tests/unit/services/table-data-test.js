@@ -105,8 +105,3 @@ test('Cannot get negative page', function(assert) {
   let service = this.subject();
   assert.notOk(service.isPossiblePage(-1, 15, 15));
 });
-
-test('Cannot get page x != 1 if no records', function(assert) {
-  let service = this.subject();
-  assert.notOk(service.isPossiblePage(3, 15, 0));
-});

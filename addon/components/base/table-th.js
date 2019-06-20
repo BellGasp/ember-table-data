@@ -16,6 +16,10 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
+    if (!this.sorts) {
+        this.set('sorts', A());
+    }
+
     const match = this.sorts.find(s => s.key === this.sort);
 
     if (match) {
