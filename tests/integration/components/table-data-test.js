@@ -1,8 +1,10 @@
 import { module } from 'qunit';
 import { setupRenderingTest, test, skip } from 'ember-qunit';
-import { click, render, pauseTest } from '@ember/test-helpers';
-import { selectChoose, clickTrigger } from 'ember-power-select/test-support/helpers';
+import { click, render, pauseTest, fillIn } from '@ember/test-helpers';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 import hbs from 'htmlbars-inline-precompile';
+import Filter from 'ember-table-data/utils/filter-object';
+import { A } from '@ember/array';
 
 module('Integration | Component | table-data', function(hooks) {
   setupRenderingTest(hooks);
@@ -93,9 +95,8 @@ module('Integration | Component | table-data', function(hooks) {
         records=records
         queryObj=queryObj
         totalCount=totalCount
-        notifyCurrentPageObservers=updateCurrentPage
-        as |table-data|
-      }}
+        notifyPageSizeObservers=updatePageSize
+        as |table-data|}}
         {{table-data.pageSize}}
         <table>
           <tr>
@@ -107,19 +108,90 @@ module('Integration | Component | table-data', function(hooks) {
       {{/table-data}}
     `);
 
-    await pauseTest();
+    await selectChoose('.page-size', '.ember-power-select-option', 4);
 
-    await clickTrigger();
-    await selectChoose('50');
-
-    assert.equal(this.get('pageSize'), 15);
+    assert.equal(this.get('pageSize'), 50);
   });
 
-  test('it notifies observers of filters changes', function(assert) {
+  test('it fires `notifySortsObservers` when sorting of the data changes', async function(assert) {
+    assert.expect(1);
 
+    this.set('records', []);
+    this.set('notificationListener', (sorts) => assert.ok(sorts));
+
+    await render(hbs`
+      {{#table-data
+        records=records
+        notifySortsObservers=notificationListener
+        as |table-data|}}
+
+        {{#table-data.table class="table-striped col-12" as |table|}}
+          {{#table.thead as |thead|}}
+            {{#thead.th sort="name" data-test-sort-name=true}}Name{{/thead.th}}
+          {{/table.thead}}
+        {{/table-data.table}}
+
+      {{/table-data}}
+    `);
+
+    await click('th');
   });
 
-  test('it notifies observers of sorts changes', function(assert) {
+  test('it fires `notifyFiltersObservers` when filtering of the data changes', async function(assert) {
+    assert.expect(1);
 
+    this.set('records', []);
+    this.set('properties', new A([
+      Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
+      Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
+      Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
+    ]));
+    this.set('notificationListener', filters => assert.ok(filters));
+
+    await render(hbs`
+      {{#table-data
+        records=records
+        notifyFiltersObservers=notificationListener
+        as |table-data|}}
+
+        {{#table-data.filter properties=properties comparators=comparators as |filter actions|}}
+
+          <div class="row mx-2 my-2">
+            <div class="w-100 text-right">
+              <button class="btn btn-sm btn-success" {{action actions.add}}>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+
+              <button class="btn btn-sm btn-primary" {{action actions.filter}}>
+                <i class="fa fa-filter" aria-hidden="true"></i>
+              </button>
+
+              <button class="btn btn-sm btn-outline-primary" {{action actions.clear}}>
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          {{#filter.body as |body|}}
+            {{#body.row class="row pb-1" as |row|}}
+              {{row.property class="col-4"}}
+              {{row.comparator class="col-4"}}
+              {{row.value class="col-3 text-center"}}
+              {{#if (gt row.count 1)}}
+                {{#row.deleteButton class="btn btn-sm btn-danger col-1"}}
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                {{/row.deleteButton}}
+              {{/if}}
+            {{/body.row}}
+          {{/filter.body}}
+
+        {{/table-data.filter}}
+
+      {{/table-data}}
+    `);
+
+    await click('.btn-success');
+    await fillIn('input', 'Champion');
+    await click('.btn-primary');
   });
 });

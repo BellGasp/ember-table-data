@@ -35,7 +35,8 @@ export default Service.extend({
       promise: resolve(recordsPromise)
     });
   },
-  paginateRecords(records, { currentPage, pageSize }) {
+
+  paginateRecords(records, { currentPage = 1, pageSize = 5 } = {}) {
     let firstRecordIndex = currentPage * pageSize - pageSize;
     return records.slice(firstRecordIndex,firstRecordIndex + pageSize);
   },
