@@ -1,6 +1,6 @@
 import { module } from 'qunit';
 import { setupRenderingTest, test, skip } from 'ember-qunit';
-import { click, render, pauseTest, fillIn } from '@ember/test-helpers';
+import { click, render, fillIn } from '@ember/test-helpers';
 import { selectChoose } from 'ember-power-select/test-support/helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Filter from 'ember-table-data/utils/filter-object';
