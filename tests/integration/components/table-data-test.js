@@ -209,7 +209,6 @@ module('Integration | Component | table-data', function(hooks) {
     this.set('totalCount', TOTAL_COUNT);
     this.set('currentPage', null);
     this.set('updateCurrentPage', (page) => { this.set('currentPage', page); });
-    this.set('resetPages', (resetPages) => { resetPages(); });
 
     await render(hbs`
       {{#table-data
@@ -220,7 +219,7 @@ module('Integration | Component | table-data', function(hooks) {
         as |table-data refreshPage resetPages|
       }}
         {{table-data.pagination}}
-        <button class="reset-current-page" {{action "resetPages" resetPages}}>
+        <button class="reset-current-page" {{action resetPages}}>
           button text
         </button>
         <table>
