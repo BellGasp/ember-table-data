@@ -30,7 +30,7 @@ export default Component.extend({
 
     this.setProperties({
       _queryObj: Query.create(),
-      loadedPages: new A()
+      loadedPages: A()
     });
 
     // Setup the query with the passed in params or default values.
@@ -148,10 +148,10 @@ export default Component.extend({
     if (service.isPossiblePage(page, pageSize, totalCount)) {
       let loadedPages = this.get('loadedPages');
       let loadedPage = loadedPages.findBy('page', page);
-      let shoudLoadPage = !loadedPage ||
+      let shouldLoadPage = !loadedPage ||
         !this.get('eagerLoading') ||
         this.shouldReloadPage(loadedPage);
-      if (shoudLoadPage) {
+      if (shouldLoadPage) {
         loadedPage = this.loadPageData(loadedPage, page, onDataChange);
       } else {
         this.triggerOnDataChangeAction(this.get('_queryObj'), onDataChange);
@@ -190,6 +190,12 @@ export default Component.extend({
 
     refreshPage(page) {
       this.forceReload(page);
+      this.notifyPropertyChange('_queryObj.currentPage');
+    },
+
+    resetPages() {
+      this.get('loadedPages').clear();
+      this.send('updatePage', DEFAULT_PAGE);
       this.notifyPropertyChange('_queryObj.currentPage');
     },
 

@@ -24,11 +24,11 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
 
     this.setProperties({
       deleteRow: () => {},
-      filtersRows: new A([
-        new EmberObject({ property: new Filter({ propertyType: 'string' }) })
+      filtersRows: A([
+        EmberObject.create({ property: Filter.create({ propertyType: 'string' }) })
       ]),
-      comparators: new A([
-        new Comparator({
+      comparators: A([
+        Comparator.create({
           label: 'Is Empty',
           showComparator: false,
           propertyType: 'string',
@@ -49,8 +49,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
 
     assert.dom('.ember-power-select-option--no-matches-message').exists();
 
-    this.set('comparators', new A([
-      new Comparator({
+    this.set('comparators', A([
+      Comparator.create({
         label: 'Is Empty',
         showComparator: true,
         propertyType: 'string',
@@ -69,8 +69,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
     assert.expect(2);
 
     this.set('deleteRow', () => {});
-    this.set('filtersRows', new A([
-        new EmberObject({ property: new Filter({ propertyType: 'string' }) })
+    this.set('filtersRows', A([
+        EmberObject.create({ property: Filter.create({ propertyType: 'string' }) })
     ]));
 
     await render(hbs`
@@ -95,9 +95,9 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
 
     this.set('deleteRow', () => {});
     this.set('filtersRows',
-      new A([
-        new EmberObject({
-          property: new Filter({
+      A([
+        EmberObject.create({
+          property: Filter.create({
             propertyType: 'stringCUSTOM',
             label:'Custom String'
           })
@@ -105,8 +105,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       ])
     );
 
-    this.set('comparators', new A([
-      new Comparator({
+    this.set('comparators', A([
+      Comparator.create({
         propertyType: 'stringCUSTOM',
         internalName: 'isEmpty',
         label:'Custom'
@@ -132,9 +132,9 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
   test('it adds comparator when propertyType exists', async function(assert) {
     this.set('deleteRow', () => {});
     this.set('filtersRows',
-      new A([
-        new EmberObject({
-          property: new Filter({
+      A([
+        EmberObject.create({
+          property: Filter.create({
             propertyType: 'string',
             label:'Custom String'
           })
@@ -142,8 +142,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       ])
     );
 
-    this.set('comparators', new A([
-      new Comparator({
+    this.set('comparators', A([
+      Comparator.create({
         propertyType: 'string',
         internalName: 'custom',
         label:'Custom'

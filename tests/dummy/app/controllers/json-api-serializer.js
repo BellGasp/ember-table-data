@@ -22,7 +22,7 @@ export default Controller.extend({
   },
 
   properties: computed(function() {
-    return new A([
+    return A([
       Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
       Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
       Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
@@ -39,7 +39,7 @@ export default Controller.extend({
 
   actions: {
     fetchCharacters(query) {
-      const params = new JSONAPIQueryParser().parse(query);
+      const params = JSONAPIQueryParser.create().parse(query);
 
       next(this, () => this.set('querySnapshot', query));
 

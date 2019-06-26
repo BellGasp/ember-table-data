@@ -15,7 +15,7 @@ test('it renders', function(assert) {
 
 test('it renders the comparators when provided', function(assert) {
  this.set('properties',
-   new A([
+   A([
      { label: 'test' },
      { label: 'test2' },
      { label: 'test3' }

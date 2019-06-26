@@ -141,7 +141,7 @@ module('Integration | Component | table-data', function(hooks) {
     assert.expect(1);
 
     this.set('records', []);
-    this.set('properties', new A([
+    this.set('properties', A([
       Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
       Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
       Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })
@@ -193,5 +193,51 @@ module('Integration | Component | table-data', function(hooks) {
     await click('.btn-success');
     await fillIn('input', 'Champion');
     await click('.btn-primary');
+  });
+
+  test('it resets the pages when calling the resetPages action', async function(assert) {
+    const TOTAL_COUNT = 40;
+
+    let records = [];
+
+    for (let i = 1; i <= TOTAL_COUNT; ++i) {
+      records.push({ id: i });
+    }
+
+    this.set('records', records);
+    this.set('queryObj', {});
+    this.set('totalCount', TOTAL_COUNT);
+    this.set('currentPage', null);
+    this.set('updateCurrentPage', (page) => { this.set('currentPage', page); });
+
+    await render(hbs`
+      {{#table-data
+        records=records
+        queryObj=queryObj
+        totalCount=totalCount
+        notifyCurrentPageObservers=updateCurrentPage
+        as |table-data refreshPage resetPages|
+      }}
+        {{table-data.pagination}}
+        <button class="reset-current-page" {{action resetPages}}>
+          button text
+        </button>
+        <table>
+          <tr>
+            <td>
+              template block text
+            </td>
+          </tr>
+        </table>
+      {{/table-data}}
+    `);
+
+    await click('.fa.fa-angle-right');
+
+    assert.equal(this.get('currentPage'), 2);
+
+    await click('.reset-current-page');
+
+    assert.equal(this.get('currentPage'), 1);
   });
 });

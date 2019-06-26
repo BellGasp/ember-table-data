@@ -86,7 +86,7 @@ Here an exemple of the properties array :
 import filterObject from 'ember-table-data/utils/filter-object';
 [...]
 properties: computed('i18n.locale', function () {
-    let array = new A();
+    let array = A();
     array.pushObject(filterObject.create({
       label:'Label to be display in the dropdown',
       propertyType:'string',
@@ -150,7 +150,7 @@ Here the available default comparators :
 ```javascript
 import ComparatorObject from 'ember-table-data/utils/comparator-object';
 [...]
-new A([
+A([
   ComparatorObject.create({label: 'Contains', internalName: 'contains', propertyType: 'string', valueForQuery:'{0}.Contains("{1}")'}),
   ComparatorObject.create({label: 'Ends with', internalName: 'endsWith', propertyType: 'string', valueForQuery:'{0}.EndsWith("{1}")'}),
   ComparatorObject.create({label: 'Equal', internalName: 'equal', propertyType: 'string', valueForQuery:'{0} == "{1}"'}),
