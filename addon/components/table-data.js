@@ -30,7 +30,7 @@ export default Component.extend({
 
     this.setProperties({
       _queryObj: Query.create(),
-      loadedPages: new A()
+      loadedPages: A()
     });
 
     // Setup the query with the passed in params or default values.

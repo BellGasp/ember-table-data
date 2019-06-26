@@ -141,7 +141,7 @@ module('Integration | Component | table-data', function(hooks) {
     assert.expect(1);
 
     this.set('records', []);
-    this.set('properties', new A([
+    this.set('properties', A([
       Filter.create({ label: 'Name', propertyType: 'string', valueForQuery: 'name' }),
       Filter.create({ label: 'Age', propertyType: 'number', valueForQuery: 'age' }),
       Filter.create({ label: 'Evil', propertyType: 'boolean', valueForQuery: 'evil' })

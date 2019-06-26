@@ -45,7 +45,7 @@ test('it renders footer when you use the inner component', function(assert) {
 
 test('it execute addRow action correctly when action is executed', function(assert) {
   assert.expect(2);
-  this.set('rows', new A());
+  this.set('rows', A());
   assert.equal(this.get('rows.length'), 0);
   this.render(hbs`
     {{#core/table-filter rows=rows as |filter|}}
@@ -60,7 +60,7 @@ test('it execute addRow action correctly when action is executed', function(asse
 
 test('it execute addRow and then remove it correctly when action is executed', function(assert) {
   assert.expect(3);
-  this.set('rows', new A());
+  this.set('rows', A());
   assert.equal(this.get('rows.length'), 0);
   this.render(hbs`
     {{#core/table-filter rows=rows as |filter|}}
@@ -90,7 +90,7 @@ test('it execute addRow and then remove it correctly when action is executed', f
 
 test('it execute updateFilter action correctly when action is executed', function(assert) {
   assert.expect(1);
-  this.set('rows', new A());
+  this.set('rows', A());
   this.set('externalAction', () => {
     assert.ok(true);
   });
@@ -113,7 +113,7 @@ test('it execute updateFilter action correctly when action is executed', functio
 
 test('it execute updateFilter action correctly when action is executed and clear filter', function(assert) {
   assert.expect(2);
-  this.set('rows', new A());
+  this.set('rows', A());
   this.set('externalAction', () => {
     assert.ok(true);
   });

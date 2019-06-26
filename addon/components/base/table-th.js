@@ -35,9 +35,9 @@ export default Component.extend({
 
   states: computed(function () {
     return A([
-      new EmberObject({ direction: 'unsorted', class: 'fa-sort' }),
-      new EmberObject({ direction: 'asc', class: 'fa-sort-asc' }),
-      new EmberObject({ direction: 'desc', class: 'fa-sort-desc' }),
+      EmberObject.create({ direction: 'unsorted', class: 'fa-sort' }),
+      EmberObject.create({ direction: 'asc', class: 'fa-sort-asc' }),
+      EmberObject.create({ direction: 'desc', class: 'fa-sort-desc' }),
     ]);
   }),
 

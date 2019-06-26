@@ -4,7 +4,7 @@ import EmberObject from '@ember/object';
 export default EmberObject.extend({
   init(...args) {
     this._super(...args);
-    this.set('records', new A());
+    this.set('records', A());
     this.set('lastUpdated', Date.now());
   },
   page: 1,
