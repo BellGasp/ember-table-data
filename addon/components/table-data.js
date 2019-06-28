@@ -51,7 +51,7 @@ export default Component.extend({
 
   resetLoadedPages: observer('records', 'records.[]', '_queryObj.pageSize', function() {
     this.get('loadedPages').clear();
-    this.send('updatePage', 1);
+    this.send('updatePage', DEFAULT_PAGE);
   }),
 
   validateParameters() {
@@ -173,12 +173,13 @@ export default Component.extend({
 
   actions: {
     updateSorts(sorts) {
+      this.resetLoadedPages();
       this.set('_queryObj.sorts', sorts);
       this.notifySortsObservers(sorts);
-      this.forceReload();
     },
 
     updatePageSize(pageSize) {
+      this.resetLoadedPages();
       this.set('_queryObj.pageSize', pageSize);
       this.notifyPageSizeObservers(pageSize);
     },
@@ -194,8 +195,7 @@ export default Component.extend({
     },
 
     resetPages() {
-      this.get('loadedPages').clear();
-      this.send('updatePage', DEFAULT_PAGE);
+      this.resetLoadedPages();
       this.notifyPropertyChange('_queryObj.currentPage');
     },
 
