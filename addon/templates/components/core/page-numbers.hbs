@@ -2,13 +2,13 @@
   <ul class="pagination">
     {{#if showFL}}
       {{#core/page-numbers/page-link isDisabled=isFirstPage action=(action "goToFirst")}}
-        <span class="fa fa-angle-double-left"></span>
+        «
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if showPN}}
       {{#core/page-numbers/page-link isDisabled=isFirstPage action=(action "goToPrev")}}
-        <span class="fa fa-angle-left"></span>
+        <
       {{/core/page-numbers/page-link}}
     {{/if}}
 
@@ -18,7 +18,7 @@
       {{/core/page-numbers/page-link}}
 
       {{#core/page-numbers/page-link action=(action "showMore" true)}}
-        <span class="fa fa-ellipsis-h"></span>
+        …
       {{/core/page-numbers/page-link}}
     {{/if}}
 
@@ -30,7 +30,7 @@
 
     {{#if hasMoreAfter}}
       {{#core/page-numbers/page-link action=(action "showMore" false)}}
-        <span class="fa fa-ellipsis-h"></span>
+        …
       {{/core/page-numbers/page-link}}
 
       {{#core/page-numbers/page-link currentPage=queryObj.currentPage page=lastPage action=(action
@@ -41,13 +41,13 @@
 
     {{#if showPN}}
       {{#core/page-numbers/page-link isDisabled=isLastPage action=(action "goToNext")}}
-        <span class="fa fa-angle-right"></span>
+        >
       {{/core/page-numbers/page-link}}
     {{/if}}
 
     {{#if showFL}}
       {{#core/page-numbers/page-link isDisabled=isLastPage action=(action "goToLast")}}
-        <span class="fa fa-angle-double-right"></span>
+        »
       {{/core/page-numbers/page-link}}
     {{/if}}
   </ul>
