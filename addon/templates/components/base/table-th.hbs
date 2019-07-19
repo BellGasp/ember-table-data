@@ -1,7 +1,7 @@
 {{yield}}
 
 {{#if (and sort state)}}
-  <span class={{concat "sort-direction fa" " " state.class}}></span>
+  <span class="sort-direction">{{state-class}}</span>
 {{/if}}
 
 {{#if (and (gt sortOrder 0) (gt sorts.length 1))}}
