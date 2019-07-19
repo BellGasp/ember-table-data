@@ -3,7 +3,7 @@
   {{#table-data.filter properties=properties as |filter|}}
     {{#filter.header class="row pb-1" as |header|}}
       {{#header.addButton class="btn btn-primary col-1 offset-11"}}
-        <i class="fa fa-plus" aria-hidden="true"></i>
+        +
       {{/header.addButton}}
     {{/filter.header}}
 
@@ -14,7 +14,7 @@
         {{row.value class="col-3 text-center"}}
         {{#if (gt row.count 1)}}
           {{#row.deleteButton class="btn btn-danger col-1"}}
-            <i class="fa fa-trash" aria-hidden="true"></i>
+            🗑
           {{/row.deleteButton}}
         {{/if}}
       {{/body.row}}
@@ -25,7 +25,7 @@
         <i class="fa fa-filter" aria-hidden="true"></i>
       {{/footer.filterButton}}
       {{#footer.clearButton class="btn btn-primary col-1"}}
-        <i class="fa fa-refresh" aria-hidden="true"></i>
+        🗘
       {{/footer.clearButton}}
     {{/filter.footer}}
   {{/table-data.filter}}
