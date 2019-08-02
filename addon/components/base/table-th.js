@@ -10,11 +10,18 @@ export default Component.extend({
   index: 0,
   sort: '',
   sorts: null,
+  states: null,
 
   tagName: 'th',
 
   init() {
     this._super(...arguments);
+
+    this.set('states', A([
+      EmberObject.create({ direction: 'unsorted', class: 'fa-sort' }),
+      EmberObject.create({ direction: 'asc', class: 'fa-sort-asc' }),
+      EmberObject.create({ direction: 'desc', class: 'fa-sort-desc' }),
+    ]));
 
     if (!this.sorts) {
         this.set('sorts', A());
@@ -32,14 +39,6 @@ export default Component.extend({
 
   classNameBindings: ['sort:clickable'],
   attributeBindings: ['colspan'],
-
-  states: computed(function () {
-    return A([
-      EmberObject.create({ direction: 'unsorted', class: 'fa-sort' }),
-      EmberObject.create({ direction: 'asc', class: 'fa-sort-asc' }),
-      EmberObject.create({ direction: 'desc', class: 'fa-sort-desc' }),
-    ]);
-  }),
 
   state: computed('index', 'states', function() {
     const { states, index } = this.getProperties(['states', 'index']);

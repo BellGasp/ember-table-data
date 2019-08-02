@@ -15,9 +15,7 @@ export default Component.extend({
 
   _pageSize: 10,
 
-  _defaultOptions: computed(function () {
-    return [5, 10, 15, 25, 50, 100];
-  }),
+  _defaultOptions: null,
 
   _pageSizes: computed('_defaultOptions.[]', 'pageSizes.[]', function() {
     let pageSizes = A(this.get('pageSizes'));
@@ -27,6 +25,8 @@ export default Component.extend({
 
   didReceiveAttrs() {
     this._super(...arguments);
+
+    this.set('_defaultOptions', [5, 10, 15, 25, 50, 100]);
 
     let pageSize = this.get('pageSize');
     let pageSizes = this.get('_pageSizes');
