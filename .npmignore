@@ -6,14 +6,7 @@
 /bower_components/
 
 # misc
-/.bowerrc
-/.editorconfig
-/.ember-cli
-/.eslintignore
-/.eslintrc.js
-/.gitignore
-/.watchmanconfig
-/.travis.yml
+/.*
 /bower.json
 /config/ember-try.js
 /ember-cli-build.js
