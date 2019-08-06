@@ -17,27 +17,31 @@ module('Integration | Component | base/table-th', function(hooks) {
     assert.dom('th').hasText('A');
   });
 
-  test('it cycle through the available sort states', async function(assert) {
-    assert.expect(4);
+  test('it cycles through available sort states', async function(assert) {
+    assert.expect(8);
 
     await render(hbs`{{base/table-th sort="property"}}`);
 
-    assert.dom('.sort-direction.fa.fa-sort').exists();
+    assert.dom('.sort-direction').exists();
+    assert.dom('.sort-direction').hasText('▼▲');
 
     await click('th');
 
-    assert.dom('.sort-direction.fa.fa-sort-asc').exists();
+    assert.dom('.sort-direction').exists();
+    assert.dom('.sort-direction').hasText('▲');
 
     await click('th');
 
-    assert.dom('.sort-direction.fa.fa-sort-desc').exists();
+    assert.dom('.sort-direction').exists();
+    assert.dom('.sort-direction').hasText('▼');
 
     await click('th');
 
-    assert.dom('.sort-direction.fa.fa-sort').exists();
+    assert.dom('.sort-direction').exists();
+    assert.dom('.sort-direction').hasText('▼▲');
   });
 
-  test('it notifies observers of the sort state changes', async function(assert) {
+  test('it notifies observers of sort state changes', async function(assert) {
     assert.expect(6);
 
     const directions = ['unsorted', 'asc', 'desc'];
