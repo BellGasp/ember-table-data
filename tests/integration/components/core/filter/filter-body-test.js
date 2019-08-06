@@ -2,9 +2,10 @@ import hbs from 'htmlbars-inline-precompile';
 import EmberObject from '@ember/object';
 import Comparator from 'ember-table-data/utils/comparator-object';
 import Filter from 'ember-table-data/utils/filter-object';
+import { isOptionInList } from '../../../../helpers/ember-power-select-custom-helpers';
 import { A } from '@ember/array';
 import { render } from '@ember/test-helpers';
-import { selectSearch } from 'ember-power-select/test-support/helpers';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 
@@ -20,7 +21,7 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
   });
 
   test('it filters comparator using `showComparator`', async function(assert) {
-    assert.expect(3);
+    assert.expect(2);
 
     this.setProperties({
       deleteRow: () => {},
@@ -45,9 +46,9 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       {{/core/filter/filter-body}}
     `);
 
-    await selectSearch('.comparator-selector', 'Is E');
+    let isComparatorVisible = await isOptionInList('.comparator-selector', 'Is Empty');
 
-    assert.dom('.ember-power-select-option--no-matches-message').exists();
+    assert.ok(!isComparatorVisible);
 
     this.set('comparators', A([
       Comparator.create({
@@ -58,13 +59,10 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       })
     ]));
 
-    await selectSearch('.comparator-selector', 'Is E');
-
-    assert.dom('.ember-power-select-option').exists();
-    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+    isComparatorVisible = await isOptionInList('.comparator-selector', 'Is Empty');
+    assert.ok(isComparatorVisible);
   });
 
-  /*
   test('it hides the input when `showInput` is false', async function(assert) {
     assert.expect(2);
 
@@ -84,14 +82,13 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
 
     assert.dom('.inputValue').exists();
 
-    await selectSearch('.comparator-selector', 'Is Empty');
+    await selectChoose('.comparator-selector', 'Is Empty');
 
     assert.dom('.inputValue').doesNotExist();
   });
-  */
 
   test('it adds comparator when propertyType does not exist', async function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
     this.set('deleteRow', () => {});
     this.set('filtersRows',
@@ -123,13 +120,14 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       {{/core/filter/filter-body}}
     `);
 
-    await selectSearch('.comparator-selector', 'Cust');
+    let doesComparatorExist = await isOptionInList('.comparator-selector', 'Custom');
 
-    assert.dom('.ember-power-select-option').exists();
-    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+    assert.ok(doesComparatorExist);
   });
 
   test('it adds comparator when propertyType exists', async function(assert) {
+    assert.expect(1);
+
     this.set('deleteRow', () => {});
     this.set('filtersRows',
       A([
@@ -160,9 +158,8 @@ module('Integration | Component | core/filter/filter-body', function(hooks) {
       {{/core/filter/filter-body}}
     `);
 
-    await selectSearch('.comparator-selector', 'Cust');
+    let doesComparatorExist = await isOptionInList('.comparator-selector', 'Custom');
 
-    assert.dom('.ember-power-select-option').exists();
-    assert.dom('.ember-power-select-option--no-matches-message').doesNotExist();
+    assert.ok(doesComparatorExist);
   });
 });
