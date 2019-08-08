@@ -78,7 +78,7 @@ module('Integration | Component | table-data', function(hooks) {
       {{/table-data}}
     `);
 
-    await click('.fa.fa-angle-right');
+    await click('.goto-next');
 
     assert.equal(this.get('currentPage'), 2);
   });
@@ -159,7 +159,7 @@ module('Integration | Component | table-data', function(hooks) {
           <div class="row mx-2 my-2">
             <div class="w-100 text-right">
               <button class="btn btn-sm btn-success" {{action actions.add}}>
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                +
               </button>
 
               <button class="btn btn-sm btn-primary" {{action actions.filter}}>
@@ -167,7 +167,7 @@ module('Integration | Component | table-data', function(hooks) {
               </button>
 
               <button class="btn btn-sm btn-outline-primary" {{action actions.clear}}>
-                <i class="fa fa-refresh" aria-hidden="true"></i>
+                🗘
               </button>
             </div>
           </div>
@@ -179,7 +179,7 @@ module('Integration | Component | table-data', function(hooks) {
               {{row.value class="col-3 text-center"}}
               {{#if (gt row.count 1)}}
                 {{#row.deleteButton class="btn btn-sm btn-danger col-1"}}
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  🗑
                 {{/row.deleteButton}}
               {{/if}}
             {{/body.row}}
@@ -232,7 +232,7 @@ module('Integration | Component | table-data', function(hooks) {
       {{/table-data}}
     `);
 
-    await click('.fa.fa-angle-right');
+    await click('.goto-next');
 
     assert.equal(this.get('currentPage'), 2);
 

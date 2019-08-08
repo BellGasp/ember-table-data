@@ -159,7 +159,7 @@ test('it can filter data with boolean comparator -- true', async function(assert
     {{#core/table-filter properties=properties updateFilter=(action updateFilter) as |filter|}}
       {{#filter.header class="row pb-1" as |header|}}
         {{#header.addButton class="add-button btn btn-primary col-1 offset-11"}}
-          <i class="fa fa-plus" aria-hidden="true"></i>
+          +
         {{/header.addButton}}
       {{/filter.header}}
 
@@ -171,7 +171,7 @@ test('it can filter data with boolean comparator -- true', async function(assert
 
           {{#if (gt row.count 1)}}
             {{#row.deleteButton class="btn btn-danger col-1"}}
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              🗑
             {{/row.deleteButton}}
           {{/if}}
         {{/body.row}}
@@ -179,10 +179,10 @@ test('it can filter data with boolean comparator -- true', async function(assert
 
       {{#filter.footer class="row" as |footer| }}
         {{#footer.filterButton class="filter-button btn btn-primary col-1 offset-10"}}
-          <i class="fa fa-filter" aria-hidden="true"></i>
+          +
         {{/footer.filterButton}}
         {{#footer.clearButton class="btn btn-primary col-1"}}
-          <i class="fa fa-refresh" aria-hidden="true"></i>
+          🗘
         {{/footer.clearButton}}
       {{/filter.footer}}
     {{/core/table-filter}}
@@ -211,7 +211,7 @@ test('it can filter data with boolean comparator -- false', async function(asser
     {{#core/table-filter properties=properties updateFilter=(action updateFilter) as |filter|}}
       {{#filter.header class="row pb-1" as |header|}}
         {{#header.addButton class="add-button btn btn-primary col-1 offset-11"}}
-          <i class="fa fa-plus" aria-hidden="true"></i>
+          +
         {{/header.addButton}}
       {{/filter.header}}
 
@@ -223,7 +223,7 @@ test('it can filter data with boolean comparator -- false', async function(asser
 
           {{#if (gt row.count 1)}}
             {{#row.deleteButton class="btn btn-danger col-1"}}
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              🗑
             {{/row.deleteButton}}
           {{/if}}
         {{/body.row}}
@@ -234,7 +234,7 @@ test('it can filter data with boolean comparator -- false', async function(asser
           <i class="fa fa-filter" aria-hidden="true"></i>
         {{/footer.filterButton}}
         {{#footer.clearButton class="btn btn-primary col-1"}}
-          <i class="fa fa-refresh" aria-hidden="true"></i>
+          🗘
         {{/footer.clearButton}}
       {{/filter.footer}}
     {{/core/table-filter}}
