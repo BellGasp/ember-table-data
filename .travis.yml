@@ -1,34 +1,34 @@
 language: node_js
 node_js:
-  - '10'
+- '10'
 sudo: false
 dist: trusty
 addons:
   chrome: stable
 cache:
   directories:
-    - "$HOME/.npm"
+  - "$HOME/.npm"
 env:
   global:
-    - JOBS=1
+  - JOBS=1
 jobs:
   fail_fast: true
   allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-beta
-    - env: EMBER_TRY_SCENARIO=ember-canary
-    include:
-    - stage: Tests
-      name: Tests
-      script:
-      - npm run lint:hbs
-      - npm run lint:js
-      - npm test
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.4.0
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.8.1
-    - env: EMBER_TRY_SCENARIO=ember-release
-    - env: EMBER_TRY_SCENARIO=ember-beta
-    - env: EMBER_TRY_SCENARIO=ember-canary
-    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
+  - env: EMBER_TRY_SCENARIO=ember-beta
+  - env: EMBER_TRY_SCENARIO=ember-canary
+  include:
+  - stage: Tests
+    name: Tests
+    script:
+    - npm run lint:hbs
+    - npm run lint:js
+    - npm test
+  - env: EMBER_TRY_SCENARIO=ember-lts-3.4.0
+  - env: EMBER_TRY_SCENARIO=ember-lts-3.8.1
+  - env: EMBER_TRY_SCENARIO=ember-release
+  - env: EMBER_TRY_SCENARIO=ember-beta
+  - env: EMBER_TRY_SCENARIO=ember-canary
+  - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
 before_install:
 - npm config set spin false
 - npm install -g npm@6.10.2
