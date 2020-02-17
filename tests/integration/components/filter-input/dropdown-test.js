@@ -19,7 +19,7 @@ module('Integration | Component | filter-input/dropdown', function(hooks) {
     });
     await render(hbs`{{filter-input/dropdown filter=filter}}`);
 
-    assert.equal(this.$('div.dropdown').length, 1, 'Dropdown is showing.');
+    assert.equal(this.element.querySelectorAll('div.dropdown').length, 1, 'Dropdown is showing.');
   });
 
   test('the dropdown has the right options - array', async function(assert) {

@@ -1,10 +1,11 @@
-import { module } from 'qunit';
-import { setupRenderingTest, test, skip } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import { click, render, fillIn } from '@ember/test-helpers';
 import { selectChoose } from 'ember-power-select/test-support/helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Filter from 'ember-table-data/utils/filter-object';
 import { A } from '@ember/array';
+import setupOnerror from '@ember/test-helpers/setup-onerror';
 
 module('Integration | Component | table-data', function(hooks) {
   setupRenderingTest(hooks);
@@ -25,23 +26,29 @@ module('Integration | Component | table-data', function(hooks) {
       {{/table-data}}
     `);
 
-    assert.equal(this.$('table').length, 1);
-    assert.equal(this.$('table').text().trim(), 'template block text');
+    assert.equal(this.element.querySelectorAll('table').length, 1);
+    assert.equal(this.element.querySelector('table').textContent.trim(), 'template block text');
   });
 
-  skip('it throws assertion error without records', async function(assert) {
-    assert.expectAssertion(async () => {
-      await render(hbs`
-        {{#table-data}}
-        <tr>
-        <td>
-        template block text
-        </td>
-        </tr>
-        {{/table-data}}`);
-      },
-      /`records`/,
-      'Throws assertion error if records isn\'t passed');
+  test('it throws assertion error without records', async function(assert) {
+    assert.expect(1);
+
+    let onerror = err => {
+      assert.ok(err.message.includes('records'));
+    };
+    
+    setupOnerror(onerror);
+
+    await render(hbs`
+      {{#table-data}}
+      <tr>
+      <td>
+      template block text
+      </td>
+      </tr>
+      {{/table-data}}`);
+
+      setupOnerror();
   });
 
   test('it notifies observers of current page changes', async function(assert) {
