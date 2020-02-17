@@ -1,18 +1,20 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('base/table-none', 'Integration | Component | base/table none', {
-  integration: true
-});
+module('Integration | Component | base/table none', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
+  test('it renders', async function(assert) {
 
-  // Template block usage:
-  this.render(hbs`
-    {{#base/table-none}}
-      template block text
-    {{/base/table-none}}
-  `);
-
-  assert.equal(this.$().text().trim(), '');
+    // Template block usage:
+    await render(hbs`
+      {{#base/table-none}}
+        template block text
+      {{/base/table-none}}
+    `);
+    
+    assert.equal(this.element.textContent.trim(), '');
+  });
 });

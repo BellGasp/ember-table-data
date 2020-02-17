@@ -1,24 +1,25 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, fillIn } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('filter-input/string', 'Integration | Component | filter input/string', {
-  integration: true
-});
+module('Integration | Component | filter input/string', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  this.render(hbs `{{filter-input/string}}`);
+  test('it renders', async function(assert) {
+    await render(hbs `{{filter-input/string}}`);
 
-  assert.equal(this.$('.inputValue').length, 1, 'The input for string should be there');
-});
-
-test('it execute action on value change', function(assert) {
-  assert.expect(1);
-  this.set('testValueChange', () => {
-    assert.ok(true);
+    assert.equal(this.element.querySelectorAll('.inputValue').length, 1, 'The input for string should be there');
   });
 
-  this.render(hbs`{{filter-input/string valueChange=(action testValueChange)}}`);
+  test('it execute action on value change', async function(assert) {
+    assert.expect(1);
+    this.set('testValueChange', () => {
+      assert.ok(true);
+    });
 
-  this.$('.inputValue').val('TEST');
-  this.$('.inputValue').change();
+    await render(hbs`{{filter-input/string valueChange=(action testValueChange)}}`);
+
+    await fillIn('.inputValue', 'TEST');
+  });
 });

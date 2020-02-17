@@ -1,13 +1,15 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('core/filter/filter-footer', 'Integration | Component | core/filter/filter footer', {
-  integration: true
-});
+module('Integration | Component | core/filter/filter footer', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  this.render(hbs `{{core/filter/filter-footer}}`);
+  test('it renders', async function(assert) {
+    await render(hbs `{{core/filter/filter-footer}}`);
 
-  assert.equal(this.$().text().trim(), '', 'Theres no default layout to the component. ' +
-    'Should be empty if you dont use yeld component');
+    assert.equal(this.element.querySelector('*').textContent.trim(), '', 'Theres no default layout to the component. ' +
+      'Should be empty if you dont use yeld component');
+  });
 });

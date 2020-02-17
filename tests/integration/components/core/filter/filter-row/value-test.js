@@ -1,12 +1,14 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('core/filter/filter-row/value', 'Integration | Component | core/filter/filter row/value', {
-  integration: true
-});
+module('Integration | Component | core/filter/filter row/value', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  this.render(hbs`{{core/filter/filter-row/value propertyType="string"}}`);
+  test('it renders', async function(assert) {
+    await render(hbs`{{core/filter/filter-row/value propertyType="string"}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.equal(this.element.querySelector('*').textContent.trim(), '');
+  });
 });
