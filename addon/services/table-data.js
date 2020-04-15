@@ -5,7 +5,7 @@ import DS from 'ember-data';
 import ComparatorObject from 'ember-table-data/utils/comparator-object';
 import { A } from '@ember/array';
 import { isBlank } from '@ember/utils';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 
 const { PromiseArray } = DS;
 
@@ -18,10 +18,25 @@ export default Service.extend({
   loadPage(records, queryObj) {
     var recordPage = RecordPage.create();
     recordPage.page = queryObj.get('currentPage');
+
+    this.removeInvalidFilters(queryObj);
+
     recordPage.records = this.loadRecords(records, queryObj);
     return recordPage;
   },
 
+  removeInvalidFilters(queryObj) {
+    queryObj.filters = this.getValidFilters(queryObj.filters);
+  },
+
+  getValidFilters(filters) {
+    return A(filters.filter(filter =>
+      !isBlank(get(filter, 'property')) &&
+      !isBlank(get(filter, 'comparator')) &&
+      (!isBlank(get(filter, 'value')) || !get(filter, 'comparator.showInput'))
+    ));
+  },
+  
   loadRecords(records, query) {
     let recordsPromise;
 

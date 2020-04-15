@@ -72,7 +72,7 @@ Here are the parameters that are available.
 |------------|:-------------:|:----:|:------------|
 | properties | Ember array | array | Represents the available properties to be able to filter |
 | comparators | see below the default comparators | array | Represents the comparator to override/add to the default comparators |  
-
+| removeInvalidFiltersOnUpdate | false | boolean | Set to true to remove invalid filters from the filters when filtering. By default, invalid filters are kept, but filtered out before calling the records() method of table-data |
 We provide the filter-object in the utils. The filter-object contains 3 properties.
 
 | Properties | Description |

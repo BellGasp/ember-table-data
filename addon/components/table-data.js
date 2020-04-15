@@ -66,7 +66,7 @@ export default Component.extend({
     }
   },
 
-  pageRecords: computed('_queryObj.{currentPage,pageSize,filters.[],sorts.[]}', function() {
+  pageRecords: computed('_queryObj.{currentPage,pageSize,sorts.[],filters.[]}', 'loadedPages.[]', function() {
     let currentPage = this.get('_queryObj.currentPage');
     let loadedPage = this.loadPage(currentPage, true);
 
@@ -202,6 +202,7 @@ export default Component.extend({
     updateFilter(filters){
       this.resetLoadedPages();
       this.set('_queryObj.filters', filters);
+      this.notifyPropertyChange('_queryObj.filters');
       this.notifyFiltersObservers(filters);
     }
   }
