@@ -3,13 +3,17 @@ import FilterRow from 'ember-table-data/utils/filter-row-object';
 import layout from '../../templates/components/core/table-filter';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
-import { isBlank } from '@ember/utils';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   layout,
 
+  tableData: service(),
+
   rows: null,
   _rows: null,
+
+  removeInvalidFiltersOnUpdate: false,
 
   init() {
     this._super(...arguments);
@@ -33,6 +37,18 @@ export default Component.extend({
     return rows;
   }),
 
+  removeInvalidFilters() {
+    let filtersRows = this.get('filtersRows');
+    let validFilter = this.tableData.getValidFilters(filtersRows);
+    let invalidFilter = A(
+      filtersRows.filter(filter =>
+        validFilter.length === 0 ||
+        !validFilter.any(vf => vf === filter)
+      )
+    );
+    this.send('deleteRow', invalidFilter);
+  },
+
   actions:{
     addRow(){
       let rows = this.get('_rows');
@@ -45,29 +61,19 @@ export default Component.extend({
         this.get('_rows').removeObject(row);
       }
     },
+    
     clearFilters(){
       this.initializeFilters();
       this.get('updateFilter')(this.get('filtersRows'));
     },
+
     filter(){
+      if (this.get('removeInvalidFiltersOnUpdate')) {
+        this.removeInvalidFilters();
+      }
+
       let filtersRows = this.get('filtersRows');
-      let validFilter = A(
-        filtersRows.filter(filter =>
-          !isBlank(filter.get('property')) &&
-          !isBlank(filter.get('comparator')) &&
-          (!isBlank(filter.get('value')) || !filter.get('comparator.showInput'))
-        )
-      );
-
-      let invalidFilter = A(
-        filtersRows.filter(filter =>
-          validFilter.length === 0 ||
-          !validFilter.any(validFilter => validFilter === filter)
-        )
-      );
-
-      this.get('updateFilter')(validFilter);
-      this.send('deleteRow', invalidFilter);
+      this.get('updateFilter')(filtersRows);
     }
   }
 });

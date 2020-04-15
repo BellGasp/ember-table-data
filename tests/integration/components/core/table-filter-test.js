@@ -89,6 +89,62 @@ module('Integration | Component | core/table filter', function(hooks) {
     assert.equal(this.get('rows.length'), 1);
   });
 
+  test('it execute updateFilter action and removeInvalidFilters - false', async function (assert) {
+    assert.expect(2);
+    this.set('rows', A([
+      { value: 'test1', comparator: 'test', property: 'test' },
+      { value: 'test2', comparator: 'test2', property: null },
+      { value: 'test3', comparator: null, property: 'test2' },
+      { value: null, comparator: 'test2', property: 'test2' },
+    ]));
+    this.set('externalAction', (filters) => {
+      assert.ok(true);
+      assert.equal(filters.length, 4);
+    });
+
+    await render(hbs`
+      {{#core/table-filter rows=rows updateFilter=(action externalAction) removeInvalidFiltersOnUpdate=false as |filter|}}
+        {{#filter.header class="header" as |header|}}
+          {{header.addButton }}
+        {{/filter.header}}
+
+        {{#filter.footer as |footer| }}
+          {{footer.filterButton class="filter"}}
+        {{/filter.footer}}
+      {{/core/table-filter}}
+      `);
+
+    await click('button.filter');
+  });
+
+  test('it execute updateFilter action and removeInvalidFilters - true', async function (assert) {
+    assert.expect(2);
+    this.set('rows', A([
+      { value: 'test1', comparator: 'test', property: 'test' }, // valid
+      { value: 'test2', comparator: 'test2', property: null }, // invalid
+      { value: 'test3', comparator: null, property: 'test2' }, // invalid
+      { value: null, comparator: 'test2', property: 'test2' }, // valid
+    ]));
+    this.set('externalAction', (filters) => {
+      assert.ok(true);
+      assert.equal(filters.length, 2);
+    });
+
+    await render(hbs`
+      {{#core/table-filter rows=rows updateFilter=(action externalAction) removeInvalidFiltersOnUpdate=true as |filter|}}
+        {{#filter.header class="header" as |header|}}
+          {{header.addButton }}
+        {{/filter.header}}
+
+        {{#filter.footer as |footer| }}
+          {{footer.filterButton class="filter"}}
+        {{/filter.footer}}
+      {{/core/table-filter}}
+      `);
+
+    await click('button.filter');
+  });
+
   test('it execute updateFilter action correctly when action is executed', async function(assert) {
     assert.expect(1);
     this.set('rows', A());
