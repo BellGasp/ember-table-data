@@ -24,6 +24,10 @@ export default Component.extend({
       let internalName = currentComparator.get('internalName');
       
       var comparator = this.get('filteredComparators').findBy('internalName', internalName);
+      if (!comparator) {
+        let valueForQuery = currentComparator.get('valueForQuery');
+        comparator = this.get('filteredComparators').findBy('valueForQuery', valueForQuery);
+      }
     }
 
     if (!comparator) {
