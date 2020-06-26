@@ -1,4 +1,4 @@
-import EmberObject from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 
 export default EmberObject.extend({
 
@@ -9,15 +9,18 @@ export default EmberObject.extend({
     params['pageSize'] = pageSize;
 
     filters.forEach((filter, index) => {
-      params[`Filters[${index}].FieldName`] = filter.get('property.valueForQuery');
-      params[`Filters[${index}].FieldValue`] = filter.get('value');
-      params[`Filters[${index}].FieldType`] = filter.get('property.propertyType');
-      params[`Filters[${index}].Operator`] = filter.get('comparator.valueForQuery');
+      params[`Filters[${index}].FieldName`] = get(filter, 'property.valueForQuery');
+      params[`Filters[${index}].FieldValue`] = get(filter, 'value');
+      params[`Filters[${index}].FieldType`] = get(filter, 'property.propertyType');
+      params[`Filters[${index}].Operator`] = get(filter, 'comparator.valueForQuery');
     });
 
     sorts.forEach((sort, index) => {
-      params[`Sorts[${index}].Column`] = sort.get('column');
-      params[`Sorts[${index}].Asc`] = sort.get('asc');
+      // key/direction used in ember-table-data and JSON-API backends
+      // Column/Asc used in IdentityServer and JSON backends (TableDataVm)
+
+      params[`Sorts[${index}].Column`] = get(sort, 'key');
+      params[`Sorts[${index}].Asc`] = get(sort, 'direction').toLowerCase() === 'asc';
     });
 
     return params;
