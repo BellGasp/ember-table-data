@@ -17,18 +17,26 @@ export default Component.extend({
     }
   },
 
-  resetComparator: observer('filteredComparators.@each.label', function() {
-    let currentComparator = this.get('filterRowObject.comparator');
+  getComparator(comparators, property, value) {
+    if (!value || !property) return;
 
-    if (currentComparator) {
-      let internalName = currentComparator.get('internalName');
-      
-      var comparator = this.get('filteredComparators').findBy('internalName', internalName);
+    return comparators.findBy(property, value);
+  },
+
+  resetComparator: observer('filteredComparators.@each.label', function() {
+    let filteredComparators = this.get('filteredComparators');
+    
+    let currentComparatorInternalName = this.get('filterRowObject.comparator.internalName');
+    let comparator = this.getComparator(filteredComparators, 'internalName', currentComparatorInternalName);
+    
+    if (!comparator) {
+      let currentComparatorValueForQuery = this.get('filterRowObject.comparator.valueForQuery');
+      comparator = this.getComparator(filteredComparators, 'valueForQuery', currentComparatorValueForQuery);
     }
 
     if (!comparator) {
       // defaults to undefined if you get the firstObject of an empty array
-      comparator = this.get('filteredComparators.firstObject');
+      comparator = filteredComparators.get('firstObject');
     }
 
     this.set('filterRowObject.comparator', comparator);
