@@ -45,48 +45,59 @@ module('Integration | Component | core/table filter', function(hooks) {
   });
 
   test('it execute addRow action correctly when action is executed', async function(assert) {
-    assert.expect(2);
     this.set('rows', A());
-    assert.equal(this.get('rows.length'), 0);
+    this.set('externalAction', (filters) => {
+      assert.equal(filters.length, 1);
+    });
     await render(hbs`
-      {{#core/table-filter rows=rows as |filter|}}
+      {{#core/table-filter rows=rows updateFilter=(action externalAction) as |filter|}}
         {{#filter.header as |header|}}
-          {{header.addButton }}
+          {{header.addButton}}
         {{/filter.header}}
+
+        {{#filter.footer as |footer|}}
+          {{footer.filterButton class="filter"}}
+        {{/filter.footer}}
       {{/core/table-filter}}
       `);
     await click('button');
-    assert.equal(this.get('rows.length'), 1);
+    await click('button.filter');
   });
 
   test('it execute addRow and then remove it correctly when action is executed', async function(assert) {
-    assert.expect(3);
     this.set('rows', A());
-    assert.equal(this.get('rows.length'), 0);
+    this.set('externalAction', (filters) => {
+      assert.equal(filters.length, 2);
+    });
     await render(hbs`
-      {{#core/table-filter rows=rows as |filter|}}
+      {{#core/table-filter rows=rows updateFilter=(action externalAction) as |filter|}}
         {{#filter.header class="header" as |header|}}
-          {{header.addButton }}
+          {{header.addButton}}
         {{/filter.header}}
 
         {{#filter.body as |body|}}
 
         {{#body.row as |row|}}
-          {{row.property }}
-          {{row.comparator }}
-          {{row.value }}
+          {{row.property}}
+          {{row.comparator}}
+          {{row.value}}
           {{row.deleteButton class="delete"}}
         {{/body.row}}
+
+        {{#filter.footer as |footer|}}
+          {{footer.filterButton class="filter"}}
+        {{/filter.footer}}
       {{/filter.body}}
 
       {{/core/table-filter}}
       `);
     await click('.header > button');
     await click('.header > button');
-    assert.equal(this.get('rows.length'), 2);
+    await click('.header > button');
 
     await click(this.element.querySelector('button.delete'));
-    assert.equal(this.get('rows.length'), 1);
+
+    await click('button.filter');
   });
 
   test('it execute updateFilter action and removeInvalidFilters - false', async function (assert) {
