@@ -4,6 +4,7 @@ import layout from '../../templates/components/core/table-filter';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend({
   layout,
@@ -15,20 +16,14 @@ export default Component.extend({
 
   removeInvalidFiltersOnUpdate: false,
 
-  init() {
+  init(){
     this._super(...arguments);
-
-    let rows = this.get('rows');
-
-    if(!rows){
-      this.initializeFilters();
-    }else{
-      this.set('_rows', rows);
-    }
+    this.initializeFilters(this.rows);
   },
 
-  initializeFilters(){
+  initializeFilters(rows){
     this.set('_rows', A());
+    if (!isEmpty(rows)) this._rows.pushObjects(rows.map(r => FilterRow.create().copyFromObject(r)));
   },
 
   filtersRows: computed('_rows', function(){
@@ -37,7 +32,7 @@ export default Component.extend({
     return rows;
   }),
 
-  removeInvalidFilters() {
+  removeInvalidFilters(){
     let filtersRows = this.get('filtersRows');
     let validFilter = this.tableData.getValidFilters(filtersRows);
     let invalidFilter = A(
@@ -54,6 +49,7 @@ export default Component.extend({
       let rows = this.get('_rows');
       rows.pushObject(FilterRow.create());
     },
+    
     deleteRow(row){
       if (row.length){
         this.get('_rows').removeObjects(row);
