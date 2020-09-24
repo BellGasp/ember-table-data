@@ -4,7 +4,7 @@
   {{#power-select
       selected=filterRowObject.property
       options=properties
-      onchange=(action (mut filterRowObject.property))
+      onchange=(action 'updateSelectedProperty' (action (mut filterRowObject.property)) filterRowObject)
       tagName="div"
       searchField="label"
       class="property-selector"

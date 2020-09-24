@@ -15,4 +15,11 @@ export default Component.extend({
       set(filterRowObject, 'property', properties.get('firstObject'));
     }
   },
+
+  actions: {
+    updateSelectedProperty(mutAction, filterRowObject, property) {
+      mutAction(property);
+      filterRowObject.set('value', null);
+    }
+  }
 });
