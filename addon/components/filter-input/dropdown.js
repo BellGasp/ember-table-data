@@ -4,25 +4,25 @@ import { assert } from '@ember/debug';
 import { isArray } from '@ember/array';
 import { computed, observer, getProperties, get } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { A } from '@ember/array';
+import { Promise } from 'rsvp';
 
 export default Component.extend({
   layout,
-  data: null,
+  data: alias('filter.property.data'),
 
   valueChange: null,
   propertyPath: 'id',
   labelPath: 'label',
 
-  options: alias('filter.property.data'),
-
   assertData() {
-    let options = this.get('options');
-    
-    if (!options) {
+    let data = this.get('data');
+
+    if (!data) {
       assert('dropdown: the property "data" must be passed.');
     }
 
-    if (typeof (options) !== 'function' && !isArray(options)) {
+    if (typeof (data) !== 'function' && !isArray(data)) {
       assert('dropdown: the property "data" must be a function or an array.');
     }
   },
@@ -54,17 +54,25 @@ export default Component.extend({
   }),
   /* eslint-enable ember/no-observers */
 
+  options: computed('data', function () {
+    return new Promise(async (resolve) => {
+      let data = this.get('data');
+      if (typeof data === 'function') resolve(await data());
+      else resolve(data);
+    });
+  }),
+
   sortedOptions: computed('options', 'options.[]', function() {
-    let options = this.get('options');
+    return new Promise(async (resolve) => {
+      let options = A(await this.get('options'));
 
-    let optionResults = typeof options === 'function'
-      ? options()
-      : options;
+      let labelPath = this.get('labelPath');
+      let sortedOptions = labelPath
+        ? options.sortBy(labelPath)
+        : options.sort();
 
-    let labelPath = this.get('labelPath');
-    return labelPath 
-      ? optionResults.sortBy(labelPath)
-      : optionResults.sort();
+      resolve(sortedOptions);
+    });
   }),
 
   init() {
