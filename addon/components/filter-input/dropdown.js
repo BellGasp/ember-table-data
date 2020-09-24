@@ -2,41 +2,36 @@ import Component from '@ember/component';
 import layout from '../../templates/components/filter-input/dropdown';
 import { assert } from '@ember/debug';
 import { isArray } from '@ember/array';
-import { getProperties, get } from '@ember/object';
+import { computed, observer, getProperties, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 export default Component.extend({
   layout,
-  options: null,
   data: null,
 
   valueChange: null,
   propertyPath: 'id',
   labelPath: 'label',
 
-  assertData() {
-    let data = this.get('filter.property.data');
+  options: alias('filter.property.data'),
 
-    if (!data) {
+  assertData() {
+    let options = this.get('options');
+    
+    if (!options) {
       assert('dropdown: the property "data" must be passed.');
     }
 
-    if (typeof(data) !== 'function' && !isArray(data)) {
+    if (typeof (options) !== 'function' && !isArray(options)) {
       assert('dropdown: the property "data" must be a function or an array.');
     }
   },
 
   initDropdownProperties() {
     let {
-      data,
       labelPath,
       propertyPath
-    } = getProperties(this.get('filter.property'), 'data', 'labelPath', 'propertyPath');
-
-    if (typeof(data) === 'function') {
-      this.set('options', data());
-    } else if (isArray(data)) {
-      this.set('options', data);
-    }
+    } = getProperties(this.get('filter.property'), 'labelPath', 'propertyPath');
 
     if (labelPath) {
       this.set('labelPath', labelPath);
@@ -50,8 +45,27 @@ export default Component.extend({
     if(selectedValue){
       this.set('selectedValue', selectedValue);
     }
-
   },
+
+  /* eslint-disable ember/no-observers */
+  resetSelectionOnOptionsChange: observer('options', function() {
+    this.set('selectedValue', null);
+    this.send('valueChanged', null);
+  }),
+  /* eslint-enable ember/no-observers */
+
+  sortedOptions: computed('options', 'options.[]', function() {
+    let options = this.get('options');
+
+    let optionResults = typeof options === 'function'
+      ? options()
+      : options;
+
+    let labelPath = this.get('labelPath');
+    return labelPath 
+      ? optionResults.sortBy(labelPath)
+      : optionResults.sort();
+  }),
 
   init() {
     this._super(...arguments);
@@ -75,6 +89,8 @@ export default Component.extend({
         return;
       }
 
+      this.set('selectedValue', value);
+
       if (typeof(value) !== 'object') {
         this.get('valueChange')(value);
         return;
@@ -85,7 +101,7 @@ export default Component.extend({
       if (!value.hasOwnProperty(propertyPath)) {
         assert('dropdown: the propertyPath must be a valid property of the object.');
       }
-
+      
       this.get('valueChange')(get(value, propertyPath));
     }
   }
