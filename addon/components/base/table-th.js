@@ -23,8 +23,9 @@ export default Component.extend({
     const match = this.sorts.find(s => s.key === this.sort);
 
     if (match) {
-      const state = this.states.find(s => s.direction === match.direction);
-      const index = this.states.indexOf(state);
+      const states = this.get('states');
+      const state = states.find(s => s.direction === match.direction);
+      const index = states.indexOf(state);
 
       this.set('index', index);
     }
