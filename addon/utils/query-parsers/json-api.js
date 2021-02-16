@@ -2,7 +2,7 @@ import EmberObject from '@ember/object';
 
 export default EmberObject.extend({
 
-  parse({ currentPage, pageSize, sorts = [], filters = [] }) {
+  parse({ currentPage, pageSize, sorts = [], filters = [] }, useSimpleFilters = false) {
     const params = {};
 
     params['page[number]'] = currentPage;
@@ -13,9 +13,24 @@ export default EmberObject.extend({
     }
 
     if (filters.length > 0) {
-      params['filter'] = filters.map(({ value, comparator: { valueForQuery: comparator }, property: { valueForQuery: key } }) => {
-        return `${key} ${comparator} ${value}`;
-      }).join(' and ');
+      if (useSimpleFilters) {
+        filters.forEach(
+          ({
+            value, 
+            comparator: { valueForQuery: comparator }, 
+            property: { valueForQuery: key } 
+          }) => params[`filter[${key}]`] = `${comparator}:${value}`);
+      } else {
+        params['filter'] = filters
+          .map(
+            ({ 
+              value, 
+              comparator: { valueForQuery: comparator }, 
+              property: { valueForQuery: key } 
+            }) => `${key} ${comparator} ${value}`)
+          .join(' and ');
+      }
+      
     }
 
     return params;
