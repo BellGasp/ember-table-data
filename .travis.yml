@@ -16,6 +16,7 @@ jobs:
   allow_failures:
   - env: EMBER_TRY_SCENARIO=ember-beta
   - env: EMBER_TRY_SCENARIO=ember-canary
+  - env: EMBER_TRY_SCENARIO=ember-release
   include:
   - stage: Tests
     name: Tests
@@ -25,6 +26,8 @@ jobs:
     - npm test
   - env: EMBER_TRY_SCENARIO=ember-lts-3.4.0
   - env: EMBER_TRY_SCENARIO=ember-lts-3.8.1
+  - env: EMBER_TRY_SCENARIO=ember-lts-3.16.0
+  - env: EMBER_TRY_SCENARIO=ember-lts-3.20.0
   - env: EMBER_TRY_SCENARIO=ember-release
   - env: EMBER_TRY_SCENARIO=ember-beta
   - env: EMBER_TRY_SCENARIO=ember-canary
