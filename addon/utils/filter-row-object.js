@@ -9,7 +9,8 @@ export default EmberObject.extend({
   copyFromObject(row) {
     return this.setProperties({
       comparator: row.comparator,
-      property: row.property
+      property: row.property,
+      value: row.value
     });
   }
 
